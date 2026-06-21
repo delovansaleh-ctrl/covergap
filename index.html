@@ -637,7 +637,7 @@ const BANK_DATA = [
 
 const INSURER_DATA = [
   {id:'aalife',name:'AA Life',color:'#F5A623',domain:'aa.co.nz'},
-  {id:'aia',name:'AIA',color:'#D4002D',domain:'aia.com',logoH:36},
+  {id:'aia',name:'AIA',color:'#D4002D',domain:'aia.com',logoH:36,noLogo:true},
   {id:'asteron',name:'Asteron Life',color:'#0066A1',domain:'asteronlife.co.nz'},
   {id:'booster',name:'Booster',color:'#00B2A9',domain:'booster.co.nz'},
   {id:'chubb',name:'Chubb Life',color:'#003087',domain:'chubb.com'},
@@ -907,9 +907,11 @@ function buildProvGrid(){
   const makeTile=(p,i)=>{
     const sel=ST.provider===p.id;
     const sz = p.logoH ? `max-height:${p.logoH}px;max-width:${p.logoH*2}px` : '';
-    const lbl=`<img class="prov-logo" src="https://www.google.com/s2/favicons?domain=${p.domain}&sz=128"
+    const lbl=p.noLogo
+      ? `<span class="prov-name-fb" style="display:block;color:${sel?'#5B21B6':p.color}">${p.name}</span>`
+      : `<img class="prov-logo" src="https://www.google.com/s2/favicons?domain=${p.domain}&sz=128"
       onerror="this.style.display='none';this.nextElementSibling.style.display='block'" alt="${p.name}" style="${sz}"/>
-      <span class="prov-name-fb" style="color:${sel?'#5B21B6':p.color}">${p.name}</span>
+      <span class="prov-name-fb" style="color:${sel?'#5B21B6':p.color}">${p.name}</span>`;
       <span class="prov-tile-name">${p.name}</span>`;
     return `<div class="prov-tile${sel?' sel':''}" data-id="${p.id}"
       onclick="selectProvider('${p.id}')"
