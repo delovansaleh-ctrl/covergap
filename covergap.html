@@ -401,84 +401,77 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
     <div class="map-wrap">
       <!-- SVG map of NZ -->
       <div class="map-svg-wrap">
-        <svg id="nz-map" viewBox="0 0 220 518" width="210" height="494">
+        <svg id="nz-map" viewBox="0 0 200 580" width="180" height="522" style="overflow:visible">
+          <defs>
+            <filter id="map-shadow" x="-10%" y="-10%" width="120%" height="120%">
+              <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="rgba(91,33,182,0.12)"/>
+            </filter>
+          </defs>
 
-          <!-- NORTH ISLAND REGIONS -->
-          <polygon class="region" data-r="Northland"
-            points="116,4 90,16 70,35 60,54 62,74 77,80 96,74 112,54 118,29"
-            onclick="selectRegion('Northland')"/>
+          <!-- ── NORTH ISLAND ── -->
+          <path class="region" data-r="Northland" onclick="selectRegion('Northland')"
+            d="M104,5 C98,8 88,14 78,24 C68,34 60,46 56,60 C53,70 55,78 62,82 C68,86 76,84 84,78 C92,70 100,56 106,40 C112,26 110,12 104,5 Z"/>
 
-          <polygon class="region" data-r="Auckland"
-            points="62,74 58,90 57,107 67,112 84,108 98,99 98,84 96,74 77,80"
-            onclick="selectRegion('Auckland')"/>
+          <path class="region" data-r="Auckland" onclick="selectRegion('Auckland')"
+            d="M62,82 C56,88 52,96 52,106 C52,114 58,120 68,122 C78,124 88,120 94,112 C100,104 100,94 96,86 C90,78 80,78 74,78 C68,78 64,80 62,82 Z"/>
 
-          <polygon class="region" data-r="Waikato"
-            points="57,107 39,120 34,148 37,173 55,178 70,172 78,158 79,136 76,118 67,112"
-            onclick="selectRegion('Waikato')"/>
+          <path class="region" data-r="Bay of Plenty" onclick="selectRegion('Bay of Plenty')"
+            d="M68,122 C78,124 88,122 96,118 C106,112 110,100 118,90 C124,82 132,76 144,74 C156,72 166,78 172,90 C168,104 158,116 146,122 C132,128 116,126 100,122 C84,118 74,116 68,122 Z"/>
 
-          <polygon class="region" data-r="Bay of Plenty"
-            points="84,108 98,99 98,84 117,78 144,78 160,90 155,113 134,120 109,118 76,118 79,136 67,112"
-            onclick="selectRegion('Bay of Plenty')"/>
+          <path class="region" data-r="Gisborne" onclick="selectRegion('Gisborne')"
+            d="M144,74 C152,68 162,64 172,68 C180,72 184,84 180,100 C176,112 166,122 156,124 C148,126 144,122 146,122 C158,116 168,104 172,90 C166,78 156,72 144,74 Z"/>
 
-          <polygon class="region" data-r="Gisborne"
-            points="144,78 165,68 176,83 170,115 160,122 155,113 160,90"
-            onclick="selectRegion('Gisborne')"/>
+          <path class="region" data-r="Hawke's Bay" onclick="selectRegion(&quot;Hawke's Bay&quot;)"
+            d="M146,122 C148,126 156,124 164,128 C172,132 178,148 174,166 C170,180 158,186 146,182 C138,178 132,168 132,156 C132,142 136,128 146,122 Z"/>
 
-          <polygon class="region" data-r="Hawke's Bay"
-            points="155,113 160,122 175,120 181,146 174,170 156,168 147,150 147,130"
-            onclick="selectRegion(&quot;Hawke's Bay&quot;)"/>
+          <path class="region" data-r="Taranaki" onclick="selectRegion('Taranaki')"
+            d="M40,176 C32,182 24,196 24,210 C24,222 34,230 48,228 C60,226 64,216 62,204 C60,192 52,180 40,176 Z"/>
 
-          <polygon class="region" data-r="Taranaki"
-            points="37,173 27,182 19,198 26,214 47,218 56,207 55,178"
-            onclick="selectRegion('Taranaki')"/>
+          <path class="region" data-r="Manawatū-Whanganui" onclick="selectRegion('Manawatū-Whanganui')"
+            d="M68,122 C62,128 56,134 52,142 C46,152 42,164 40,176 C52,180 60,192 62,204 C64,216 60,226 48,228 C52,234 58,240 66,246 C76,252 90,256 104,256 C112,250 120,240 126,228 C132,216 132,200 128,190 C124,178 116,168 114,158 C112,148 118,136 126,128 C120,124 112,122 100,122 C90,120 78,120 68,122 Z"/>
 
-          <polygon class="region" data-r="Manawatū-Whanganui"
-            points="76,118 109,118 134,120 155,113 147,130 147,150 147,168 109,200 117,220 113,238 96,248 72,244 55,234 48,218 55,178 70,172 79,136"
-            onclick="selectRegion('Manawatū-Whanganui')"/>
+          <path class="region" data-r="Wellington" onclick="selectRegion('Wellington')"
+            d="M66,246 C72,254 80,260 90,264 C100,268 112,266 120,260 C126,254 128,244 126,236 C124,230 120,224 114,222 C108,218 102,220 100,226 C98,232 98,244 94,250 C88,256 76,254 66,246 Z"/>
 
-          <polygon class="region" data-r="Wellington"
-            points="72,244 96,248 113,238 121,248 126,260 124,267 112,269 100,263 87,255"
-            onclick="selectRegion('Wellington')"/>
+          <!-- Foveaux Strait gap -->
+          <rect x="0" y="275" width="200" height="12" fill="#FFFFFF"/>
 
-          <!-- Cook Strait visual gap -->
-          <rect x="0" y="272" width="220" height="14" fill="#FFFFFF" rx="0"/>
+          <!-- ── SOUTH ISLAND ── -->
+          <path class="region" data-r="Top of South" onclick="selectRegion('Top of South')"
+            d="M106,290 C118,282 134,278 150,278 C164,278 178,282 190,292 C198,300 200,314 194,324 C188,332 176,334 162,330 C150,326 140,316 130,306 C120,296 110,290 106,290 Z"/>
 
-          <!-- SOUTH ISLAND REGIONS -->
-          <polygon class="region" data-r="Top of South"
-            points="130,288 152,282 174,285 193,298 196,318 182,326 158,322 142,310 134,296"
-            onclick="selectRegion('Top of South')"/>
+          <path class="region" data-r="West Coast" onclick="selectRegion('West Coast')"
+            d="M106,290 C110,296 116,306 118,318 C120,332 114,352 106,374 C98,396 88,418 80,438 C76,448 72,456 68,456 C62,452 62,440 66,428 C72,412 80,392 88,368 C96,344 104,318 106,290 Z"/>
 
-          <polygon class="region" data-r="West Coast"
-            points="130,288 134,296 130,322 116,360 100,406 86,435 82,445 70,448 65,437 76,400 92,358 108,318 122,295"
-            onclick="selectRegion('West Coast')"/>
+          <path class="region" data-r="Canterbury" onclick="selectRegion('Canterbury')"
+            d="M130,306 C140,316 150,326 162,330 C176,334 188,332 196,322 C204,340 208,364 208,390 C208,416 202,440 192,456 C182,466 168,470 152,468 C138,466 126,456 118,440 C110,424 106,404 106,382 C106,362 108,342 110,324 C112,312 118,302 130,306 Z"/>
 
-          <polygon class="region" data-r="Canterbury"
-            points="142,310 158,322 182,326 196,318 208,352 212,398 206,440 192,454 164,460 143,447 128,408 118,368 116,360 130,322"
-            onclick="selectRegion('Canterbury')"/>
+          <path class="region" data-r="Otago" onclick="selectRegion('Otago')"
+            d="M106,382 C106,404 110,424 118,440 C126,456 138,466 152,468 C164,470 176,466 186,458 C190,466 190,476 184,484 C176,492 162,496 146,496 C130,496 114,490 100,480 C90,472 84,460 82,448 C82,440 84,432 88,424 C94,414 100,400 106,382 Z"/>
 
-          <polygon class="region" data-r="Otago"
-            points="118,368 128,408 143,447 164,460 192,454 202,448 206,462 197,476 173,486 143,490 113,483 92,471 86,457 86,435 100,406"
-            onclick="selectRegion('Otago')"/>
+          <path class="region" data-r="Southland" onclick="selectRegion('Southland')"
+            d="M82,448 C84,460 90,472 100,480 C114,490 130,496 146,496 C162,496 176,492 184,484 C188,492 190,504 184,514 C176,522 160,526 142,526 C122,526 102,520 86,510 C74,502 66,490 64,478 C62,466 64,454 68,448 C72,444 78,444 82,448 Z"/>
 
-          <polygon class="region" data-r="Southland"
-            points="86,435 86,457 92,471 113,483 143,490 173,486 197,476 206,462 216,474 208,492 186,505 155,510 122,508 93,500 74,490 66,478 65,437 70,448 82,445"
-            onclick="selectRegion('Southland')"/>
+          <!-- Stewart Island (Rakiura) — part of Southland -->
+          <path class="region" data-r="Southland" onclick="selectRegion('Southland')"
+            d="M80,538 C74,542 70,548 72,554 C74,560 82,562 90,560 C98,558 104,552 102,546 C100,540 88,534 80,538 Z"/>
 
-          <!-- Region name labels (show on hover, suppress when selected) -->
-          <text x="88" y="50" text-anchor="middle" font-size="8" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Northland</text>
-          <text x="78" y="96" text-anchor="middle" font-size="7.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Auckland</text>
-          <text x="55" y="148" text-anchor="middle" font-size="7.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Waikato</text>
-          <text x="118" y="106" text-anchor="middle" font-size="7.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Bay of Plenty</text>
-          <text x="163" y="96" text-anchor="middle" font-size="7" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Gisborne</text>
-          <text x="166" y="144" text-anchor="middle" font-size="7" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Hawke's Bay</text>
-          <text x="36" y="200" text-anchor="middle" font-size="7" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Taranaki</text>
-          <text x="88" y="192" text-anchor="middle" font-size="7.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Whanganui</text>
-          <text x="100" y="257" text-anchor="middle" font-size="7.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Wellington</text>
-          <text x="162" y="304" text-anchor="middle" font-size="7" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Top of South</text>
-          <text x="94" y="390" text-anchor="middle" font-size="7" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">West Coast</text>
-          <text x="165" y="390" text-anchor="middle" font-size="8" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Canterbury</text>
-          <text x="152" y="450" text-anchor="middle" font-size="7.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Otago</text>
-          <text x="140" y="488" text-anchor="middle" font-size="7.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Southland</text>
+          <!-- Labels -->
+          <text x="84" y="44" text-anchor="middle" font-size="7" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Northland</text>
+          <text x="70" y="104" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Auckland</text>
+          <text x="46" y="152" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Waikato</text>
+          <text x="122" y="100" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Bay of Plenty</text>
+          <text x="166" y="90" text-anchor="middle" font-size="6" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Gisborne</text>
+          <text x="162" y="152" text-anchor="middle" font-size="6" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Hawke's Bay</text>
+          <text x="34" y="208" text-anchor="middle" font-size="6" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Taranaki</text>
+          <text x="82" y="186" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Whanganui</text>
+          <text x="96" y="244" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Wellington</text>
+          <text x="158" y="304" text-anchor="middle" font-size="6" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Top of South</text>
+          <text x="80" y="370" text-anchor="middle" font-size="6" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">West Coast</text>
+          <text x="162" y="400" text-anchor="middle" font-size="7" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Canterbury</text>
+          <text x="140" y="460" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Otago</text>
+          <text x="120" y="504" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Southland</text>
+          <text x="88" y="554" text-anchor="middle" font-size="5.5" fill="#9CA3AF" font-family="DM Sans,sans-serif" pointer-events="none">Stewart Is.</text>
         </svg>
       </div>
 
