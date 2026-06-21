@@ -908,11 +908,12 @@ function buildProvGrid(){
     const sel=ST.provider===p.id;
     const sz = p.logoH ? `max-height:${p.logoH}px;max-width:${p.logoH*2}px` : '';
     const lbl=p.noLogo
-      ? `<span class="prov-name-fb" style="display:block;color:${sel?'#5B21B6':p.color}">${p.name}</span>`
+      ? `<span class="prov-name-fb" style="display:block;color:${sel?'#5B21B6':p.color}">${p.name}</span>
+         <span class="prov-tile-name">${p.name}</span>`
       : `<img class="prov-logo" src="https://www.google.com/s2/favicons?domain=${p.domain}&sz=128"
-      onerror="this.style.display='none';this.nextElementSibling.style.display='block'" alt="${p.name}" style="${sz}"/>
-      <span class="prov-name-fb" style="color:${sel?'#5B21B6':p.color}">${p.name}</span>`;
-      <span class="prov-tile-name">${p.name}</span>`;
+         onerror="this.style.display='none';this.nextElementSibling.style.display='block'" alt="${p.name}" style="${sz}"/>
+         <span class="prov-name-fb" style="color:${sel?'#5B21B6':p.color}">${p.name}</span>
+         <span class="prov-tile-name">${p.name}</span>`;
     return `<div class="prov-tile${sel?' sel':''}" data-id="${p.id}"
       onclick="selectProvider('${p.id}')"
       style="animation:cardIn .32s ease ${.08+i*.025}s both">
