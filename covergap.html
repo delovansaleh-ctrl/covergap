@@ -26,6 +26,19 @@ input,button,select,textarea{font-family:inherit}
 @keyframes slideInL{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:translateX(0)}}
 @keyframes cardIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes headIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes wordRise{from{opacity:0;transform:translateY(20px);filter:blur(3px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes heroExit{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.04)}}
+@keyframes formRise{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bgWash{from{opacity:1}to{opacity:0}}
+.hw{display:inline-block;opacity:0;animation:wordRise .5s cubic-bezier(.16,1,.3,1) forwards;margin-right:.28em}
+.hw.ac{color:#a78bfa}
+#s0-sub{opacity:0;transition:opacity .6s ease}
+#s0-sub.vis{opacity:1}
+.hero-exiting{animation:heroExit .7s cubic-bezier(.4,0,1,1) forwards!important}
+.screen.form-rise{animation:formRise .65s cubic-bezier(.16,1,.3,1) both!important}
+#hero-wash{position:fixed;inset:0;background:#26215C;pointer-events:none;z-index:5;opacity:0;transition:opacity .7s ease}
+#hero-wash.active{opacity:1}
+#hero-wash.fade{opacity:0}
 @keyframes bigPop{0%{opacity:0;transform:scale(.88) translateY(8px)}65%{transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
 @keyframes heartPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
 @keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
@@ -255,20 +268,14 @@ footer{padding:16px 48px;border-top:1px solid rgba(26,18,8,.06);display:flex;ali
   <span class="header-note">Free cover review</span>
 </header>
 
+<div id="hero-wash"></div>
 <main>
 
   <!-- S0: HERO -->
-  <div class="screen active slide-in-r" id="s0" style="max-width:100%;min-height:calc(100vh - 55px);display:flex;align-items:center;justify-content:center;background:#26215C;text-align:center;padding:60px 24px;">
-    <div style="max-width:640px">
-      <h1 style="font-size:clamp(28px,5vw,52px);font-weight:800;line-height:1.15;letter-spacing:-0.03em;color:#fff;margin-bottom:24px;">
-        Most Kiwis set up their insurance once — and never look at it again.
-      </h1>
-      <p style="font-size:clamp(16px,2vw,19px);color:rgba(255,255,255,0.65);line-height:1.7;max-width:400px;margin:0 auto 40px;">
-        Your cover made sense when you got it. Does it still?
-      </p>
-      <button onclick="navigateTo(1,1)" style="background:#10B981;color:#fff;border:none;border-radius:50px;padding:16px 44px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 8px 28px rgba(16,185,129,0.35);transition:transform 0.18s,box-shadow 0.18s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 36px rgba(16,185,129,0.45)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 28px rgba(16,185,129,0.35)'">
-        Free cover review
-      </button>
+  <div class="screen active" id="s0" style="max-width:100%;min-height:calc(100vh - 55px);display:flex;align-items:center;justify-content:center;background:#26215C;text-align:center;padding:60px 24px;">
+    <div style="max-width:620px">
+      <h1 id="s0-headline" style="font-size:clamp(28px,5vw,52px);font-weight:800;line-height:1.2;letter-spacing:-0.03em;color:#fff;margin-bottom:28px;display:flex;flex-wrap:wrap;justify-content:center"></h1>
+      <p id="s0-sub" style="font-size:clamp(16px,2vw,19px);color:rgba(255,255,255,0.6);line-height:1.75;margin:0 auto"></p>
     </div>
   </div>
 
@@ -728,6 +735,7 @@ function render() {
 
 function buildScreen(n) {
   switch(n) {
+    case 0: buildHero(); break;
     case 1: buildGoalGrid(); break;
     case 2: buildProvGrid(); buildGoalPill('pill-s2','pill-s2-text'); break;
     case 3: buildCoverGrid(); buildGoalPill('pill-s3','pill-s3-text'); break;
@@ -743,6 +751,55 @@ function buildScreen(n) {
 
 // ── SCREEN BUILDERS (run once on screen entry) ──
 function mkChk(){return'<div class="chk">✓</div>';}
+
+let _heroTimer = null;
+function buildHero() {
+  const words = [
+    {t:'Most',d:0},{t:'Kiwis',d:.09},{t:'set',d:.17},{t:'up',d:.24},
+    {t:'their',d:.31},{t:'insurance',d:.40,ac:true},{t:'once',d:.50,ac:true},
+    {t:'—',d:.63},{t:'and',d:.80},{t:'never',d:.89},{t:'look',d:.98},
+    {t:'at',d:1.05},{t:'it',d:1.11},{t:'again.',d:1.17},
+  ];
+  const h = document.getElementById('s0-headline');
+  const sub = document.getElementById('s0-sub');
+  if (!h || !sub) return;
+
+  h.innerHTML = words.map(w =>
+    `<span class="hw${w.ac?' ac':''}" style="animation-delay:${w.d}s">${w.t}</span>`
+  ).join('');
+
+  sub.textContent = 'Your cover made sense when you got it. Does it still?';
+  setTimeout(() => sub.classList.add('vis'), 1700);
+
+  // Auto-transition: hero exits → wash → form rises
+  clearTimeout(_heroTimer);
+  _heroTimer = setTimeout(() => {
+    const s0 = document.getElementById('s0');
+    const wash = document.getElementById('hero-wash');
+
+    // 1. Fade s0 text out, scale hero slightly
+    s0.classList.add('hero-exiting');
+
+    // 2. Wash overlay flashes purple over the transition
+    setTimeout(() => {
+      wash.classList.add('active');
+      setTimeout(() => {
+        // 3. Navigate to s1 while hidden behind wash
+        navigateTo(1, 1);
+        const s1 = document.getElementById('s1');
+        s1.classList.remove('slide-in-r','slide-in-l');
+        s1.classList.add('form-rise');
+
+        // 4. Dissolve wash to reveal s1
+        setTimeout(() => {
+          wash.classList.remove('active');
+          wash.classList.add('fade');
+          setTimeout(() => wash.classList.remove('fade'), 800);
+        }, 80);
+      }, 350);
+    }, 300);
+  }, 3400);
+}
 
 function buildGoalGrid(){
   const g=document.getElementById('goal-grid'); if(!g) return;
