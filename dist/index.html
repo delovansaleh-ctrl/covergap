@@ -16,7 +16,7 @@ input,button,select,textarea{font-family:inherit}
 ::placeholder{color:#9CA3AF}
 
 :root{
-  --A:#5B21B6;--a-btn:#5B47D6;--a-dim:rgba(91,33,182,.08);--a-glow:rgba(91,33,182,.14);--a-border:rgba(91,33,182,.32);
+  --A:#5B21B6;--a-btn:#5B47D6;--a-dim:rgba(91,33,182,.14);--a-glow:rgba(91,33,182,.22);--a-border:rgba(91,33,182,.38);
   --cta:#F43F5E;--cta-h:#E0284F;
   --bg:#FFFFFF;--surf:#EDE9FE;--surf-h:rgba(91,33,182,.05);--bd:#DDD6FE;
   --t1:#111827;--t2:#6B7280;--t3:#9CA3AF;--t4:#7B4DBB;
@@ -28,7 +28,8 @@ input,button,select,textarea{font-family:inherit}
 @keyframes slideInL{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:translateX(0)}}
 @keyframes cardIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes headIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes wordRise{from{opacity:0;transform:translateY(20px);filter:blur(3px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes wordRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes headlineIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes heroExit{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.04)}}
 @keyframes formRise{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
 @keyframes bgWash{from{opacity:1}to{opacity:0}}
@@ -111,10 +112,10 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
 
 /* ── CARDS ── */
 .card{background:#EDE9FE;border:1.5px solid #DDD6FE;border-radius:14px;cursor:pointer;transition:background .18s,border-color .18s,box-shadow .18s,transform .18s;position:relative;user-select:none;overflow:hidden;box-shadow:0 1px 6px rgba(17,24,39,.06)}
-.card:hover{background:rgba(91,33,182,.05);border-color:var(--a-border);transform:translateY(-2px) scale(1.015);box-shadow:0 6px 20px rgba(91,33,182,.1)}
+.card:hover{background:rgba(91,33,182,.1);border-color:var(--a-border);transform:translateY(-2px) scale(1.015);box-shadow:0 6px 20px rgba(91,33,182,.13)}
 .card:active{transform:scale(.97)}
-.card.sel{background:var(--a-dim);border-color:var(--A);box-shadow:0 0 0 3px var(--a-glow)}
-.card.sel:hover{background:rgba(91,33,182,.1);box-shadow:0 0 0 3px var(--a-glow),0 8px 24px rgba(91,33,182,.18)}
+.card.sel{background:rgba(91,33,182,.18);border-color:var(--A);box-shadow:0 0 0 3px var(--a-glow)}
+.card.sel:hover{background:rgba(91,33,182,.22);box-shadow:0 0 0 3px var(--a-glow),0 8px 24px rgba(91,33,182,.2)}
 .chk{position:absolute;top:10px;right:10px;width:16px;height:16px;border-radius:50%;background:var(--A);display:none;align-items:center;justify-content:center;font-size:9px;color:#FFF;font-weight:900;z-index:1}
 .card.sel .chk{display:flex}
 
@@ -154,13 +155,13 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
 
 /* ── PROVIDER TILES ── */
 .prov-tile{background:#EDE9FE;border:1.5px solid #DDD6FE;border-radius:14px;cursor:pointer;transition:background .18s,border-color .18s,box-shadow .18s,transform .18s;position:relative;user-select:none;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:88px;box-shadow:0 1px 6px rgba(17,24,39,.06);padding:14px 10px}
-.prov-tile:hover{background:rgba(91,33,182,.05);border-color:var(--a-border);transform:translateY(-2px) scale(1.015);box-shadow:0 6px 20px rgba(91,33,182,.1)}
+.prov-tile:hover{background:rgba(91,33,182,.1);border-color:var(--a-border);transform:translateY(-2px) scale(1.015);box-shadow:0 6px 20px rgba(91,33,182,.13)}
 .prov-tile:active{transform:scale(.97)}
 .prov-tile.sel{background:var(--a-dim);border-color:var(--A);box-shadow:0 0 0 3px var(--a-glow)}
 .prov-bar{position:absolute;top:0;left:0;right:0;height:3px}
 .prov-tile .chk{display:none}
 .prov-tile.sel .chk{display:flex}
-.prov-logo{max-width:52px;max-height:32px;object-fit:contain;display:block;pointer-events:none;transition:opacity .18s;margin-bottom:2px}
+.prov-logo{height:36px;width:auto;max-width:90px;object-fit:contain;display:block;pointer-events:none;transition:opacity .18s;margin-bottom:2px}
 .prov-tile.sel .prov-logo{opacity:.85}
 .prov-name-fb{font-family:'DM Sans',sans-serif;text-align:center;font-weight:700;font-size:15px;pointer-events:none;transition:color .18s;display:none;margin-bottom:2px}
 .prov-tile-name{font-family:'DM Sans',sans-serif;font-size:10.5px;font-weight:600;text-align:center;color:#6B7280;pointer-events:none;transition:color .18s;line-height:1.2;margin-top:2px}
@@ -636,7 +637,7 @@ const BANK_DATA = [
 
 const INSURER_DATA = [
   {id:'aalife',name:'AA Life',color:'#F5A623',domain:'aa.co.nz'},
-  {id:'aia',name:'AIA',color:'#D4002D',domain:'aia.co.nz',logoH:48},
+  {id:'aia',name:'AIA',color:'#D4002D',domain:'aia.com',logoH:36},
   {id:'asteron',name:'Asteron Life',color:'#0066A1',domain:'asteronlife.co.nz'},
   {id:'booster',name:'Booster',color:'#00B2A9',domain:'booster.co.nz'},
   {id:'chubb',name:'Chubb Life',color:'#003087',domain:'chubb.com'},
@@ -798,6 +799,8 @@ function buildHero() {
   if (!h) return;
 
   h.innerHTML = '';
+  h.style.opacity = '0';
+  h.style.animation = 'none';
   if (sub) { sub.style.opacity = '0'; sub.textContent = ''; }
   if (viz) viz.style.opacity = '0';
   if (barCvr) { barCvr.style.transition = 'none'; barCvr.style.width = '0'; }
@@ -810,27 +813,20 @@ function buildHero() {
 
   const t = (fn, ms) => { const id = setTimeout(fn, ms); _heroTimers.push(id); };
 
-  // 1. Headline words rise in one by one
-  const words = [
-    {t:'Are',ac:false},{t:'you',ac:false},{t:'actually',ac:false},{t:'covered?',ac:true}
-  ];
-  words.forEach((w, i) => {
-    t(() => {
-      const span = document.createElement('span');
-      span.className = 'hw' + (w.ac ? ' ac' : '');
-      span.style.animationDelay = '0s';
-      span.textContent = w.t;
-      h.appendChild(span);
-    }, 200 + i * 230);
-  });
+  // 1. Headline fades up as a whole — smooth, no jank
+  t(() => {
+    h.innerHTML = 'Are you actually <span style="color:#a78bfa">covered?</span>';
+    h.style.animation = 'headlineIn .7s cubic-bezier(.16,1,.3,1) forwards';
+    h.style.opacity = '1';
+  }, 150);
 
   // 2. Coverage meter fades in
-  t(() => { if (viz) viz.style.opacity = '1'; }, 1100);
+  t(() => { if (viz) viz.style.opacity = '1'; }, 800);
 
   // 3. Bar fills to 100% (looks fully covered)
   t(() => {
     if (barCvr) { barCvr.style.transition = 'width 1.1s cubic-bezier(0.25,1,0.5,1)'; barCvr.style.width = '100%'; }
-  }, 1300);
+  }, 1000);
 
   // 4. Bar drains to 58%, gap fills in red from right
   t(() => {
