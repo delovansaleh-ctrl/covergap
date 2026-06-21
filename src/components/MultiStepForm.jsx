@@ -375,7 +375,6 @@ export default function MultiStepForm() {
   return (
     <div id="review" ref={sectionRef} style={{
       background: 'var(--surface)',
-      borderTop: '1px solid var(--border)',
       scrollMarginTop: 60,
     }}>
       <div style={{ maxWidth: 520, margin: '0 auto', padding: '80px 24px' }}>
