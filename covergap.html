@@ -307,7 +307,8 @@ src="https://www.facebook.com/tr?id=1549779503201230&ev=PageView&noscript=1"
         </div>
       </div>
 
-      <p id="s0-sub" style="opacity:0;font-size:clamp(15px,2vw,18px);color:#6B7280;line-height:1.8;margin:0 auto;transition:opacity .6s ease"></p>
+      <p id="s0-sub" style="opacity:0;font-size:clamp(15px,2vw,18px);color:#6B7280;line-height:1.8;margin:0 auto 36px;transition:opacity .6s ease"></p>
+      <button id="s0-cta" onclick="startFunnel()" style="opacity:0;transform:translateY(10px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1),box-shadow .2s;background:linear-gradient(135deg,#5B47D6 0%,#7C3AED 100%);color:#fff;border:none;border-radius:50px;padding:17px 46px;font-size:17px;font-weight:700;cursor:pointer;letter-spacing:-0.01em;box-shadow:0 8px 28px rgba(91,71,214,0.35)">Find your cover gap →</button>
     </div>
   </div>
 
@@ -844,24 +845,30 @@ function buildHero() {
     }
   }, 3900);
 
-  // 7. Auto-transition: hero exits → purple wash → s1 revealed
+  // 7. Reveal CTA button after animation completes
   t(() => {
-    const s0el = g('s0');
-    const wash = g('hero-wash');
-    s0el.classList.add('hero-exiting');
+    const cta = g('s0-cta');
+    if (cta) { cta.style.opacity = '1'; cta.style.transform = 'translateY(0)'; }
+  }, 4400);
+}
+
+function startFunnel() {
+  _heroTimers.forEach(clearTimeout);
+  const s0el = document.getElementById('s0');
+  const wash = document.getElementById('hero-wash');
+  s0el.classList.add('hero-exiting');
+  setTimeout(() => {
+    wash.classList.add('active');
     setTimeout(() => {
-      wash.classList.add('active');
+      navigateTo(1, 1);
+      window.scrollTo({top:0,behavior:'instant'});
       setTimeout(() => {
-        navigateTo(1, 1);
-        window.scrollTo({top:0,behavior:'instant'});
-        setTimeout(() => {
-          wash.classList.remove('active');
-          setTimeout(() => wash.classList.add('fade'), 50);
-          setTimeout(() => wash.classList.remove('fade'), 800);
-        }, 120);
-      }, 320);
-    }, 280);
-  }, 5200);
+        wash.classList.remove('active');
+        setTimeout(() => wash.classList.add('fade'), 50);
+        setTimeout(() => wash.classList.remove('fade'), 800);
+      }, 120);
+    }, 320);
+  }, 280);
 }
 
 function buildGoalGrid(){
