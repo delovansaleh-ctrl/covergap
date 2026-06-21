@@ -76,7 +76,7 @@ footer{padding:16px 48px;border-top:1px solid rgba(26,18,8,.06);display:flex;ali
 
 /* ── SCREENS ── */
 .screen{width:100%;display:none;padding:56px 48px 80px}
-.screen.active{display:block}
+.screen.active{display:flex;flex-direction:column;min-height:calc(100vh - 55px)}
 .screen.slide-in-r{animation:slideInR .42s cubic-bezier(.22,.61,.36,1) both}
 .screen.slide-in-l{animation:slideInL .42s cubic-bezier(.22,.61,.36,1) both}
 
@@ -272,8 +272,8 @@ footer{padding:16px 48px;border-top:1px solid rgba(26,18,8,.06);display:flex;ali
 <main>
 
   <!-- S0: HERO -->
-  <div class="screen active" id="s0" style="max-width:100%;min-height:calc(100vh - 55px);display:flex;align-items:center;justify-content:center;background:#26215C;text-align:center;padding:60px 24px;">
-    <div style="max-width:620px">
+  <div class="screen active" id="s0" style="max-width:100%;background:#26215C;text-align:center;padding:0;align-items:center;justify-content:center;">
+    <div style="max-width:620px;margin:auto;padding:60px 24px;">
       <h1 id="s0-headline" style="font-size:clamp(28px,5vw,52px);font-weight:800;line-height:1.2;letter-spacing:-0.03em;color:#fff;margin-bottom:28px;display:flex;flex-wrap:wrap;justify-content:center"></h1>
       <p id="s0-sub" style="font-size:clamp(16px,2vw,19px);color:rgba(255,255,255,0.6);line-height:1.75;margin:0 auto"></p>
     </div>
@@ -771,33 +771,32 @@ function buildHero() {
   sub.textContent = 'Your cover made sense when you got it. Does it still?';
   setTimeout(() => sub.classList.add('vis'), 1700);
 
-  // Auto-transition: hero exits → wash → form rises
+  // Auto-transition: hero exits → wash → s1 revealed
   clearTimeout(_heroTimer);
   _heroTimer = setTimeout(() => {
     const s0 = document.getElementById('s0');
     const wash = document.getElementById('hero-wash');
 
-    // 1. Fade s0 text out, scale hero slightly
+    // 1. Hero fades + scales out
     s0.classList.add('hero-exiting');
 
-    // 2. Wash overlay flashes purple over the transition
+    // 2. Purple wash appears over the cut
     setTimeout(() => {
       wash.classList.add('active');
+
+      // 3. Navigate while hidden — plain slide animation is fine, wash covers it
       setTimeout(() => {
-        // 3. Navigate to s1 while hidden behind wash
         navigateTo(1, 1);
-        const s1 = document.getElementById('s1');
-        s1.classList.remove('slide-in-r','slide-in-l');
-        s1.classList.add('form-rise');
+        window.scrollTo({top:0,behavior:'instant'});
 
         // 4. Dissolve wash to reveal s1
         setTimeout(() => {
           wash.classList.remove('active');
-          wash.classList.add('fade');
+          setTimeout(() => wash.classList.add('fade'), 50);
           setTimeout(() => wash.classList.remove('fade'), 800);
-        }, 80);
-      }, 350);
-    }, 300);
+        }, 120);
+      }, 320);
+    }, 280);
   }, 3400);
 }
 
