@@ -36,6 +36,7 @@ input,button,select,textarea{font-family:inherit}
 .hw.ac{color:#a78bfa}
 #s0-sub{opacity:0;transition:opacity .6s ease}
 #s0-sub.vis{opacity:1}
+@keyframes sliderFill{from{width:56px}to{width:100%}}
 .hero-exiting{animation:heroExit .7s cubic-bezier(.4,0,1,1) forwards!important}
 .screen.form-rise{animation:formRise .65s cubic-bezier(.16,1,.3,1) both!important}
 #hero-wash{position:fixed;inset:0;background:#26215C;pointer-events:none;z-index:5;opacity:0;transition:opacity .7s ease}
@@ -309,7 +310,16 @@ src="https://www.facebook.com/tr?id=1549779503201230&ev=PageView&noscript=1"
 
       <p id="s0-sub" style="opacity:0;font-size:clamp(15px,2vw,18px);color:#6B7280;line-height:1.8;margin:0 auto 36px;transition:opacity .6s ease"></p>
       
-      <button id="s0-cta" onclick="startFunnel()" style="transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);background:linear-gradient(135deg,#5B47D6 0%,#7C3AED 100%);color:#fff;border:none;border-radius:50px;padding:17px 46px;font-size:17px;font-weight:700;cursor:pointer;letter-spacing:-0.01em;box-shadow:0 8px 28px rgba(91,71,214,0.4)">Find your cover gap →</button>
+      <div id="s0-slider" style="opacity:0;transition:opacity .5s ease;max-width:340px;margin:0 auto">
+        <div style="position:relative;height:58px;background:#EDE9FE;border-radius:100px;overflow:hidden">
+          <div id="s0-fill" style="position:absolute;left:0;top:0;bottom:0;width:58px;background:linear-gradient(90deg,#5B47D6,#7C3AED);border-radius:100px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;box-shadow:4px 0 20px rgba(91,71,214,0.3)">
+            <div style="width:48px;height:48px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="#5B47D6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+          <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#5B47D6;font-size:15px;font-weight:700;letter-spacing:-0.01em;pointer-events:none;padding-left:16px">Find your cover gap</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -801,6 +811,9 @@ function buildHero() {
   if (barGap) { barGap.style.transition = 'none'; barGap.style.width = '0'; }
   if (lblCvr) lblCvr.style.opacity = '0';
   if (lblGap) lblGap.style.opacity = '0';
+  const slider = g('s0-slider'), fill = g('s0-fill');
+  if (slider) slider.style.opacity = '0';
+  if (fill) { fill.style.animation = 'none'; fill.style.width = '58px'; }
 
   const t = (fn, ms) => { const id = setTimeout(fn, ms); _heroTimers.push(id); };
 
@@ -846,11 +859,18 @@ function buildHero() {
     }
   }, 3900);
 
-  // 7. Reveal CTA button after animation completes
+  // 7. Reveal slider, then auto-animate it and fire transition on completion
   t(() => {
-    const cta = g('s0-cta');
-    if (cta) { cta.style.opacity = '1'; cta.style.transform = 'translateY(0)'; }
-  }, 4400);
+    const slider = g('s0-slider');
+    const fill = g('s0-fill');
+    if (slider) slider.style.opacity = '1';
+    if (fill) {
+      setTimeout(() => {
+        fill.style.animation = 'sliderFill 1.6s cubic-bezier(0.4,0,0.2,1) forwards';
+        fill.addEventListener('animationend', () => startFunnel(), { once: true });
+      }, 400);
+    }
+  }, 4200);
 }
 
 function startFunnel() {
