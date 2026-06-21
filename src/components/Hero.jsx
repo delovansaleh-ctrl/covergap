@@ -106,20 +106,6 @@ export default function Hero() {
 
         <div style={{ position: 'relative', zIndex: 1, maxWidth: 680 }}>
 
-          {/* Eyebrow badge */}
-          <div style={{
-            display: 'inline-block',
-            fontSize: 11, fontWeight: 600, letterSpacing: '0.12em',
-            color: '#a78bfa',
-            background: 'rgba(167,139,250,0.1)',
-            border: '1px solid rgba(167,139,250,0.22)',
-            borderRadius: 40, padding: '5px 14px', marginBottom: 32,
-            opacity: ready ? 1 : 0,
-            transition: 'opacity 0.5s ease 0.05s',
-          }}>
-            FREE COVER REVIEW · 20 MINUTES · NO OBLIGATION
-          </div>
-
           {/* Animated headline */}
           <h1 style={{
             fontSize: 'clamp(30px, 5.2vw, 56px)',
