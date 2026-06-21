@@ -578,26 +578,26 @@ const BANK_DATA = [
   {id:'bnz',name:'BNZ',color:'#C8102E',domain:'bnz.co.nz'},
   {id:'kiwibank',name:'Kiwibank',color:'#00A859',domain:'kiwibank.co.nz'},
   {id:'westpac',name:'Westpac',color:'#DA1710',domain:'westpac.co.nz'},
-  {id:'cooperative',name:'Cooperative Bank',color:'#1B4B6B',domain:'thecooperativebank.co.nz'},
+  {id:'cooperative',name:'Cooperative Bank',color:'#1B4B6B',domain:'co-operativebank.co.nz'},
   {id:'sbs',name:'SBS Bank',color:'#003B8E',domain:'sbsbank.co.nz'},
 ];
 
 const INSURER_DATA = [
   {id:'aalife',name:'AA Life',color:'#F5A623',domain:'aa.co.nz'},
-  {id:'aia',name:'AIA',color:'#D4002D',domain:'aia.co.nz'},
+  {id:'aia',name:'AIA',color:'#D4002D',domain:'aia.co.nz',logoH:48},
   {id:'asteron',name:'Asteron Life',color:'#0066A1',domain:'asteronlife.co.nz'},
   {id:'booster',name:'Booster',color:'#00B2A9',domain:'booster.co.nz'},
   {id:'chubb',name:'Chubb Life',color:'#003087',domain:'chubb.com'},
   {id:'fidelity',name:'Fidelity Life',color:'#E4002B',domain:'fidelitylife.co.nz'},
   {id:'mas',name:'MAS',color:'#00539F',domain:'mas.co.nz'},
-  {id:'momentum',name:'Momentum Life',color:'#E8641A',domain:'momentumlife.co.nz'},
+  {id:'momentum',name:'Momentum Life',color:'#E8641A',domain:'momentumlife.co.nz',logoH:44},
   {id:'nib',name:'NIB',color:'#00A99D',domain:'nib.co.nz'},
   {id:'nzseniors',name:'NZ Seniors',color:'#2E7D32',domain:'nzseniors.co.nz'},
   {id:'onechoice',name:'OneChoice',color:'#2B6CB0',domain:'onechoice.co.nz'},
   {id:'partners',name:'Partners Life',color:'#0082C8',domain:'partnerslife.co.nz'},
   {id:'pinnacle',name:'Pinnacle Life',color:'#038A44',domain:'pinnaclelife.co.nz'},
-  {id:'resolution',name:'Resolution Life',color:'#00205B',domain:'resolutionlife.co.nz'},
-  {id:'southerncross',name:'Southern Cross',color:'#C8102E',domain:'southerncross.co.nz'},
+  {id:'resolution',name:'Resolution Life',color:'#00205B',domain:'resolutionlife.co.nz',logoH:44},
+  {id:'southerncross',name:'Southern Cross',color:'#C8102E',domain:'southerncross.co.nz',logoH:44},
   {id:'pps',name:'PPS Mutual',color:'#1A3A6B',domain:'ppsmutual.co.nz'},
 ];
 
@@ -752,8 +752,9 @@ function buildProvGrid(){
 
   const makeTile=(p,i)=>{
     const sel=ST.provider===p.id;
+    const sz = p.logoH ? `max-height:${p.logoH}px;max-width:${p.logoH*2}px` : '';
     const lbl=`<img class="prov-logo" src="https://www.google.com/s2/favicons?domain=${p.domain}&sz=64"
-      onerror="this.style.display='none';this.nextElementSibling.style.display='block'" alt="${p.name}"/>
+      onerror="this.style.display='none';this.nextElementSibling.style.display='block'" alt="${p.name}" style="${sz}"/>
       <span class="prov-name-fb" style="color:${sel?'#5B21B6':p.color}">${p.name}</span>
       <span class="prov-tile-name">${p.name}</span>`;
     return `<div class="prov-tile${sel?' sel':''}" data-id="${p.id}"
