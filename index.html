@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>CoverGap — Free Insurance Review · NZ</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235B21B6'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial,sans-serif' font-weight='900' font-size='15' fill='white'%3ECG%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111827'/%3E%3Cline x1='5' y1='11' x2='13' y2='11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3Cline x1='14' y1='11' x2='18' y2='11' stroke='%235B21B6' stroke-width='3' stroke-linecap='round'/%3E%3Cline x1='19' y1='11' x2='27' y2='11' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3Cline x1='5' y1='21' x2='27' y2='21' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 <meta name="description" content="Get a free 20-minute second opinion on your NZ insurance. No obligation, no cost — ever."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -278,7 +278,7 @@ src="https://www.facebook.com/tr?id=1549779503201230&ev=PageView&noscript=1"
 <div class="blob2"></div>
 
 <header>
-  <div class="logo-wrap">
+  <div class="logo-wrap" onclick="resetFunnel()" style="cursor:pointer">
     <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
       <line x1=".5" y1="3.5" x2="8" y2="3.5" stroke="#111827" stroke-width="2.5" stroke-linecap="round"/>
       <line x1="14" y1="3.5" x2="21.5" y2="3.5" stroke="#111827" stroke-width="2.5" stroke-linecap="round"/>
@@ -608,7 +608,7 @@ document.getElementById('yr').textContent = new Date().getFullYear();
 // ── STATE ──
 const ST = {
   screen:0, dir:1,
-  goal:null, provider:null, covers:[], whoFor:null,
+  goal:null, providers:[], covers:[], whoFor:null,
   health:null, smoker:null, ageRange:null, gender:null, region:null,
   firstName:'', lastName:'', email:'', phone:'', callTime:'',
 };
@@ -639,7 +639,7 @@ const BANK_DATA = [
 
 const INSURER_DATA = [
   {id:'aalife',name:'AA Life',color:'#F5A623',domain:'aa.co.nz'},
-  {id:'aia',name:'AIA',color:'#D4002D',domain:'aia.com',logoH:36,noLogo:true},
+  {id:'aia',name:'AIA',color:'#D4002D',domain:'aia.com',logoH:36,logoUrl:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 28'%3E%3Ctext x='36' y='22' text-anchor='middle' font-family='Arial Black%2CArial%2Csans-serif' font-weight='900' font-size='26' fill='%23D4002D'%3EAIA%3C/text%3E%3C/svg%3E"},
   {id:'asteron',name:'Asteron Life',color:'#0066A1',domain:'asteronlife.co.nz'},
   {id:'booster',name:'Booster',color:'#00B2A9',domain:'booster.co.nz'},
   {id:'chubb',name:'Chubb Life',color:'#003087',domain:'chubb.com'},
@@ -698,7 +698,7 @@ const stepOf = () => { const p=getPath(),i=p.indexOf(ST.screen); return `Step ${
 
 // ── VALIDATION ──
 const VALID = {
-  1:()=>!!ST.goal,2:()=>!!ST.provider,3:()=>ST.covers.length>0,
+  1:()=>!!ST.goal,2:()=>ST.providers.length>0,3:()=>ST.covers.length>0,
   4:()=>!!ST.whoFor,5:()=>!!ST.health,6:()=>!!ST.smoker,
   7:()=>!!(ST.ageRange&&ST.gender),8:()=>!!ST.region,
   9:()=>!!(ST.firstName&&ST.lastName&&ST.email&&ST.phone&&ST.callTime),
@@ -865,6 +865,14 @@ function buildHero() {
   }, 4200);
 }
 
+function resetFunnel() {
+  if(ST.screen===0) return;
+  ST.goal=null; ST.providers=[]; ST.covers=[]; ST.whoFor=null;
+  ST.health=null; ST.smoker=null; ST.ageRange=null; ST.gender=null; ST.region=null;
+  navigateTo(1,-1);
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
 function startFunnel() {
   _heroTimers.forEach(clearTimeout);
   const s0el = document.getElementById('s0');
@@ -907,12 +915,10 @@ function buildProvGrid(){
   if(!bankEl||!insEl) return;
 
   const makeTile=(p,i)=>{
-    const sel=ST.provider===p.id;
+    const sel=ST.providers.includes(p.id);
     const sz = p.logoH ? `max-height:${p.logoH}px;max-width:${p.logoH*2}px` : '';
-    const lbl=p.noLogo
-      ? `<span class="prov-name-fb show" style="color:${sel?'#5B21B6':p.color}">${p.name}</span>
-         <span class="prov-tile-name">${p.name}</span>`
-      : `<img class="prov-logo" src="https://www.google.com/s2/favicons?domain=${p.domain}&sz=128"
+    const src=p.logoUrl||`https://www.google.com/s2/favicons?domain=${p.domain}&sz=128`;
+    const lbl=`<img class="prov-logo" src="${src}"
          onerror="this.style.display='none';this.nextElementSibling.style.display='block'" alt="${p.name}" style="${sz}"/>
          <span class="prov-name-fb" style="color:${sel?'#5B21B6':p.color}">${p.name}</span>
          <span class="prov-tile-name">${p.name}</span>`;
@@ -1041,7 +1047,7 @@ function buildCallTime(){
 function buildS9Sub(){
   const el=document.getElementById('s9-sub'); if(!el) return;
   const all=[...BANK_DATA,...INSURER_DATA];
-  const pName=(all.find(p=>p.id===ST.provider)||{}).name||'';
+  const pName=ST.providers.map(id=>(all.find(p=>p.id===id)||{}).name).filter(Boolean).join(' & ');
   const map={
     premiums:`Let's find you a better premium${pName?' on your '+pName+' cover':''}.`,
     review:`Let's review your ${pName||'current'} cover levels.`,
@@ -1077,9 +1083,10 @@ function selectGoal(id){
 }
 
 function selectProvider(id){
-  ST.provider=id;
+  if(ST.providers.includes(id)) ST.providers=ST.providers.filter(x=>x!==id);
+  else ST.providers.push(id);
   document.querySelectorAll('.prov-tile').forEach(el=>{
-    const s=el.dataset.id===id;
+    const s=ST.providers.includes(el.dataset.id);
     el.classList.toggle('sel',s);
     el.querySelector('.chk').style.display=s?'flex':'none';
     const fb=el.querySelector('.prov-name-fb');
@@ -1087,15 +1094,16 @@ function selectProvider(id){
   });
   const oth=document.getElementById('prov-other');
   if(oth){
-    oth.classList.toggle('sel',id==='other');
+    const s=ST.providers.includes('other');
+    oth.classList.toggle('sel',s);
     const chk=oth.querySelector('.chk');
-    if(chk) chk.style.display=id==='other'?'flex':'none';
+    if(chk) chk.style.display=s?'flex':'none';
   }
   updateNextBtn();
 }
 
 function refreshProvSel(){
-  if(ST.provider) selectProvider(ST.provider);
+  ST.providers.forEach(id=>selectProvider(id));
 }
 
 function toggleCover(id,el){
@@ -1331,7 +1339,7 @@ const ENDPOINT='https://formsubmit.co/ajax/delovan.saleh@spireadvice.co.nz';
 
 async function submitForm(){
   const payload={
-    goal:ST.goal, provider:ST.provider, covers:ST.covers.join(', '),
+    goal:ST.goal, providers:ST.providers.join(', '), covers:ST.covers.join(', '),
     whoFor:ST.whoFor, health:ST.health, smoker:ST.smoker,
     ageRange:ST.ageRange, gender:ST.gender, region:ST.region,
     name:`${ST.firstName} ${ST.lastName}`, email:ST.email,
