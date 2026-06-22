@@ -316,9 +316,32 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
 .faq-item p{padding:0 20px 18px;font-size:14px;color:#6B7280;line-height:1.7;border-top:1px solid #F3F4F6;padding-top:14px}
 .bottom-cta-btn{background:#5B47D6;color:#fff;font-size:17px;font-weight:700;padding:18px 48px;border-radius:50px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 8px 32px rgba(91,71,214,0.3);letter-spacing:-.01em;transition:background .2s,transform .2s}
 .bottom-cta-btn:hover{background:#4A3BC0;transform:translateY(-2px)}
-@media(max-width:700px){
-  #landing-extra section{padding-left:20px;padding-right:20px}
-  .faq-item summary{font-size:14px;padding:16px}
+/* ── MARKETING SECTION MOBILE ── */
+.s0-mkt section{padding-left:20px;padding-right:20px}
+@media(max-width:768px){
+  /* Hero above-fold */
+  #s0 > div:first-child{padding:40px 20px}
+  .s0-cta{font-size:15px;padding:14px 32px}
+
+  /* All marketing sections: reduce vertical padding */
+  .s0-mkt section{padding-top:56px;padding-bottom:56px}
+
+  /* Section headings */
+  .s0-mkt h2{font-size:clamp(22px,6vw,30px) !important}
+
+  /* How it works: single column, hide connector line */
+  .s0-mkt .hiw-grid{grid-template-columns:1fr !important}
+  .s0-mkt .hiw-connector{display:none !important}
+
+  /* Testimonials: single column */
+  .s0-mkt .testi-grid{grid-template-columns:1fr !important}
+
+  /* Advisers: single column, hide map */
+  .s0-mkt .advisers-grid{grid-template-columns:1fr !important}
+  .s0-mkt .advisers-map{display:none !important}
+
+  /* FAQ */
+  .s0-mkt details summary{font-size:15px !important}
 }
 </style>
 <!-- Meta Pixel Code -->
@@ -388,6 +411,7 @@ src="https://www.facebook.com/tr?id=1549779503201230&ev=PageView&noscript=1"
     </div>
 
 
+    <div class="s0-mkt">
     <!-- INSURER TRUST BAR -->
     <section style="background:#FFFFFF;border-bottom:1px solid rgba(17,24,39,0.06);padding:32px 0;overflow:hidden;">
       <p style="text-align:center;font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#9CA3AF;margin-bottom:24px;font-family:'DM Sans',sans-serif;">Independent advice across New Zealand's leading insurers</p>
@@ -429,8 +453,8 @@ src="https://www.facebook.com/tr?id=1549779503201230&ev=PageView&noscript=1"
           <h2 style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:42px;line-height:1.08;letter-spacing:-0.028em;color:#111827;margin-bottom:16px;">Three steps to knowing where you stand</h2>
           <p style="font-size:17px;color:#6B7280;line-height:1.65;">No cost, no jargon, no obligation — just a clear picture of your cover and where the gaps are.</p>
         </div>
-        <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-          <div style="position:absolute;top:54px;left:17%;right:17%;height:4px;z-index:0;">
+        <div class="hiw-grid" style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+          <div class="hiw-connector" style="position:absolute;top:54px;left:17%;right:17%;height:4px;z-index:0;">
             <svg width="100%" height="4" preserveAspectRatio="none"><line x1="0" y1="2" x2="100%" y2="2" stroke="#DDD6FE" stroke-width="2" stroke-dasharray="6 7" style="animation:dashFlow 1.1s linear infinite"/></svg>
           </div>
           <div style="position:relative;z-index:1;border:1.5px solid #ECE7FB;border-radius:20px;padding:34px 26px 30px;text-align:center;animation:hiwCard 9s ease-in-out infinite;animation-delay:0s;">
@@ -468,7 +492,7 @@ src="https://www.facebook.com/tr?id=1549779503201230&ev=PageView&noscript=1"
           <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#5B21B6;margin-bottom:14px;">Real reviews</div>
           <h2 style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:42px;line-height:1.08;letter-spacing:-0.028em;color:#111827;">What Kiwis found when they looked again</h2>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+        <div class="testi-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
           <div style="background:#FFFFFF;border:1px solid #EDE9FE;border-radius:20px;padding:32px 30px;box-shadow:0 6px 24px rgba(91,33,182,0.06);display:flex;flex-direction:column;">
             <div style="font-family:'DM Sans',sans-serif;font-weight:800;font-size:46px;line-height:0.5;color:#DDD6FE;height:26px;">&ldquo;</div>
             <p style="font-size:15.5px;color:#374151;line-height:1.7;margin:16px 0 20px;flex:1;">I thought I was sorted through my bank. Turns out I had no income protection at all — and I'm self-employed. The review took twenty minutes and probably saved my family.</p>
@@ -536,8 +560,9 @@ src="https://www.facebook.com/tr?id=1549779503201230&ev=PageView&noscript=1"
     <section style="background:#EDE9FE;padding:84px 48px;text-align:center;">
       <h2 style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:40px;line-height:1.08;letter-spacing:-0.028em;color:#1B1340;margin-bottom:14px;">Ready to find your gap?</h2>
       <p style="font-size:17px;color:#5B4B7A;margin-bottom:34px;">It's free, takes a couple of minutes, and there's no obligation.</p>
-      <button onclick="navigateTo(1,1);window.scrollTo({top:0,behavior:'instant'});" style="display:inline-block;font-family:'DM Sans',sans-serif;font-weight:700;font-size:16px;background:#5B47D6;color:#FFFFFF;border:none;border-radius:100px;padding:17px 42px;cursor:pointer;box-shadow:0 8px 28px rgba(91,71,214,0.32);transition:all 0.2s ease;">Start my free review →</button>
+      <button onclick="startFunnel()" style="display:inline-block;font-family:'DM Sans',sans-serif;font-weight:700;font-size:16px;background:#5B47D6;color:#FFFFFF;border:none;border-radius:100px;padding:17px 42px;cursor:pointer;box-shadow:0 8px 28px rgba(91,71,214,0.32);transition:all 0.2s ease;">Start my free review →</button>
     </section>
+    </div><!-- /s0-mkt -->
 
   </div>
 
@@ -1095,12 +1120,16 @@ function startFunnel() {
   const s0el = document.getElementById('s0');
   const wash = document.getElementById('hero-wash');
   if (!s0el || !wash) return;
+  // Scroll to top instantly before any animation so user never sees marketing sections scroll
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
   s0el.classList.add('hero-exiting');
   setTimeout(() => {
     wash.classList.add('active');
     setTimeout(() => {
       navigateTo(1, 1);
-      window.scrollTo({top:0,behavior:'instant'});
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
       setTimeout(() => {
         wash.classList.remove('active');
         setTimeout(() => wash.classList.add('fade'), 50);
