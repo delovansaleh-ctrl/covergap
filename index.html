@@ -164,6 +164,7 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
 .prov-logo{height:36px;width:auto;max-width:90px;object-fit:contain;display:block;pointer-events:none;transition:opacity .18s;margin-bottom:2px}
 .prov-tile.sel .prov-logo{opacity:.85}
 .prov-name-fb{font-family:'DM Sans',sans-serif;text-align:center;font-weight:700;font-size:15px;pointer-events:none;transition:color .18s;display:none;margin-bottom:2px}
+.prov-name-fb.show{display:block}
 .prov-tile-name{font-family:'DM Sans',sans-serif;font-size:10.5px;font-weight:600;text-align:center;color:#6B7280;pointer-events:none;transition:color .18s;line-height:1.2;margin-top:2px}
 .prov-tile.sel .prov-tile-name{color:#5B21B6}
 .prov-other{background:#EDE9FE;border:1.5px solid #DDD6FE;border-radius:14px;cursor:pointer;transition:background .18s,border-color .18s,box-shadow .18s;position:relative;user-select:none;overflow:hidden;padding:18px 24px;display:flex;align-items:center;gap:12px;margin-bottom:36px;margin-top:4px;box-shadow:0 1px 6px rgba(17,24,39,.06)}
@@ -908,7 +909,7 @@ function buildProvGrid(){
     const sel=ST.provider===p.id;
     const sz = p.logoH ? `max-height:${p.logoH}px;max-width:${p.logoH*2}px` : '';
     const lbl=p.noLogo
-      ? `<span class="prov-name-fb" style="display:block;color:${sel?'#5B21B6':p.color}">${p.name}</span>
+      ? `<span class="prov-name-fb show" style="color:${sel?'#5B21B6':p.color}">${p.name}</span>
          <span class="prov-tile-name">${p.name}</span>`
       : `<img class="prov-logo" src="https://www.google.com/s2/favicons?domain=${p.domain}&sz=128"
          onerror="this.style.display='none';this.nextElementSibling.style.display='block'" alt="${p.name}" style="${sz}"/>
