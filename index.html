@@ -405,6 +405,23 @@ src="https://www.facebook.com/tr?id=1549779503201230&ev=PageView&noscript=1"
       <p id="s0-sub" style="opacity:0;font-size:clamp(15px,2vw,18px);color:#6B7280;line-height:1.8;margin:0 auto 36px;transition:opacity .6s ease"></p>
       
       <button id="s0-cta" class="s0-cta" onclick="startFunnel()">Start your free review →</button>
+
+      <!-- QUICK CALLBACK FORM -->
+      <div id="quick-cb" style="opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease;width:100%;max-width:380px;margin-top:4px;">
+        <div style="display:flex;align-items:center;gap:10px;margin:14px 0 12px;">
+          <div style="flex:1;height:1px;background:rgba(17,24,39,.09)"></div>
+          <span style="font-size:12px;color:#9CA3AF;white-space:nowrap;font-weight:500;letter-spacing:.02em;">or just leave your number</span>
+          <div style="flex:1;height:1px;background:rgba(17,24,39,.09)"></div>
+        </div>
+        <div style="background:#F3F4F6;border-radius:14px;padding:6px;display:flex;gap:6px;flex-wrap:wrap;box-shadow:0 1px 8px rgba(17,24,39,.06);">
+          <input id="qc-name" type="text" placeholder="Your name" autocomplete="given-name" style="flex:1;min-width:90px;border:none;background:#fff;border-radius:9px;padding:11px 13px;font-size:14px;color:#111827;font-family:'Inter',sans-serif;outline:none;box-shadow:0 1px 4px rgba(0,0,0,.04);" />
+          <input id="qc-phone" type="tel" placeholder="021 000 0000" autocomplete="tel" style="flex:1;min-width:110px;border:none;background:#fff;border-radius:9px;padding:11px 13px;font-size:14px;color:#111827;font-family:'Inter',sans-serif;outline:none;box-shadow:0 1px 4px rgba(0,0,0,.04);" />
+          <button id="qc-btn" onclick="quickSubmit()" style="background:#5B47D6;color:#fff;border:none;border-radius:9px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:background .2s,opacity .2s;flex-shrink:0;letter-spacing:-.01em;">Call me →</button>
+        </div>
+        <div id="qc-msg" style="display:none;font-size:12.5px;margin-top:10px;text-align:center;font-weight:600;line-height:1.5;"></div>
+        <p style="font-size:11px;color:#C4C4CC;margin-top:8px;text-align:center;letter-spacing:.01em;">Free · No obligation · We'll call within 1 business day</p>
+      </div>
+
       <div id="s0-scroll-hint" class="s0-scroll-hint">
         <span>Scroll to learn more</span>
         <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 17l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1105,6 +1122,12 @@ function buildHero() {
     if (cta) { cta.style.opacity = '1'; cta.style.transform = 'translateY(0)'; }
     if (hint) hint.style.opacity = '1';
   }, 4200);
+
+  // 8. Reveal quick callback form
+  t(() => {
+    const qcb = g('quick-cb');
+    if (qcb) { qcb.style.opacity = '1'; qcb.style.transform = 'translateY(0)'; }
+  }, 4700);
 }
 
 function resetFunnel() {
@@ -1606,6 +1629,44 @@ async function submitForm(){
     else throw new Error();
   }catch{
     alert('Your number was verified but we couldn\'t save your details — please try again.');
+  }
+}
+
+// ── QUICK CALLBACK ──
+async function quickSubmit(){
+  const name=(document.getElementById('qc-name').value||'').trim();
+  const phone=(document.getElementById('qc-phone').value||'').trim();
+  const btn=document.getElementById('qc-btn');
+  const msg=document.getElementById('qc-msg');
+  if(!name||!phone){
+    if(msg){msg.style.display='block';msg.style.color='#C0401A';msg.textContent='Please enter your name and phone number.';}
+    return;
+  }
+  if(btn){btn.textContent='Sending…';btn.disabled=true;btn.style.opacity='.7';}
+  if(msg){msg.style.display='none';}
+  try{
+    const res=await fetch('https://formsubmit.co/ajax/delovan.saleh@spireadvice.co.nz',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({
+        _subject:'🔔 New call-back request — CoverGap',
+        name,phone,
+        source:'hero-quick-form',
+        submittedAt:new Date().toISOString()
+      })
+    });
+    if(res.ok){
+      if(typeof fbq!=='undefined') fbq('track','Lead');
+      if(msg){msg.style.display='block';msg.style.color='#5B21B6';msg.innerHTML='✓ <strong>Got it!</strong> We\'ll call you within 1 business day.';}
+      if(btn) btn.style.display='none';
+      const ni=document.getElementById('qc-name');
+      const pi=document.getElementById('qc-phone');
+      if(ni){ni.disabled=true;ni.style.opacity='.5';}
+      if(pi){pi.disabled=true;pi.style.opacity='.5';}
+    }else{throw new Error();}
+  }catch{
+    if(btn){btn.textContent='Call me →';btn.disabled=false;btn.style.opacity='1';}
+    if(msg){msg.style.display='block';msg.style.color='#C0401A';msg.textContent='Something went wrong — please try again.';}
   }
 }
 
