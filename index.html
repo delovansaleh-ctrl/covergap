@@ -945,9 +945,11 @@ const SI_REGIONS = ['Top of South','West Coast','Canterbury','Otago','Southland'
 const GOAL_LABELS = {premiums:'Lower premiums',review:'Review cover',life_change:'Life change',dont_know:'Unsure about cover',new:'New to insurance'};
 
 // ── ROUTING ──
-const PATH_FULL = [1,2,3,4,5,6,7,8,9,10];
-const PATH_NEW  = [1,3,4,6,7,8,9,10];
-const getPath = () => ST.goal === 'new' ? PATH_NEW : PATH_FULL;
+const PATH_FULL  = [1,2,3,4,5,6,7,8,9,10];
+const PATH_NEW   = [1,3,4,6,7,8,9,10];
+const PATH_QUICK = [9,10];
+const QUICK_MODE = new URLSearchParams(window.location.search).get('quick') === '1';
+const getPath = () => QUICK_MODE ? PATH_QUICK : (ST.goal === 'new' ? PATH_NEW : PATH_FULL);
 const stepOf = () => { const p=getPath(),i=p.indexOf(ST.screen); return `Step ${i+1} of ${p.length}`; };
 
 // ── VALIDATION ──
@@ -955,7 +957,7 @@ const VALID = {
   1:()=>!!ST.goal,2:()=>ST.providers.length>0,3:()=>ST.covers.length>0,
   4:()=>!!ST.whoFor,5:()=>!!ST.health,6:()=>!!ST.smoker,
   7:()=>!!(ST.ageRange&&ST.gender),8:()=>!!ST.region,
-  9:()=>!!(ST.firstName&&ST.lastName&&ST.email&&ST.phone&&ST.callTime),
+  9:()=>QUICK_MODE ? !!(ST.firstName&&ST.phone&&ST.callTime) : !!(ST.firstName&&ST.lastName&&ST.email&&ST.phone&&ST.callTime),
   10:()=>true,
 };
 
@@ -1133,14 +1135,15 @@ function startFunnel() {
   const s0el = document.getElementById('s0');
   const wash = document.getElementById('hero-wash');
   if (!s0el || !wash) return;
-  // Scroll to top instantly before any animation so user never sees marketing sections scroll
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
   s0el.classList.add('hero-exiting');
+  const firstScreen = QUICK_MODE ? 9 : 1;
+  if (QUICK_MODE) { ST.goal = 'quick'; ST.lastName = 'x'; ST.email = 'x@x.x'; }
   setTimeout(() => {
     wash.classList.add('active');
     setTimeout(() => {
-      navigateTo(1, 1);
+      navigateTo(firstScreen, 1);
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
       setTimeout(() => {
@@ -1305,6 +1308,16 @@ function buildCallTime(){
 
 function buildS9Sub(){
   const el=document.getElementById('s9-sub'); if(!el) return;
+  if(QUICK_MODE){
+    el.textContent="Leave your number and we'll call you back — free, no obligation.";
+    // Hide last name + email rows in quick mode
+    const lnameDiv=document.getElementById('f-lname')?.closest('div');
+    const emailDiv=document.getElementById('f-email')?.closest('div');
+    const twoColRows=document.querySelectorAll('#s9 .two-col');
+    if(lnameDiv) lnameDiv.style.display='none';
+    if(twoColRows[1]) twoColRows[1].style.display='none'; // hide email row
+    return;
+  }
   const all=[...BANK_DATA,...INSURER_DATA];
   const pName=ST.providers.map(id=>(all.find(p=>p.id===id)||{}).name).filter(Boolean).join(' & ');
   const map={
