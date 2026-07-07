@@ -369,6 +369,8 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1549779503201230&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+<!-- Calendly popup widget -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 </head>
 <body>
 
@@ -456,6 +458,7 @@ src="https://www.facebook.com/tr?id=1549779503201230&ev=PageView&noscript=1"
         </div>
         <div id="qc-msg" style="display:none;font-size:12.5px;margin-top:10px;text-align:center;font-weight:600;line-height:1.5;"></div>
         <p style="font-size:11px;color:#C4C4CC;margin-top:8px;text-align:center;letter-spacing:.01em;">Free · No obligation · We'll call within 1 business day</p>
+        <p style="font-size:12px;text-align:center;margin-top:8px;color:#9CA3AF;font-family:'DM Sans',sans-serif;">Or, <a href="#" onclick="Calendly.initPopupWidget({url:'https://calendly.com/delovan-saleh-spireadvice/free-cover-review'});return false;" style="color:#5B47D6;font-weight:600;text-decoration:none;">pick a time that suits you →</a></p>
       </div>
 
       <div id="s0-scroll-hint" class="s0-scroll-hint">
@@ -1708,5 +1711,7 @@ async function quickSubmit(){
 buildMarquee();
 render();
 </script>
+<!-- Calendly popup widget JS -->
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
 </body>
 </html>
