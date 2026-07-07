@@ -377,25 +377,6 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
   .s0-mkt details summary{font-size:15px !important}
 }
 </style>
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1549779503201230');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1549779503201230&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
-<!-- Calendly popup widget -->
-<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 </head>
 <body>
 
@@ -483,7 +464,7 @@ src="https://www.facebook.com/tr?id=1549779503201230&ev=PageView&noscript=1"
         </div>
         <div id="qc-msg" style="display:none;font-size:12.5px;margin-top:10px;text-align:center;font-weight:600;line-height:1.5;"></div>
         <p style="font-size:11px;color:#C4C4CC;margin-top:8px;text-align:center;letter-spacing:.01em;">Free · No obligation · We'll call within 1 business day</p>
-        <p style="font-size:12px;text-align:center;margin-top:8px;color:#9CA3AF;font-family:'DM Sans',sans-serif;">Or, <a href="#" onclick="Calendly.initPopupWidget({url:'https://calendly.com/hello-covergap/30min'});return false;" style="color:#5B47D6;font-weight:600;text-decoration:none;">pick a time that suits you →</a></p>
+        <p style="font-size:12px;text-align:center;margin-top:8px;color:#9CA3AF;font-family:'DM Sans',sans-serif;">Or, <a href="#" onclick="return openCalendly();" style="color:#5B47D6;font-weight:600;text-decoration:none;">pick a time that suits you →</a></p>
       </div>
 
       <div id="s0-scroll-hint" class="s0-scroll-hint">
@@ -1748,8 +1729,26 @@ async function quickSubmit(){
 buildMarquee();
 render();
 </script>
-<!-- Calendly popup widget JS -->
-<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+<!-- Calendly lazy-load: only fetches JS+CSS when user clicks the booking link -->
+<script>
+function loadCalendly(cb) {
+  if (window.Calendly) { cb && cb(); return; }
+  var css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = 'https://assets.calendly.com/assets/external/widget.css';
+  document.head.appendChild(css);
+  var s = document.createElement('script');
+  s.src = 'https://assets.calendly.com/assets/external/widget.js';
+  s.onload = function() { cb && cb(); };
+  document.head.appendChild(s);
+}
+function openCalendly() {
+  loadCalendly(function() {
+    Calendly.initPopupWidget({url: 'https://calendly.com/hello-covergap/30min'});
+  });
+  return false;
+}
+</script>
 <script>
 function handleLeadSubmit(e) {
   e.preventDefault();
