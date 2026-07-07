@@ -7,18 +7,6 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGxpbmUgeDE9IjYiIHkxPSIyMiIgeDI9IjI2IiB5Mj0iMjIiIHN0cm9rZT0iIzExMTgyNyIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48bGluZSB4MT0iMzgiIHkxPSIyMiIgeDI9IjU4IiB5Mj0iMjIiIHN0cm9rZT0iIzExMTgyNyIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48bGluZSB4MT0iMjYiIHkxPSIyMiIgeDI9IjM4IiB5Mj0iMjIiIHN0cm9rZT0iIzVCMjFCNiIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1kYXNoYXJyYXk9IjQgNSIvPjxsaW5lIHgxPSI2IiB5MT0iNDIiIHgyPSI1OCIgeTI9IjQyIiBzdHJva2U9IiMxMTE4MjciIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+">
 <meta name="description" content="Get a free 20-minute second opinion on your NZ insurance. No obligation, no cost — ever."/>
 
-<!-- ── META PIXEL ── -->
-<script>
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','1018706937610256');
-fbq('track','PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1018706937610256&ev=PageView&noscript=1"/></noscript>
-<!-- ── END META PIXEL ── -->
 
 <!-- Preload critical fonts for fastest first render -->
 <link rel="preload" href="/fonts/dm-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin/>
@@ -202,7 +190,7 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
 .prov-tile .chk{display:none}
 .prov-tile.sel .chk{display:flex}
 .prov-logo{height:36px;width:auto;max-width:90px;object-fit:contain;display:block;pointer-events:none;transition:opacity .18s;margin-bottom:2px}
-.s0-cta{opacity:0;transform:translateY(10px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);background:linear-gradient(135deg,#5B47D6 0%,#7C3AED 100%);color:#fff;border:none;border-radius:50px;padding:17px 46px;font-size:17px;font-weight:700;cursor:pointer;letter-spacing:-0.01em;box-shadow:0 8px 28px rgba(91,71,214,0.4);margin-top:24px}
+.s0-cta{animation:fadeUp .5s ease .2s both;background:linear-gradient(135deg,#5B47D6 0%,#7C3AED 100%);color:#fff;border:none;border-radius:50px;padding:17px 46px;font-size:17px;font-weight:700;cursor:pointer;letter-spacing:-0.01em;box-shadow:0 8px 28px rgba(91,71,214,0.4);margin-top:24px}
 .s0-cta:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(91,71,214,0.5)}
 .s0-cta:active{transform:scale(.97)}
 .s0-scroll-hint{opacity:0;animation:fadeUpSlow .5s ease 5.5s forwards;font-size:12px;color:#6B7280;letter-spacing:.05em;margin-top:48px;display:flex;flex-direction:column;align-items:center;gap:8px}
@@ -403,21 +391,21 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
   <!-- S0: HERO -->
   <div class="screen active" id="s0" style="max-width:100%;background:#FFFFFF;padding:0;">
     <div style="max-width:560px;margin:0 auto;padding:60px 24px;width:100%;min-height:calc(100vh - 68px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
-      <h1 id="s0-headline" style="font-size:clamp(28px,5vw,50px);font-weight:800;line-height:1.18;letter-spacing:-0.03em;color:#111827;margin-bottom:52px;display:flex;flex-wrap:wrap;justify-content:center;min-height:1.4em"></h1>
+      <h1 id="s0-headline" style="font-size:clamp(28px,5vw,50px);font-weight:800;line-height:1.18;letter-spacing:-0.03em;color:#111827;margin-bottom:52px;display:flex;flex-wrap:wrap;justify-content:center;min-height:1.4em;animation:headlineIn .5s cubic-bezier(.16,1,.3,1) forwards;">Are you actually <span style="color:#a78bfa;margin-left:.25em">covered?</span></h1>
 
       <!-- Coverage meter -->
-      <div id="s0-viz" style="opacity:0;transition:opacity .5s ease;margin-bottom:44px">
+      <div id="s0-viz" style="opacity:1;transition:opacity .5s ease;margin-bottom:44px;animation:fadeUp .5s ease .1s both;">
         <div style="position:relative;height:20px;background:rgba(0,0,0,0.06);border-radius:100px;overflow:hidden;margin-bottom:16px;box-shadow:inset 0 1px 3px rgba(0,0,0,0.08)">
-          <div id="s0-bar-cvr" style="position:absolute;left:0;top:0;height:100%;width:0;background:linear-gradient(90deg,#5B47D6,#8B5CF6);border-radius:100px;transition:width 1.1s cubic-bezier(0.25,1,0.5,1)"></div>
-          <div id="s0-bar-gap" style="position:absolute;top:0;height:100%;width:0;left:58%;background:linear-gradient(90deg,rgba(244,63,94,0.75),rgba(244,63,94,1));border-radius:0 100px 100px 0;transition:width .85s cubic-bezier(0.25,1,0.5,1);box-shadow:0 0 18px rgba(244,63,94,0.4)"></div>
+          <div id="s0-bar-cvr" style="position:absolute;left:0;top:0;height:100%;width:58%;background:linear-gradient(90deg,#5B47D6,#8B5CF6);border-radius:100px;transition:width .8s cubic-bezier(0.25,1,0.5,1)"></div>
+          <div id="s0-bar-gap" style="position:absolute;top:0;height:100%;width:42%;left:58%;background:linear-gradient(90deg,rgba(244,63,94,0.75),rgba(244,63,94,1));border-radius:0 100px 100px 0;transition:width .7s cubic-bezier(0.25,1,0.5,1);box-shadow:0 0 18px rgba(244,63,94,0.4)"></div>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase">
-          <span id="s0-lbl-cvr" style="opacity:0;color:#6B7280;transition:opacity .4s ease">58% covered</span>
-          <span id="s0-lbl-gap" style="opacity:0;color:#F43F5E;transition:opacity .4s ease;display:flex;align-items:center;gap:5px"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="#F43F5E" stroke-width="1.5" stroke-linecap="round"/></svg>42% gap</span>
+          <span id="s0-lbl-cvr" style="opacity:1;color:#6B7280;transition:opacity .4s ease">58% covered</span>
+          <span id="s0-lbl-gap" style="opacity:1;color:#F43F5E;transition:opacity .4s ease;display:flex;align-items:center;gap:5px"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="#F43F5E" stroke-width="1.5" stroke-linecap="round"/></svg>42% gap</span>
         </div>
       </div>
 
-      <p id="s0-sub" style="opacity:0;font-size:clamp(15px,2vw,18px);color:#6B7280;line-height:1.8;margin:0 auto 36px;transition:opacity .6s ease"></p>
+      <p id="s0-sub" style="opacity:1;font-size:clamp(15px,2vw,18px);color:#6B7280;line-height:1.8;margin:0 auto 36px;transition:opacity .6s ease;animation:fadeUp .4s ease .15s both;">Most NZ policies leave a gap. Find out where yours is.</p>
 
       <!-- TRUST BADGE STRIP -->
       <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:28px;">
@@ -451,7 +439,7 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
       </div>
 
       <!-- QUICK CALLBACK FORM -->
-      <div id="quick-cb" style="opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease;width:100%;max-width:380px;margin-top:4px;">
+      <div id="quick-cb" style="opacity:1;transform:translateY(0);transition:opacity .5s ease,transform .5s ease;width:100%;max-width:380px;margin-top:4px;animation:fadeUp .5s ease .3s both;">
         <div style="display:flex;align-items:center;gap:10px;margin:18px 0 12px;">
           <div style="flex:1;height:1px;background:rgba(17,24,39,.09)"></div>
           <span style="font-size:12px;color:#9CA3AF;white-space:nowrap;font-weight:500;letter-spacing:.02em;">Prefer a quick callback?</span>
@@ -1082,14 +1070,28 @@ function mkChk(){return'<div class="chk">✓</div>';}
 
 let _heroTimer = null;
 let _heroTimers = [];
+let _heroFirstLoad = true;
 function buildHero() {
   // Cancel any running timers (back-nav replay safety)
   _heroTimers.forEach(clearTimeout);
   _heroTimers = [];
   clearTimeout(_heroTimer);
 
-  // Reset all elements to initial state so animation replays cleanly
   const g = id => document.getElementById(id);
+
+  // On first page load, content is already pre-rendered as static HTML.
+  // Skip the reset+animation so the user sees content instantly.
+  if (_heroFirstLoad) {
+    _heroFirstLoad = false;
+    // Re-attach CTA and quick-cb in case JS needs to wire them up
+    const cta = g('s0-cta');
+    if (cta) { cta.style.opacity = '1'; cta.style.transform = 'none'; }
+    const qcb = g('quick-cb');
+    if (qcb) { qcb.style.opacity = '1'; qcb.style.transform = 'translateY(0)'; }
+    return;
+  }
+
+  // Back-navigation: reset and replay animation cleanly
   const h = g('s0-headline'), sub = g('s0-sub'), viz = g('s0-viz');
   const barCvr = g('s0-bar-cvr'), barGap = g('s0-bar-gap');
   const lblCvr = g('s0-lbl-cvr'), lblGap = g('s0-lbl-gap');
@@ -1762,5 +1764,16 @@ function handleLeadSubmit(e) {
     .catch(() => { form.style.display = 'none'; success.style.display = 'block'; });
 }
 </script>
+<!-- ── META PIXEL (end of body — doesn't block page render) ── -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1018706937610256');
+fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1018706937610256&ev=PageView&noscript=1"/></noscript>
 </body>
 </html>
