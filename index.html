@@ -6,6 +6,20 @@
 <title>CoverGap — Free Insurance Review · NZ</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGxpbmUgeDE9IjYiIHkxPSIyMiIgeDI9IjI2IiB5Mj0iMjIiIHN0cm9rZT0iIzExMTgyNyIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48bGluZSB4MT0iMzgiIHkxPSIyMiIgeDI9IjU4IiB5Mj0iMjIiIHN0cm9rZT0iIzExMTgyNyIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48bGluZSB4MT0iMjYiIHkxPSIyMiIgeDI9IjM4IiB5Mj0iMjIiIHN0cm9rZT0iIzVCMjFCNiIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1kYXNoYXJyYXk9IjQgNSIvPjxsaW5lIHgxPSI2IiB5MT0iNDIiIHgyPSI1OCIgeTI9IjQyIiBzdHJva2U9IiMxMTE4MjciIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+">
 <meta name="description" content="Get a free 20-minute second opinion on your NZ insurance. No obligation, no cost — ever."/>
+
+<!-- ── META PIXEL ── Replace REPLACE_WITH_PIXEL_ID once created in Events Manager -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','REPLACE_WITH_PIXEL_ID');
+fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=REPLACE_WITH_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+<!-- ── END META PIXEL ── -->
+
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -517,6 +531,46 @@ src="https://www.facebook.com/tr?id=1549779503201230&ev=PageView&noscript=1"
             <p style="font-size:14.5px;color:#6B7280;line-height:1.6;">An independent, authorised adviser walks you through your options — at a time that suits you, with no obligation.</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- INLINE LEAD FORM -->
+    <section id="enquire" style="background:linear-gradient(135deg,#1B1340 0%,#2D1B69 100%);padding:88px 24px;">
+      <div style="max-width:560px;margin:0 auto;text-align:center;">
+        <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#A78BFA;margin-bottom:16px;">Free cover review</div>
+        <h2 style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:38px;line-height:1.1;letter-spacing:-0.025em;color:#FFFFFF;margin-bottom:14px;">Not ready to book a call?<br/>Leave your details.</h2>
+        <p style="font-size:16px;color:#C4B5FD;margin-bottom:36px;line-height:1.6;">We'll reach out within 24 hours to find a time that works for you. No obligation, no cost.</p>
+
+        <!-- Netlify Form -->
+        <form id="lead-form" name="cover-review-enquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field"
+          style="display:flex;flex-direction:column;gap:14px;"
+          onsubmit="handleLeadSubmit(event)">
+          <input type="hidden" name="form-name" value="cover-review-enquiry"/>
+          <input name="bot-field" style="display:none"/>
+          <input type="text" name="name" placeholder="Your name" required
+            style="width:100%;padding:16px 20px;border-radius:12px;border:1.5px solid rgba(167,139,250,0.3);background:rgba(255,255,255,0.07);color:#FFFFFF;font-size:16px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;"
+            onfocus="this.style.borderColor='#7C3AED'" onblur="this.style.borderColor='rgba(167,139,250,0.3)'"/>
+          <input type="tel" name="phone" placeholder="Phone number" required
+            style="width:100%;padding:16px 20px;border-radius:12px;border:1.5px solid rgba(167,139,250,0.3);background:rgba(255,255,255,0.07);color:#FFFFFF;font-size:16px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;"
+            onfocus="this.style.borderColor='#7C3AED'" onblur="this.style.borderColor='rgba(167,139,250,0.3)'"/>
+          <input type="email" name="email" placeholder="Email address (optional)"
+            style="width:100%;padding:16px 20px;border-radius:12px;border:1.5px solid rgba(167,139,250,0.3);background:rgba(255,255,255,0.07);color:#FFFFFF;font-size:16px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;"
+            onfocus="this.style.borderColor='#7C3AED'" onblur="this.style.borderColor='rgba(167,139,250,0.3)'"/>
+          <button type="submit"
+            style="width:100%;padding:17px 20px;border-radius:100px;border:none;background:#5B47D6;color:#FFFFFF;font-family:'DM Sans',sans-serif;font-weight:700;font-size:17px;cursor:pointer;box-shadow:0 8px 28px rgba(91,71,214,0.45);transition:all .2s ease;"
+            onmouseover="this.style.background='#4C3CC7'" onmouseout="this.style.background='#5B47D6'">
+            Get my free review →
+          </button>
+        </form>
+
+        <!-- Success state -->
+        <div id="lead-success" style="display:none;text-align:center;padding:32px 0;">
+          <div style="font-size:48px;margin-bottom:16px;">✅</div>
+          <h3 style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:24px;color:#FFFFFF;margin-bottom:10px;">You're on the list!</h3>
+          <p style="color:#C4B5FD;font-size:16px;">We'll be in touch within 24 hours.</p>
+        </div>
+
+        <p style="font-size:12px;color:rgba(196,181,253,0.6);margin-top:18px;">No spam. No sales pressure. Unsubscribe any time.</p>
       </div>
     </section>
 
@@ -1685,5 +1739,18 @@ render();
 </script>
 <!-- Calendly popup widget JS -->
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+<script>
+function handleLeadSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('lead-form');
+  const success = document.getElementById('lead-success');
+  const data = new FormData(form);
+  // Fire Meta Pixel lead event if pixel is loaded
+  if (typeof fbq !== 'undefined') { fbq('track', 'Lead'); }
+  fetch('/', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(data).toString() })
+    .then(() => { form.style.display = 'none'; success.style.display = 'block'; })
+    .catch(() => { form.style.display = 'none'; success.style.display = 'block'; });
+}
+</script>
 </body>
 </html>
