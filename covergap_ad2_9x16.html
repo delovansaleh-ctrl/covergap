@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<!-- CoverGap – Ad 2 "Cover Gaps" – 9:16 (540×960) for screen recording
+     HOW TO RECORD:
+     1. Open this file in Chrome
+     2. Press Cmd+Shift+5 → "Record Selected Portion"
+     3. Drag selection to exactly cover this page (use the guide lines)
+     4. Click Record — the ad plays through 5 slides (~30 sec) automatically
+     5. Stop recording when the last slide appears
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=540">
+<title>Ad 2 — Cover Gaps — 9:16</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{
+  width:100vw;height:100vh;overflow:hidden;
+  background:#042C53;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+#wrapper{transform-origin:center center;}
+#ac{position:relative;width:390px;height:520px;overflow:hidden;}
+#ptcl{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+#sa{position:absolute;inset:0;z-index:1;overflow:hidden;font-family:'Inter',sans-serif;}
+#pg{position:absolute;bottom:0;left:0;right:0;z-index:3;display:flex;gap:3px;padding:0 14px 13px;}
+.ps{height:2.5px;flex:1;background:rgba(255,255,255,0.15);border-radius:2px;overflow:hidden;}
+.pf{height:100%;width:0;background:rgba(255,255,255,0.8);border-radius:2px;}
+@keyframes su{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes sc{from{transform:scale(0.6);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes sl{from{transform:translateX(-26px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-6deg)}40%{transform:rotate(6deg)}60%{transform:rotate(-4deg)}80%{transform:rotate(4deg)}}
+@keyframes pfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+</style>
+</head>
+<body>
+<div id="wrapper">
+  <div id="ac" style="background:#042C53;">
+    <div id="ptcl"></div>
+    <div id="sa"></div>
+    <div id="pg"></div>
+  </div>
+</div>
+<script>
+const DUR=5800;
+let cS=0,nxtT=null,pend=[];
+function later(fn,ms){const t=setTimeout(fn,ms);pend.push(t);return t;}
+function clearP(){pend.forEach(clearTimeout);pend=[];}
+function countUp(el,to,ms){
+  if(!el)return;const t=Date.now();
+  (function tick(){if(!el||!el.isConnected)return;const p=Math.min((Date.now()-t)/ms,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*to);if(p<1)requestAnimationFrame(tick);})();
+}
+function wRev(sel,d0,area){
+  (area||document).querySelectorAll(sel).forEach(el=>{
+    if(!el||!el.isConnected)return;
+    const ws=el.textContent.trim().split(/\s+/);el.innerHTML='';let d=d0;
+    ws.forEach(w=>{const s=document.createElement('span');s.style.cssText=`display:inline-block;margin-right:0.28em;animation:su 0.38s cubic-bezier(0.16,1,0.3,1) ${d.toFixed(2)}s both`;s.textContent=w;el.appendChild(s);d+=0.078;});
+  });
+}
+function mkParts(){
+  const p=document.getElementById('ptcl');if(!p)return;p.innerHTML='';
+  [[12,18],[68,12],[42,55],[88,72],[22,88],[92,38],[56,28],[8,62],[75,45],[35,75]].forEach(([x,y],i)=>{
+    const d=document.createElement('div');const sz=3+(i%3)*2.5;
+    d.style.cssText=`position:absolute;border-radius:50%;pointer-events:none;width:${sz}px;height:${sz}px;background:rgba(74,156,222,0.7);opacity:${0.05+(i%4)*0.03};top:${y}%;left:${x}%;animation:pfloat ${5+(i%3)*2.5}s ease-in-out ${(i%5)*0.6}s infinite`;
+    p.appendChild(d);
+  });
+}
+
+const SLIDES=[
+  {html:`<div style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:28px;text-align:center;gap:14px;font-family:'Inter',sans-serif;">
+    <div style="animation:sc 0.55s cubic-bezier(0.16,1,0.3,1) 0.1s both;">
+      <svg width="76" height="76" viewBox="0 0 24 24" fill="none">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="rgba(74,156,222,0.7)" stroke-width="1.5" fill="rgba(74,156,222,0.07)"/>
+        <path d="M12.5 7.5L10.5 13L13.5 17" stroke="#FF5252" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div id="h1" style="font-size:21px;font-weight:800;color:#fff;line-height:1.3;max-width:280px;">Your bank insurance might have a gap.</div>
+    <div id="h2" style="font-size:13.5px;color:rgba(255,255,255,0.52);line-height:1.7;max-width:268px;">Most people don't think about it until they need to make a claim.</div>
+    <div style="animation:fi 0.6s 2.3s both;font-size:10px;color:#4A9CDE;letter-spacing:0.1em;font-weight:600;">HERE'S WHAT'S WORTH KNOWING ↓</div>
+  </div>`,
+  js:c=>{wRev('#h1',0.45,c);wRev('#h2',0.85,c);}},
+
+  {html:`<div style="height:100%;display:flex;flex-direction:column;justify-content:center;padding:26px;gap:14px;font-family:'Inter',sans-serif;">
+    <div id="h1" style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.1em;">TRAUMA COVER COMPARISON</div>
+    <div style="height:2px"></div>
+    <div style="animation:su 0.4s 0.3s both;">
+      <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;">
+        <span>Bank / direct policy</span><span style="color:rgba(255,255,255,0.4);font-size:11px;">Fewer conditions</span>
+      </div>
+      <div style="height:30px;background:rgba(255,255,255,0.05);border-radius:7px;overflow:hidden;">
+        <div id="b1" style="height:100%;width:0;background:rgba(255,255,255,0.18);border-radius:7px;transition:width 0.9s cubic-bezier(0.25,1,0.5,1);display:flex;align-items:center;padding-left:10px;">
+          <span id="l1" style="font-size:10.5px;color:rgba(255,255,255,0.6);opacity:0;transition:opacity 0.4s 0.7s;white-space:nowrap;">Standardised range</span>
+        </div>
+      </div>
+    </div>
+    <div style="animation:su 0.4s 0.6s both;">
+      <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;">
+        <span>Adviser-arranged policy</span><span style="color:#4A9CDE;font-weight:700;font-size:13px;"><span id="c1">0</span>+ conditions</span>
+      </div>
+      <div style="height:30px;background:rgba(255,255,255,0.05);border-radius:7px;overflow:hidden;">
+        <div id="b2" style="height:100%;width:0;background:linear-gradient(90deg,#185FA5,#4A9CDE);border-radius:7px;transition:width 1.2s cubic-bezier(0.25,1,0.5,1);display:flex;align-items:center;padding-left:10px;">
+          <span id="l2" style="font-size:10.5px;color:rgba(255,255,255,0.85);opacity:0;transition:opacity 0.4s 1s;white-space:nowrap;">Comprehensive cover</span>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.65;padding:11px 14px;background:rgba(255,255,255,0.04);border-radius:10px;animation:fi 0.5s 2.2s both;">Comprehensive adviser-arranged trauma cover typically includes <strong style="color:rgba(255,255,255,0.78);">47+ defined conditions</strong>. Bank products are usually more standardised.</div>
+  </div>`,
+  js:c=>{
+    wRev('#h1',0.1,c);
+    later(()=>{const b=c.querySelector('#b1');if(b)b.style.width='22%';const l=c.querySelector('#l1');if(l)l.style.opacity='1';},400);
+    later(()=>{const b=c.querySelector('#b2');if(b)b.style.width='100%';const l=c.querySelector('#l2');if(l)l.style.opacity='1';countUp(c.querySelector('#c1'),47,1200);},900);
+  }},
+
+  {html:`<div style="height:100%;display:flex;flex-direction:column;justify-content:center;padding:28px;gap:13px;font-family:'Inter',sans-serif;">
+    <div id="h1" style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.1em;">THE KEY DIFFERENCE</div>
+    <div style="height:2px"></div>
+    <div id="h2" style="font-size:20px;font-weight:800;color:rgba(255,255,255,0.5);line-height:1.3;">A bank can only recommend their own products.</div>
+    <div id="h3" style="font-size:20px;font-weight:800;color:#fff;line-height:1.3;">An adviser works across every major insurer in NZ.</div>
+    <div style="height:2px"></div>
+    <div id="h4" style="font-size:13.5px;color:rgba(255,255,255,0.5);line-height:1.7;max-width:295px;">It's how each is set up. A bank shows you what they offer — that's their range. An adviser has no such limit. They assess what you actually need, then go to the full market.</div>
+    <div style="background:rgba(74,156,222,0.07);border-left:3px solid rgba(74,156,222,0.5);border-radius:0 6px 6px 0;padding:12px 15px;font-size:13px;color:rgba(255,255,255,0.72);line-height:1.6;animation:sl 0.5s cubic-bezier(0.16,1,0.3,1) 2.2s both;">Same process — access to every insurer. At no cost to you.</div>
+  </div>`,
+  js:c=>{
+    wRev('#h1',0.1,c);
+    later(()=>wRev('#h2',0.05,c),200);
+    later(()=>wRev('#h3',0.05,c),650);
+    later(()=>wRev('#h4',0.06,c),1000);
+  }},
+
+  {html:`<div style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:28px;text-align:center;gap:12px;font-family:'Inter',sans-serif;">
+    <div id="alrt" style="animation:sc 0.45s cubic-bezier(0.16,1,0.3,1) 0.1s both;">
+      <svg width="66" height="66" viewBox="0 0 24 24" fill="none">
+        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="rgba(232,112,112,0.65)" stroke-width="1.5" fill="rgba(232,112,112,0.07)"/>
+        <line x1="12" y1="9" x2="12" y2="13" stroke="#E87070" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="12" cy="17" r="0.9" fill="#E87070"/>
+      </svg>
+    </div>
+    <div id="h1" style="font-size:19px;font-weight:800;color:#fff;line-height:1.35;max-width:265px;">Without a needs analysis, gaps can go unnoticed.</div>
+    <div id="rc" style="background:rgba(232,112,112,0.07);border:1px solid rgba(232,112,112,0.22);border-radius:12px;padding:15px 18px;max-width:285px;opacity:0;transition:opacity 0.5s;margin-top:4px;">
+      <div style="font-size:10px;color:rgba(232,112,112,0.6);letter-spacing:0.08em;margin-bottom:7px;font-weight:600;">CLAIMS EXAMPLE</div>
+      <div style="font-size:13.5px;color:rgba(255,255,255,0.75);font-style:italic;line-height:1.6;">"Sorry — your condition isn't covered under this policy."</div>
+    </div>
+    <div id="h2" style="font-size:13.5px;color:rgba(255,255,255,0.4);line-height:1.6;max-width:270px;">A free cover review can find gaps before you ever need to claim.</div>
+  </div>`,
+  js:c=>{
+    wRev('#h1',0.2,c);
+    later(()=>{const a=c.querySelector('#alrt');if(a){a.style.animation='none';void a.offsetHeight;a.style.animation='shake 0.5s ease';}},2200);
+    later(()=>{const r=c.querySelector('#rc');if(r)r.style.opacity='1';},2500);
+    later(()=>wRev('#h2',0.1,c),3100);
+  }},
+
+  {html:`<div style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:30px;text-align:center;gap:12px;font-family:'Inter',sans-serif;">
+    <div style="animation:sc 0.5s cubic-bezier(0.16,1,0.3,1) 0.1s both;">
+      <svg width="58" height="58" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke="rgba(74,156,222,0.35)" stroke-width="1.3" fill="rgba(74,156,222,0.07)"/>
+        <path d="m8.5 12 2.5 2.5 4.5-4.5" stroke="#4A9CDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div id="h1" style="font-size:23px;font-weight:800;color:#fff;line-height:1.25;max-width:265px;">Find out what you're actually covered for</div>
+    <div id="h2" style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.65;max-width:265px;">Free cover review. 20 minutes. No obligation.</div>
+    <div style="height:4px"></div>
+    <div id="h3" style="font-size:12px;color:rgba(255,255,255,0.3);line-height:1.55;max-width:260px;">Not a quote comparison. A review of the cover you already have.</div>
+    <div style="height:6px"></div>
+    <a href="https://covergap.nz" style="display:block;background:#185FA5;border-radius:40px;padding:15px 36px;font-size:14px;font-weight:700;color:#fff;text-decoration:none;animation:pulse 2s 1.2s infinite;">covergap.nz →</a>
+  </div>`,
+  js:c=>{wRev('#h1',0.2,c);wRev('#h2',0.65,c);wRev('#h3',1.1,c);}}
+];
+
+function goSlide(si){
+  clearP();cS=si;
+  const sa=document.getElementById('sa');
+  sa.innerHTML=SLIDES[si].html;
+  setTimeout(()=>{if(sa.isConnected)SLIDES[si].js(sa);},60);
+  updProg(si);
+  if(si<SLIDES.length-1)nxtT=setTimeout(()=>goSlide(si+1),DUR);
+}
+function updProg(si){
+  document.querySelectorAll('.pf').forEach((s,i)=>{
+    s.style.transition='none';s.style.width='0';
+    if(i<si){s.style.width='100%';}
+    else if(i===si){setTimeout(()=>{if(s.isConnected){s.style.transition=`width ${DUR}ms linear`;s.style.width='100%';}},100);}
+  });
+}
+
+// Fit ad to viewport (scales to fill window without overflow)
+function fitAd(){
+  const scale=Math.min(window.innerWidth/390,window.innerHeight/520);
+  document.getElementById('wrapper').style.transform=`scale(${scale})`;
+}
+window.addEventListener('resize',fitAd);
+fitAd();
+
+// Init
+document.getElementById('pg').innerHTML=SLIDES.map(()=>`<div class="ps"><div class="pf"></div></div>`).join('');
+mkParts();
+goSlide(0);
+</script>
+</body>
+</html>

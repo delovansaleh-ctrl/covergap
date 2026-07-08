@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CoverGap — Ad Recorder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#0a0a0a; color:#fff;
+  display:flex; flex-direction:column; align-items:center;
+  justify-content:flex-start; min-height:100vh;
+  font-family:'DM Sans',sans-serif; gap:24px; padding:40px 20px;
+}
+h1 { font-size:22px; font-weight:800; letter-spacing:-0.02em; }
+h1 span { color:#3DD68C; }
+
+/* Canvas preview — CSS-scaled, real pixels differ per format */
+.preview-wrap {
+  position:relative;
+  display:flex; align-items:center; justify-content:center;
+  background:#111; border-radius:16px; overflow:hidden;
+  height:400px; width:400px; flex-shrink:0;
+}
+canvas { border-radius:0; }
+
+.controls {
+  display:flex; flex-direction:column; align-items:center;
+  gap:16px; width:100%; max-width:480px;
+}
+
+/* Format selector */
+.formats {
+  display:flex; gap:10px; width:100%; justify-content:center;
+}
+.fmt-btn {
+  flex:1; padding:12px 8px; border-radius:10px;
+  background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.5); font-family:'DM Mono',monospace;
+  font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+  cursor:pointer; text-align:center; user-select:none; transition:all 0.15s;
+}
+.fmt-btn .ratio { font-size:15px; font-weight:700; display:block; color:#fff; margin-bottom:4px; }
+.fmt-btn.active { border-color:#3DD68C; background:rgba(61,214,140,0.08); color:#3DD68C; }
+.fmt-btn .ratio.active-r { color:#3DD68C; }
+
+.file-label {
+  width:100%; padding:16px 24px; text-align:center;
+  background:rgba(255,255,255,0.04); border:1.5px dashed rgba(255,255,255,0.18);
+  border-radius:12px; color:rgba(255,255,255,0.4);
+  font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.12em;
+  text-transform:uppercase; cursor:pointer; transition:all 0.15s;
+}
+.file-label.loaded { border-color:#3DD68C; color:#3DD68C; background:rgba(61,214,140,0.05); }
+
+.record-btn {
+  width:100%; padding:18px; border:none; border-radius:100px;
+  background:#3DD68C; color:#04342C;
+  font-size:18px; font-weight:800; letter-spacing:-0.01em;
+  cursor:pointer; opacity:0.25; pointer-events:none; transition:all 0.15s;
+}
+.record-btn.ready { opacity:1; pointer-events:all; }
+.record-btn.busy  { background:#5B21B6; color:#fff; opacity:1; pointer-events:none; }
+
+.status {
+  font-family:'DM Mono',monospace; font-size:12px;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:rgba(255,255,255,0.3); text-align:center; min-height:18px;
+}
+.status.ok  { color:#3DD68C; }
+.status.err { color:#D4002D; }
+
+/* Queue list */
+.queue {
+  display:flex; flex-direction:column; gap:8px;
+  width:100%; max-width:480px; display:none;
+}
+.q-item {
+  display:flex; align-items:center; gap:12px; padding:10px 16px;
+  background:rgba(255,255,255,0.04); border-radius:10px;
+  font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.1em;
+  text-transform:uppercase; color:rgba(255,255,255,0.35);
+}
+.q-item .dot {
+  width:8px; height:8px; border-radius:50%;
+  background:rgba(255,255,255,0.15); flex-shrink:0;
+}
+.q-item.active .dot { background:#3DD68C; box-shadow:0 0 6px #3DD68C; }
+.q-item.done   .dot { background:#3DD68C; }
+.q-item.active { color:#fff; }
+.q-item.done   { color:rgba(255,255,255,0.5); }
+</style>
+</head>
+<body>
+
+<h1>CoverGap <span>Ad Recorder</span></h1>
+
+<div class="preview-wrap" id="previewWrap">
+  <canvas id="c"></canvas>
+</div>
+
+<div class="controls">
+
+  <!-- Format toggles -->
+  <div class="formats">
+    <div class="fmt-btn active" data-fmt="1:1">
+      <span class="ratio">1 : 1</span>Feed &amp; Stories
+    </div>
+    <div class="fmt-btn active" data-fmt="4:5">
+      <span class="ratio">4 : 5</span>Instagram Portrait
+    </div>
+    <div class="fmt-btn active" data-fmt="9:16">
+      <span class="ratio">9 : 16</span>Reels &amp; Stories
+    </div>
+  </div>
+
+  <label class="file-label" id="fileLabel">
+    📂 &nbsp; Load Kiwi Mikey voiceover MP3
+    <input type="file" id="audioInput" accept="audio/*" style="display:none">
+  </label>
+
+  <button class="record-btn" id="recordBtn">▶ &nbsp; Record &amp; Download All</button>
+  <div class="status" id="status">Select formats then load MP3</div>
+</div>
+
+<div class="queue" id="queue"></div>
+
+<script>
+// ── Format definitions ──────────────────────────────
+const FORMATS = {
+  '1:1':  { W:1080, H:1080, label:'Square 1:1',        file:'covergap-ad-1x1.webm' },
+  '4:5':  { W:1080, H:1350, label:'Portrait 4:5',       file:'covergap-ad-4x5.webm' },
+  '9:16': { W:1080, H:1920, label:'Stories / Reels 9:16',file:'covergap-ad-9x16.webm' },
+};
+
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+
+// ── Brand ────────────────────────────────────────────
+const TEAL='#04342C', VIOLET='#5B21B6', MINT='#3DD68C', RED='#D4002D';
+const INK='#111827', MIST='#F7F5FF', LINE='#DDD6FE', WHITE='#FFFFFF';
+
+const clamp     = (v,a,b) => Math.max(a,Math.min(b,v));
+const easeOut   = t => 1-Math.pow(1-t,3);
+const easeInOut = t => t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const p         = (t,s,d) => clamp((t-s)/d,0,1);
+
+function rgba(hex,a) {
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+// ── Layout — all positions proportional to W/H ──────
+function L(W,H) {
+  const PAD=88;
+  return {
+    PAD, W, H,
+    logoY:  H*0.067, logoW: 240,
+    eyeY:   H*0.092,
+
+    // S1 hook
+    s1_h1:  H*0.40, s1_h2: H*0.51, s1_h3: H*0.62, s1_sub: H*0.71,
+
+    // S2 problem
+    s2_h1:  H*0.25, s2_h2: H*0.34,
+    s2_disc:H*0.40,
+    s2_mlbl:H*0.455, s2_mtr:H*0.475, s2_mtrH:22,
+    s2_st:  H*0.58, s2_div:H*0.70,
+
+    // S3 solution
+    s3_h1:  H*0.24, s3_h2: H*0.33,
+    s3_p1:  H*0.46, s3_p2: H*0.57, s3_p3: H*0.68,
+    s3_div: H*0.78, s3_url:H*0.883, s3_cta:H*0.883,
+
+    // S4 CTA
+    s4_num: H*0.50, s4_wrd:H*0.61,
+    s4_div: H*0.715,
+    s4_c1:  H*0.795, s4_c2:H*0.845, s4_cta:H*0.92,
+  };
+}
+
+// ── Draw helpers ─────────────────────────────────────
+function bg(c){ ctx.fillStyle=c; ctx.fillRect(0,0,canvas.width,canvas.height); }
+
+function T(s,x,y,font,col,align='left',a=1){
+  if(a<=0)return;
+  ctx.save(); ctx.globalAlpha=a;
+  ctx.font=font; ctx.fillStyle=col; ctx.textAlign=align; ctx.textBaseline='alphabetic';
+  ctx.fillText(s,x,y); ctx.restore();
+}
+
+function RR(x,y,w,h,r,col,a=1){
+  if(a<=0||w<=0)return;
+  ctx.save(); ctx.globalAlpha=a; ctx.fillStyle=col;
+  ctx.beginPath(); ctx.roundRect(x,y,w,h,r); ctx.fill(); ctx.restore();
+}
+
+function GapLine(y,sc,dc,a=1,l){
+  if(a<=0)return;
+  const PAD=l.PAD, CW=(l.W-PAD*2)*0.44, GW=(l.W-PAD*2)*0.09, cx=l.W/2;
+  ctx.save(); ctx.globalAlpha=a; ctx.lineWidth=2.5; ctx.lineCap='round';
+  ctx.strokeStyle=sc;
+  ctx.beginPath(); ctx.moveTo(PAD,y); ctx.lineTo(PAD+CW,y); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(l.W-PAD,y); ctx.lineTo(l.W-PAD-CW,y); ctx.stroke();
+  ctx.strokeStyle=dc; ctx.setLineDash([12,18]);
+  ctx.beginPath(); ctx.moveTo(cx-GW/2,y); ctx.lineTo(cx+GW/2,y); ctx.stroke();
+  ctx.setLineDash([]); ctx.restore();
+}
+
+// Pill — auto-sizes to text, right-edge anchored so it never overflows
+// rx = right edge x position (aligns to right padding)
+function Pill(lbl,rx,cy,h,bg_,fg,a=1){
+  if(a<=0)return;
+  const fs = Math.round(h*0.40);
+  const font = `700 ${fs}px 'DM Sans',sans-serif`;
+  ctx.save();
+  ctx.font = font;
+  const tw = ctx.measureText(lbl).width;
+  ctx.restore();
+  const w  = tw + h * 1.1; // generous horizontal padding
+  const x  = rx - w;       // left edge
+  // Background
+  ctx.save(); ctx.globalAlpha=a; ctx.fillStyle=bg_;
+  ctx.beginPath(); ctx.roundRect(x,cy-h/2,w,h,h/2); ctx.fill(); ctx.restore();
+  // Text — properly centred both axes
+  ctx.save(); ctx.globalAlpha=a;
+  ctx.font=font; ctx.fillStyle=fg;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(lbl, x+w/2, cy);
+  ctx.restore();
+}
+
+// ── SVG logos ────────────────────────────────────────
+function svgToImg(s){
+  return new Promise(r=>{
+    const i=new Image(),b=new Blob([s],{type:'image/svg+xml'});
+    i.onload=()=>{URL.revokeObjectURL(i.src);r(i);};
+    i.src=URL.createObjectURL(b);
+  });
+}
+const SVG_R=`<svg width="440" height="132" viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
+<line x1="70" y1="150" x2="158" y2="150" stroke="#FFF" stroke-width="34" stroke-linecap="round"/>
+<line x1="222" y1="150" x2="310" y2="150" stroke="#FFF" stroke-width="34" stroke-linecap="round"/>
+<line x1="158" y1="150" x2="222" y2="150" stroke="#3DD68C" stroke-width="34" stroke-linecap="round" stroke-dasharray="17 22"/>
+<line x1="70" y1="234" x2="310" y2="234" stroke="#FFF" stroke-width="34" stroke-linecap="round"/>
+<text font-family="'DM Sans',sans-serif" font-weight="800" font-size="150" letter-spacing="-4" x="380" y="240">
+<tspan fill="#FFF">Cover</tspan><tspan fill="#3DD68C">Gap</tspan></text></svg>`;
+const SVG_D=`<svg width="440" height="132" viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
+<line x1="70" y1="150" x2="158" y2="150" stroke="#111827" stroke-width="34" stroke-linecap="round"/>
+<line x1="222" y1="150" x2="310" y2="150" stroke="#111827" stroke-width="34" stroke-linecap="round"/>
+<line x1="158" y1="150" x2="222" y2="150" stroke="#5B21B6" stroke-width="34" stroke-linecap="round" stroke-dasharray="17 22"/>
+<line x1="70" y1="234" x2="310" y2="234" stroke="#111827" stroke-width="34" stroke-linecap="round"/>
+<text font-family="'DM Sans',sans-serif" font-weight="800" font-size="150" letter-spacing="-4" x="380" y="240">
+<tspan fill="#111827">Cover</tspan><tspan fill="#5B21B6">Gap</tspan></text></svg>`;
+let imgR, imgD;
+
+function Logo(img,x,y,w,a=1){
+  if(!img||a<=0)return;
+  ctx.save(); ctx.globalAlpha=a;
+  ctx.drawImage(img,x,y,w,Math.round(w*(132/440)));
+  ctx.restore();
+}
+
+// ══════════════════════════════════════════════════════
+// SCENES — all layout values come from L(W,H)
+// ══════════════════════════════════════════════════════
+
+function scene1(t,ma,l){
+  if(ma<=0)return;
+  ctx.save(); ctx.globalAlpha=ma; bg(TEAL); ctx.restore();
+  const{PAD,W,H,logoY,logoW,eyeY,s1_h1,s1_h2,s1_h3,s1_sub}=l;
+  Logo(imgR,PAD,logoY,logoW,easeOut(p(t,0.2,0.5)));
+  T('Free Cover Review  ·  covergap.nz',PAD,eyeY+logoW*(132/440)+20,
+    `500 13px 'DM Mono',monospace`,rgba(MINT,0.6),'left',easeOut(p(t,0.5,0.6))*ma);
+  T('Got insurance?',PAD,s1_h1,`800 86px 'DM Sans',sans-serif`,WHITE,'left',easeOut(p(t,0.9,0.7))*ma);
+  const h2a=easeOut(p(t,1.4,0.7))*ma;
+  if(h2a>0){
+    ctx.save(); ctx.globalAlpha=h2a;
+    ctx.font=`800 86px 'DM Sans',sans-serif`; ctx.textBaseline='alphabetic'; ctx.textAlign='left';
+    ctx.fillStyle=WHITE; ctx.fillText('But do you ',PAD,s1_h2);
+    ctx.fillStyle=MINT; ctx.fillText('know',PAD+ctx.measureText('But do you ').width,s1_h2);
+    ctx.restore();
+  }
+  T("what's covered?",PAD,s1_h3,`800 86px 'DM Sans',sans-serif`,WHITE,'left',easeOut(p(t,1.9,0.7))*ma);
+  T("Most Kiwis don't.",PAD,s1_sub,`400 30px 'DM Sans',sans-serif`,rgba(WHITE,0.5),'left',easeOut(p(t,2.8,0.6))*ma);
+}
+
+function scene2(t,ma,l){
+  if(ma<=0)return;
+  ctx.save(); ctx.globalAlpha=ma; bg(TEAL); ctx.restore();
+  const{PAD,W,H,logoY,logoW,eyeY,s2_h1,s2_h2,s2_disc,s2_mlbl,s2_mtr,s2_mtrH,s2_st,s2_div}=l;
+  Logo(imgR,PAD,logoY,logoW,easeOut(p(t,0.1,0.4)));
+  T('THE REALITY',W-PAD,eyeY,`500 13px 'DM Mono',monospace`,rgba(MINT,0.55),'right',easeOut(p(t,0.2,0.5))*ma);
+  const ha=easeOut(p(t,0.5,0.7))*ma;
+  T("Most people don't find out",PAD,s2_h1,`800 62px 'DM Sans',sans-serif`,WHITE,'left',ha);
+  if(ha>0){
+    ctx.save(); ctx.globalAlpha=ha;
+    ctx.font=`800 62px 'DM Sans',sans-serif`; ctx.textBaseline='alphabetic'; ctx.textAlign='left';
+    ctx.fillStyle=WHITE; ctx.fillText('until they need to ',PAD,s2_h2);
+    ctx.fillStyle=MINT; ctx.fillText('claim.',PAD+ctx.measureText('until they need to ').width,s2_h2);
+    ctx.restore();
+  }
+  T('Illustrative figures. Actual coverage varies.',PAD,s2_disc,
+    `500 12px 'DM Mono',monospace`,rgba(WHITE,0.22),'left',easeOut(p(t,1.2,0.4))*ma);
+  const mA=easeOut(p(t,1.5,0.5))*ma;
+  T('COVERED',PAD,s2_mlbl,`500 12px 'DM Mono',monospace`,rgba(WHITE,0.4),'left',mA);
+  T('THE GAP',W-PAD,s2_mlbl,`500 12px 'DM Mono',monospace`,rgba(RED,0.8),'right',mA);
+  const TW=W-PAD*2;
+  RR(PAD,s2_mtr,TW,s2_mtrH,s2_mtrH/2,rgba(WHITE,0.07),mA);
+  const gW=easeInOut(p(t,1.9,2.0))*TW*0.62;
+  if(gW>0) RR(PAD,s2_mtr,gW,s2_mtrH,[s2_mtrH/2,0,0,s2_mtrH/2],MINT,mA);
+  const rT=easeInOut(p(t,3.9,0.9));
+  if(rT>0&&gW>=TW*0.60){
+    RR(PAD+TW*0.62-1,s2_mtr,5,s2_mtrH,0,TEAL,mA);
+    RR(PAD+TW*0.62+4,s2_mtr,rT*(TW*0.38-4),s2_mtrH,[0,s2_mtrH/2,s2_mtrH/2,0],RED,mA);
+  }
+  const sA=easeOut(p(t,4.8,0.5))*ma;
+  T('62%',PAD,s2_st,`800 68px 'DM Sans',sans-serif`,MINT,'left',sA);
+  T('average coverage',PAD,s2_st+32,`400 16px 'DM Sans',sans-serif`,rgba(WHITE,0.45),'left',sA);
+  T('38%',W-PAD,s2_st,`800 68px 'DM Sans',sans-serif`,RED,'right',sA);
+  T('sits in a gap',W-PAD,s2_st+32,`400 16px 'DM Sans',sans-serif`,rgba(WHITE,0.45),'right',sA);
+  GapLine(s2_div,rgba(WHITE,0.15),MINT,easeOut(p(t,5.6,0.4))*ma,l);
+}
+
+function scene3(t,ma,l){
+  if(ma<=0)return;
+  ctx.save(); ctx.globalAlpha=ma; bg(MIST); ctx.restore();
+  const{PAD,W,H,logoY,logoW,eyeY,s3_h1,s3_h2,s3_p1,s3_p2,s3_p3,s3_div,s3_url,s3_cta}=l;
+  Logo(imgD,PAD,logoY,logoW,easeOut(p(t,0.2,0.5)));
+  T('COVERGAP — NZ INDEPENDENT ADVISER',W-PAD,eyeY,`500 12px 'DM Mono',monospace`,VIOLET,'right',easeOut(p(t,0.3,0.5))*ma);
+  const ha=easeOut(p(t,0.7,0.7))*ma;
+  T('A free 20-minute review',PAD,s3_h1,`800 62px 'DM Sans',sans-serif`,INK,'left',ha);
+  if(ha>0){
+    ctx.save(); ctx.globalAlpha=ha;
+    ctx.font=`800 62px 'DM Sans',sans-serif`; ctx.textBaseline='alphabetic'; ctx.textAlign='left';
+    ctx.fillStyle=INK; ctx.fillText('that ',PAD,s3_h2);
+    ctx.fillStyle=VIOLET; ctx.fillText('closes the gap.',PAD+ctx.measureText('that ').width,s3_h2);
+    ctx.restore();
+  }
+  [[s3_p1,"We look at what you've got"," — your existing policies",1.8],
+   [s3_p2,"We find exactly where the gaps are","",2.7],
+   [s3_p3,"No jargon. No obligation.","",3.5]].forEach(([y,lbl,sub,delay])=>{
+    const pa=easeOut(p(t,delay,0.5))*ma;
+    if(pa<=0)return;
+    ctx.save(); ctx.globalAlpha=pa;
+    ctx.fillStyle='#5B47D6'; ctx.beginPath(); ctx.arc(PAD+6,y+2,6,0,Math.PI*2); ctx.fill();
+    ctx.font=`700 26px 'DM Sans',sans-serif`; ctx.fillStyle=INK;
+    ctx.textAlign='left'; ctx.textBaseline='alphabetic'; ctx.fillText(lbl,PAD+22,y+10);
+    if(sub){ const lw=ctx.measureText(lbl).width; ctx.font=`400 20px 'DM Sans',sans-serif`; ctx.fillStyle='#6B7280'; ctx.fillText(sub,PAD+22+lw,y+10); }
+    ctx.restore();
+  });
+  GapLine(s3_div,LINE,VIOLET,easeOut(p(t,4.4,0.4))*ma,l);
+  const ua=easeOut(p(t,4.8,0.4))*ma;
+  // Bottom row — URL left, pill right, both centred on same Y
+  ctx.save(); ctx.globalAlpha=ua;
+  ctx.font=`500 18px 'DM Mono',monospace`; ctx.fillStyle=VIOLET;
+  ctx.textAlign='left'; ctx.textBaseline='middle';
+  ctx.fillText('covergap.nz',PAD,s3_url); ctx.restore();
+  Pill('Free, independent, no obligation →', W-PAD, s3_cta, 64, VIOLET, WHITE, ua);
+}
+
+function scene4(t,ma,l){
+  if(ma<=0)return;
+  ctx.save(); ctx.globalAlpha=ma; bg(VIOLET); ctx.restore();
+  const{PAD,W,H,logoY,logoW,eyeY,s4_num,s4_wrd,s4_div,s4_c1,s4_c2,s4_cta}=l;
+  // Ghost 20
+  ctx.save(); ctx.globalAlpha=ma*0.05;
+  ctx.font=`900 ${Math.round(H*0.37)}px 'DM Sans',sans-serif`;
+  ctx.fillStyle=WHITE; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('20',W/2,H*0.48); ctx.restore();
+  Logo(imgR,PAD,logoY,logoW,easeOut(p(t,0.3,0.6)));
+  T('NZ · FREE · NO OBLIGATION',W-PAD,eyeY,`500 13px 'DM Mono',monospace`,rgba(MINT,0.7),'right',easeOut(p(t,0.4,0.5))*ma);
+  T('20',W/2,s4_num,`900 230px 'DM Sans',sans-serif`,WHITE,'center',easeOut(p(t,0.6,0.7))*ma);
+  T('minutes.',W/2,s4_wrd,`800 96px 'DM Sans',sans-serif`,WHITE,'center',easeOut(p(t,1.2,0.6))*ma);
+  GapLine(s4_div,rgba(WHITE,0.18),MINT,easeOut(p(t,2.0,0.4))*ma,l);
+  const ba=easeOut(p(t,2.4,0.5))*ma;
+  T('A free cover review. No jargon.',W/2,s4_c1,`400 28px 'DM Sans',sans-serif`,rgba(WHITE,0.75),'center',ba);
+  T('No obligation. Just clarity.',W/2,s4_c2,`400 28px 'DM Sans',sans-serif`,rgba(WHITE,0.75),'center',ba);
+  const ua=easeOut(p(t,3.0,0.5))*ma;
+  // Bottom row — URL left, pill right, both centred on same Y
+  ctx.save(); ctx.globalAlpha=ua;
+  ctx.font=`500 22px 'DM Mono',monospace`; ctx.fillStyle=rgba(WHITE,0.85);
+  ctx.textAlign='left'; ctx.textBaseline='middle';
+  ctx.fillText('covergap.nz',PAD,H-80); ctx.restore();
+  Pill('Free 20-min review →', W-PAD, H-80, 68, MINT, TEAL, ua);
+}
+
+// ── Render loop ──────────────────────────────────────
+let TOTAL=28;
+const XFADE=0.5;
+
+function sceneA(t,s,e){
+  if(t<s-XFADE||t>e+XFADE)return 0;
+  return clamp(t<s+XFADE?(t-(s-XFADE))/(XFADE*2):((e+XFADE)-t)/(XFADE*2),0,1);
+}
+
+function render(t,W,H){
+  const B1=TOTAL*0.20, B2=TOTAL*0.47, B3=TOTAL*0.77;
+  const l=L(W,H);
+  ctx.clearRect(0,0,W,H);
+  const a1=sceneA(t,0,B1), a2=sceneA(t,B1,B2), a3=sceneA(t,B2,B3), a4=sceneA(t,B3,TOTAL);
+  if(a1>0) scene1(t,a1,l);
+  if(a2>0) scene2(t-B1,a2,l);
+  if(a3>0) scene3(t-B2,a3,l);
+  if(a4>0) scene4(t-B3,a4,l);
+  // progress bar
+  ctx.fillStyle=rgba(MINT,0.4);
+  ctx.fillRect(0,H-4,clamp(t/TOTAL,0,1)*W,4);
+}
+
+// ── Preview scaling ──────────────────────────────────
+function fitPreview(W,H){
+  const wrap=document.getElementById('previewWrap');
+  const maxW=400, maxH=400;
+  const scale=Math.min(maxW/W, maxH/H);
+  canvas.style.width  = Math.round(W*scale)+'px';
+  canvas.style.height = Math.round(H*scale)+'px';
+  wrap.style.width    = Math.round(W*scale)+'px';
+  wrap.style.height   = Math.round(H*scale)+'px';
+}
+
+// ── Format toggles ───────────────────────────────────
+const fmtBtns   = document.querySelectorAll('.fmt-btn');
+const selectedFmts = new Set(['1:1','4:5','9:16']);
+let previewFmt = '1:1';
+
+fmtBtns.forEach(btn => {
+  btn.addEventListener('click', ()=>{
+    const f=btn.dataset.fmt;
+    if(selectedFmts.has(f)){
+      if(selectedFmts.size>1){ selectedFmts.delete(f); btn.classList.remove('active'); }
+    } else {
+      selectedFmts.add(f); btn.classList.add('active');
+    }
+    previewFmt=[...selectedFmts][0];
+    showPreview();
+  });
+});
+
+function showPreview(){
+  const{W,H}=FORMATS[previewFmt];
+  canvas.width=W; canvas.height=H;
+  fitPreview(W,H);
+  render(0,W,H);
+}
+
+// ── Audio ────────────────────────────────────────────
+let audioURL=null;
+const audioInput=document.getElementById('audioInput');
+const fileLabel =document.getElementById('fileLabel');
+const recordBtn =document.getElementById('recordBtn');
+const statusEl  =document.getElementById('status');
+
+audioInput.addEventListener('change',function(){
+  if(!this.files[0])return;
+  audioURL=URL.createObjectURL(this.files[0]);
+  fileLabel.classList.add('loaded');
+  fileLabel.innerHTML='✓ &nbsp; '+this.files[0].name;
+  const probe=new Audio(audioURL);
+  probe.addEventListener('loadedmetadata',()=>{
+    TOTAL=probe.duration+1.5;
+    statusEl.textContent=`Audio ${probe.duration.toFixed(1)}s · ${[...selectedFmts].length} format(s) — ready`;
+    recordBtn.classList.add('ready');
+    showPreview();
+  });
+});
+
+// ── Record one format ────────────────────────────────
+function recordOne(fmtKey, qItem){
+  return new Promise(async resolve=>{
+    const{W,H,label,file}=FORMATS[fmtKey];
+    canvas.width=W; canvas.height=H; fitPreview(W,H);
+    if(qItem){ qItem.classList.add('active'); }
+
+    const audioCtx=new AudioContext();
+    const audioEl=new Audio(audioURL);
+    audioEl.crossOrigin='anonymous';
+    const src=audioCtx.createMediaElementSource(audioEl);
+    const dest=audioCtx.createMediaStreamDestination();
+    src.connect(dest); src.connect(audioCtx.destination);
+
+    const vidStream=canvas.captureStream(30);
+    const combined=new MediaStream([...vidStream.getVideoTracks(),...dest.stream.getAudioTracks()]);
+    const mime=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm']
+      .find(m=>MediaRecorder.isTypeSupported(m))||'video/webm';
+    const recorder=new MediaRecorder(combined,{mimeType:mime,videoBitsPerSecond:8_000_000});
+    const chunks=[];
+    recorder.ondataavailable=e=>{if(e.data.size>0)chunks.push(e.data);};
+    recorder.onstop=()=>{
+      const blob=new Blob(chunks,{type:'video/webm'});
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob); a.download=file; a.click();
+      if(qItem){ qItem.classList.remove('active'); qItem.classList.add('done'); qItem.querySelector('.dot').textContent=''; }
+      resolve();
+    };
+
+    audioEl.addEventListener('ended',()=>{
+      setTimeout(()=>{ if(recorder.state==='recording') recorder.stop(); cancelAnimationFrame(raf); }, 1500);
+    });
+
+    recorder.start(200);
+    let startTs=null, raf=null;
+    const tick=ts=>{
+      if(!startTs) startTs=ts;
+      const elapsed=(ts-startTs)/1000;
+      render(Math.min(elapsed,TOTAL),W,H);
+      const rem=Math.ceil(Math.max(0,TOTAL-elapsed));
+      statusEl.textContent=`Recording ${label} — ${rem}s remaining`;
+      if(elapsed<TOTAL+2) raf=requestAnimationFrame(tick);
+    };
+    audioEl.play();
+    raf=requestAnimationFrame(ts=>{startTs=ts;tick(ts);});
+    // Failsafe
+    setTimeout(()=>{ if(recorder.state==='recording') recorder.stop(); },(TOTAL+3)*1000);
+  });
+}
+
+// ── Main record handler ──────────────────────────────
+recordBtn.addEventListener('click', async()=>{
+  if(!audioURL||!selectedFmts.size)return;
+  await document.fonts.ready;
+  if(!imgR) imgR=await svgToImg(SVG_R);
+  if(!imgD) imgD=await svgToImg(SVG_D);
+
+  recordBtn.classList.remove('ready'); recordBtn.classList.add('busy');
+  recordBtn.textContent='● Recording…';
+
+  // Build queue UI
+  const queueEl=document.getElementById('queue');
+  queueEl.style.display='flex'; queueEl.innerHTML='';
+  const qItems={};
+  [...selectedFmts].forEach(f=>{
+    const{label}=FORMATS[f];
+    const div=document.createElement('div');
+    div.className='q-item';
+    div.innerHTML=`<div class="dot"></div><span>${label}</span>`;
+    queueEl.appendChild(div);
+    qItems[f]=div;
+  });
+
+  // Record each format sequentially
+  for(const f of selectedFmts){
+    await recordOne(f, qItems[f]);
+    await new Promise(r=>setTimeout(r,800));
+  }
+
+  statusEl.className='status ok';
+  statusEl.textContent=`✓  All ${selectedFmts.size} video(s) downloaded`;
+  recordBtn.textContent='▶  Record Again';
+  recordBtn.classList.remove('busy'); recordBtn.classList.add('ready');
+  recordBtn.onclick=()=>location.reload();
+});
+
+// ── Boot ─────────────────────────────────────────────
+(async()=>{
+  await document.fonts.ready;
+  imgR=await svgToImg(SVG_R);
+  imgD=await svgToImg(SVG_D);
+  showPreview();
+})();
+</script>
+</body>
+</html>

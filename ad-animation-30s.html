@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>CoverGap — 30s Ad Animation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1080px;
+    overflow: hidden;
+    background: #000;
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── SCENE WRAPPER ─── */
+  .scene {
+    position: absolute;
+    inset: 0;
+    width: 1080px;
+    height: 1080px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ══════════════════════════════════════
+     SCENE 1 — HOOK (0–6s)
+     "Got insurance? But do you know what's covered?"
+  ══════════════════════════════════════ */
+  #s1 {
+    background: #04342C;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px;
+    animation: sceneIn 0.6s ease 0.2s forwards,
+               sceneOut 0.5s ease 5.7s forwards;
+  }
+
+  #s1 .hook-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(61,214,140,0.6);
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.7s forwards;
+  }
+
+  #s1 .hook-text {
+    font-size: 88px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.96;
+    color: #fff;
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 1.0s forwards;
+  }
+
+  #s1 .hook-text em {
+    color: #3DD68C;
+    font-style: normal;
+  }
+
+  #s1 .hook-sub {
+    font-size: 28px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    margin-top: 32px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 2.2s forwards;
+  }
+
+  /* ══════════════════════════════════════
+     SCENE 2 — PROBLEM (6–14s)
+     Meter fills then reveals the gap
+  ══════════════════════════════════════ */
+  #s2 {
+    background: #04342C;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 80px 88px;
+    animation: sceneIn 0.5s ease 6.0s forwards,
+               sceneOut 0.5s ease 13.5s forwards;
+  }
+
+  #s2 .s2-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(61,214,140,0.55);
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 6.4s forwards;
+  }
+
+  #s2 .s2-headline {
+    font-size: 66px;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.0;
+    color: #fff;
+    margin-bottom: 64px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 6.7s forwards;
+  }
+
+  #s2 .s2-headline em {
+    color: #3DD68C;
+    font-style: normal;
+  }
+
+  /* Meter */
+  .meter-wrap { width: 100%; opacity: 0; animation: fadeUp 0.5s ease 7.8s forwards; }
+
+  .meter-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .meter-labels span {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .meter-labels span.gap-lbl { color: rgba(212,0,45,0.8); }
+
+  .meter-track {
+    width: 100%;
+    height: 22px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.07);
+    overflow: hidden;
+    display: flex;
+    position: relative;
+  }
+
+  .meter-green {
+    height: 100%;
+    width: 0%;
+    background: #3DD68C;
+    border-radius: 100px 0 0 100px;
+    animation: fillGreen 1.8s cubic-bezier(.4,0,.2,1) 8.3s forwards;
+  }
+
+  .meter-gap-break {
+    width: 0px;
+    background: #04342C;
+    animation: showGap 0.1s ease 10.2s forwards;
+  }
+
+  .meter-red {
+    flex: 1;
+    background: #D4002D;
+    border-radius: 0 100px 100px 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: fillRed 0.8s cubic-bezier(.4,0,.2,1) 10.3s forwards;
+  }
+
+  .meter-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 28px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 11.0s forwards;
+  }
+
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+
+  .stat-num {
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .stat-num.g { color: #3DD68C; }
+  .stat-num.r { color: #D4002D; }
+
+  .stat-desc {
+    font-size: 15px;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* ══════════════════════════════════════
+     SCENE 3 — SOLUTION (14–23s)
+     CoverGap intro
+  ══════════════════════════════════════ */
+  #s3 {
+    background: #F7F5FF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 88px;
+    animation: sceneIn 0.6s ease 14.0s forwards,
+               sceneOut 0.5s ease 22.5s forwards;
+  }
+
+  #s3 .s3-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #5B21B6;
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 14.5s forwards;
+  }
+
+  #s3 .s3-headline {
+    font-size: 68px;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.0;
+    color: #111827;
+    margin-bottom: 52px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 14.9s forwards;
+  }
+
+  #s3 .s3-headline em { color: #5B21B6; font-style: normal; }
+
+  /* Three pillars */
+  .pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .pillar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    opacity: 0;
+  }
+
+  .pillar:nth-child(1) { animation: fadeLeft 0.5s ease 15.8s forwards; }
+  .pillar:nth-child(2) { animation: fadeLeft 0.5s ease 16.6s forwards; }
+  .pillar:nth-child(3) { animation: fadeLeft 0.5s ease 17.4s forwards; }
+
+  .pillar-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #5B47D6;
+    flex-shrink: 0;
+  }
+
+  .pillar-text {
+    font-size: 26px;
+    font-weight: 600;
+    color: #111827;
+    letter-spacing: -0.01em;
+  }
+
+  .pillar-sub {
+    font-size: 17px;
+    font-weight: 400;
+    color: #6B7280;
+    margin-left: 8px;
+  }
+
+  /* Gap divider */
+  .s3-divider {
+    margin: 48px 0 40px;
+    height: 2px;
+    width: 100%;
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 0.4s ease 18.2s forwards;
+  }
+
+  .s3-divider::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 44%; height: 2px;
+    background: #DDD6FE;
+    border-radius: 2px;
+  }
+
+  .s3-divider::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0;
+    width: 44%; height: 2px;
+    background: #DDD6FE;
+    border-radius: 2px;
+  }
+
+  .s3-dash {
+    position: absolute;
+    left: 50%; transform: translateX(-50%);
+    top: 0; width: 9%; height: 2px;
+    background: repeating-linear-gradient(
+      90deg, #5B21B6 0px, #5B21B6 10px, transparent 10px, transparent 16px
+    );
+    border-radius: 2px;
+  }
+
+  .s3-logo {
+    opacity: 0;
+    animation: fadeUp 0.5s ease 18.6s forwards;
+  }
+
+  /* ══════════════════════════════════════
+     SCENE 4 — CTA (23–30s)
+  ══════════════════════════════════════ */
+  #s4 {
+    background: #5B21B6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px;
+    animation: sceneIn 0.6s ease 23.0s forwards;
+  }
+
+  /* Ghost 20 */
+  #s4::before {
+    content: '20';
+    position: absolute;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 900;
+    font-size: 680px;
+    letter-spacing: -0.06em;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    pointer-events: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+  }
+
+  #s4 .s4-logo {
+    opacity: 0;
+    margin-bottom: 56px;
+    position: relative;
+    z-index: 2;
+    animation: fadeUp 0.5s ease 23.5s forwards;
+  }
+
+  #s4 .s4-number {
+    font-size: 200px;
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    line-height: 0.88;
+    color: #fff;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: scaleIn 0.7s cubic-bezier(.2,1.4,.4,1) 23.8s forwards;
+  }
+
+  #s4 .s4-word {
+    font-size: 80px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    color: #fff;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 24.5s forwards;
+  }
+
+  /* Gap divider */
+  .s4-divider {
+    margin: 44px 0 40px;
+    height: 3px;
+    width: 80%;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.4s ease 25.2s forwards;
+  }
+
+  .s4-divider::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 43%; height: 3px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 3px;
+  }
+
+  .s4-divider::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0;
+    width: 43%; height: 3px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 3px;
+  }
+
+  .s4-dash {
+    position: absolute;
+    left: 50%; transform: translateX(-50%);
+    top: 0; width: 11%; height: 3px;
+    background: repeating-linear-gradient(
+      90deg, #3DD68C 0px, #3DD68C 14px, transparent 14px, transparent 22px
+    );
+    border-radius: 3px;
+  }
+
+  #s4 .s4-url {
+    font-family: 'DM Mono', monospace;
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.9);
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 25.6s forwards;
+  }
+
+  #s4 .s4-cta {
+    background: #3DD68C;
+    color: #04342C;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    padding: 20px 44px;
+    border-radius: 100px;
+    margin-top: 32px;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: scaleIn 0.6s cubic-bezier(.2,1.4,.4,1) 26.2s forwards;
+  }
+
+  /* ─── KEYFRAMES ─── */
+  @keyframes sceneIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes sceneOut {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeLeft {
+    from { opacity: 0; transform: translateX(-20px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes fillGreen {
+    from { width: 0%; }
+    to   { width: 62%; }
+  }
+
+  @keyframes showGap {
+    to { width: 4px; }
+  }
+
+  @keyframes fillRed {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background: rgba(61,214,140,0.6);
+    animation: progress 30s linear 0.2s forwards;
+    z-index: 999;
+  }
+
+  @keyframes progress {
+    from { width: 0%; }
+    to   { width: 100%; }
+  }
+
+  /* ─── LAUNCH OVERLAY ─── */
+  .launch-overlay {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    z-index: 2000;
+  }
+
+  .launch-overlay h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+
+  .launch-overlay p {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  .audio-pick {
+    background: rgba(255,255,255,0.06);
+    border: 1px dashed rgba(255,255,255,0.2);
+    border-radius: 16px;
+    padding: 24px 40px;
+    color: rgba(255,255,255,0.6);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .audio-pick input { display: none; }
+
+  .audio-pick.loaded {
+    border-color: #3DD68C;
+    color: #3DD68C;
+  }
+
+  .play-btn {
+    background: #3DD68C;
+    color: #04342C;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    padding: 22px 56px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.3;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .play-btn.ready {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .hint {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* ─── RESTART BUTTON ─── */
+  .restart-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    padding: 10px 18px;
+    border-radius: 100px;
+    cursor: pointer;
+    z-index: 1000;
+    text-transform: uppercase;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar"></div>
+
+<!-- ═══ SCENE 1 — HOOK ═══ -->
+<div class="scene" id="s1">
+  <div class="hook-label">Free Cover Review · covergap.nz</div>
+  <div class="hook-text">Got insurance?<br><em>But do you know</em><br>what's covered?</div>
+  <div class="hook-sub">Most Kiwis don't.</div>
+</div>
+
+<!-- ═══ SCENE 2 — PROBLEM ═══ -->
+<div class="scene" id="s2">
+  <div class="s2-eyebrow">The reality</div>
+  <div class="s2-headline">Most people don't find out<br>until they need to <em>claim.</em></div>
+
+  <div class="meter-wrap">
+    <div class="meter-labels">
+      <span>Covered</span>
+      <span class="gap-lbl">The Gap</span>
+    </div>
+    <div class="meter-track">
+      <div class="meter-green"></div>
+      <div class="meter-gap-break"></div>
+      <div class="meter-red"></div>
+    </div>
+    <div class="meter-stats">
+      <div class="stat">
+        <span class="stat-num g">62%</span>
+        <span class="stat-desc">average coverage</span>
+      </div>
+      <div class="stat" style="text-align:right">
+        <span class="stat-num r">38%</span>
+        <span class="stat-desc">sits in a gap</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCENE 3 — SOLUTION ═══ -->
+<div class="scene" id="s3">
+  <div class="s3-eyebrow">CoverGap — NZ Independent Adviser</div>
+  <div class="s3-headline">A free 20-minute review<br>that <em>closes the gap.</em></div>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-dot"></div>
+      <span class="pillar-text">We look at what you've got</span>
+      <span class="pillar-sub">—&nbsp;your existing policies</span>
+    </div>
+    <div class="pillar">
+      <div class="pillar-dot"></div>
+      <span class="pillar-text">We find exactly where the gaps are</span>
+    </div>
+    <div class="pillar">
+      <div class="pillar-dot"></div>
+      <span class="pillar-text">No jargon. No obligation.</span>
+    </div>
+  </div>
+
+  <div class="s3-divider"><div class="s3-dash"></div></div>
+
+  <div class="s3-logo">
+    <svg width="220" height="66" viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
+      <line x1="70"  y1="150" x2="158" y2="150" stroke="#111827" stroke-width="34" stroke-linecap="round"/>
+      <line x1="222" y1="150" x2="310" y2="150" stroke="#111827" stroke-width="34" stroke-linecap="round"/>
+      <line x1="158" y1="150" x2="222" y2="150" stroke="#5B21B6" stroke-width="34" stroke-linecap="round" stroke-dasharray="17 22"/>
+      <line x1="70"  y1="234" x2="310" y2="234" stroke="#111827" stroke-width="34" stroke-linecap="round"/>
+      <text font-family="'DM Sans',sans-serif" font-weight="800" font-size="150" letter-spacing="-4" x="380" y="240">
+        <tspan fill="#111827">Cover</tspan><tspan fill="#5B21B6">Gap</tspan>
+      </text>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══ SCENE 4 — CTA ═══ -->
+<div class="scene" id="s4">
+  <div class="s4-logo">
+    <svg width="200" height="60" viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
+      <line x1="70"  y1="150" x2="158" y2="150" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round"/>
+      <line x1="222" y1="150" x2="310" y2="150" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round"/>
+      <line x1="158" y1="150" x2="222" y2="150" stroke="#3DD68C" stroke-width="34" stroke-linecap="round" stroke-dasharray="17 22"/>
+      <line x1="70"  y1="234" x2="310" y2="234" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round"/>
+      <text font-family="'DM Sans',sans-serif" font-weight="800" font-size="150" letter-spacing="-4" x="380" y="240">
+        <tspan fill="#FFFFFF">Cover</tspan><tspan fill="#3DD68C">Gap</tspan>
+      </text>
+    </svg>
+  </div>
+  <div class="s4-number">20</div>
+  <div class="s4-word">minutes.</div>
+  <div class="s4-divider"><div class="s4-dash"></div></div>
+  <div class="s4-url">covergap.nz</div>
+  <div class="s4-cta">Free cover review — book now →</div>
+</div>
+
+<!-- Launch overlay -->
+<div class="launch-overlay" id="launchOverlay">
+  <svg width="160" height="48" viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
+    <line x1="70"  y1="150" x2="158" y2="150" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round"/>
+    <line x1="222" y1="150" x2="310" y2="150" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round"/>
+    <line x1="158" y1="150" x2="222" y2="150" stroke="#3DD68C" stroke-width="34" stroke-linecap="round" stroke-dasharray="17 22"/>
+    <line x1="70"  y1="234" x2="310" y2="234" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round"/>
+    <text font-family="'DM Sans',sans-serif" font-weight="800" font-size="150" letter-spacing="-4" x="380" y="240">
+      <tspan fill="#FFFFFF">Cover</tspan><tspan fill="#3DD68C">Gap</tspan>
+    </text>
+  </svg>
+
+  <h2>Ad Animation — 30s</h2>
+
+  <p>Step 1 · Load your Jenna voiceover MP3<br>Step 2 · Start screen recording<br>Step 3 · Hit Play — audio + animation sync automatically</p>
+
+  <label class="audio-pick" id="audioPick">
+    <input type="file" id="audioFile" accept="audio/*">
+    📂 &nbsp;Load voiceover MP3
+  </label>
+
+  <button class="play-btn" id="playBtn" onclick="startShow()">▶ &nbsp;Play &amp; Record</button>
+
+  <span class="hint">Hide this overlay before hitting record — it disappears on play</span>
+</div>
+
+<!-- Audio element (populated by JS) -->
+<audio id="voiceover" preload="auto"></audio>
+
+<!-- Restart -->
+<button class="restart-btn" id="restartBtn" onclick="location.reload()">↺ Replay</button>
+
+<script>
+  const audioFile = document.getElementById('audioFile');
+  const audioPick = document.getElementById('audioPick');
+  const playBtn   = document.getElementById('playBtn');
+  const voiceover = document.getElementById('voiceover');
+
+  audioFile.addEventListener('change', function() {
+    if (this.files[0]) {
+      const url = URL.createObjectURL(this.files[0]);
+      voiceover.src = url;
+      audioPick.classList.add('loaded');
+      audioPick.textContent = '✓  ' + this.files[0].name;
+      playBtn.classList.add('ready');
+    }
+  });
+
+  function startShow() {
+    // Hide overlay
+    document.getElementById('launchOverlay').style.display = 'none';
+    document.getElementById('restartBtn').style.display = 'block';
+
+    // Reset all animations by cloning the body content
+    // Play audio
+    voiceover.currentTime = 0;
+    voiceover.play();
+
+    // Restart CSS animations by toggling a class
+    document.querySelectorAll('.scene, .scene *').forEach(el => {
+      el.style.animationPlayState = 'running';
+    });
+  }
+</script>
+
+</body>
+</html>

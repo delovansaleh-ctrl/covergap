@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=1080"/>
+<title>CoverGap — Post C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1080px;overflow:hidden}
+body{
+  background:#04342C;
+  font-family:'DM Sans',sans-serif;
+  display:flex;flex-direction:column;
+  align-items:flex-start;justify-content:space-between;
+  padding:72px 80px;
+  position:relative;
+  overflow:hidden;
+}
+
+/* Background texture */
+.bg-circle{
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+}
+.bc1{width:600px;height:600px;background:rgba(61,214,140,0.06);top:-100px;right:-120px;}
+.bc2{width:400px;height:400px;background:rgba(91,33,182,0.12);bottom:-60px;left:-80px;}
+
+/* Logo */
+.logo{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
+.logo-word{font-family:'DM Sans',sans-serif;font-weight:800;font-size:26px;letter-spacing:-0.02em;color:#FFFFFF;}
+.logo-word span{color:#3DD68C;}
+
+/* Content */
+.content{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 0;}
+
+.free-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(61,214,140,0.15);border:1px solid rgba(61,214,140,0.35);
+  border-radius:100px;padding:8px 18px;margin-bottom:32px;
+  width:fit-content;
+}
+.free-badge-dot{width:7px;height:7px;border-radius:50%;background:#3DD68C;}
+.free-badge-text{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#3DD68C;letter-spacing:0.04em;text-transform:uppercase;}
+
+.headline{
+  font-family:'DM Sans',sans-serif;font-weight:900;
+  font-size:88px;line-height:0.95;letter-spacing:-0.045em;
+  color:#FFFFFF;margin-bottom:16px;
+}
+.headline .green{color:#3DD68C;}
+
+.tagline{
+  font-family:'DM Sans',sans-serif;font-weight:700;
+  font-size:28px;color:rgba(255,255,255,0.5);
+  letter-spacing:-0.01em;margin-bottom:48px;
+}
+
+/* Three pillars */
+.pillars{display:flex;gap:16px;margin-bottom:52px;}
+.pillar{
+  flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px;padding:20px 18px;
+}
+.pillar-num{font-family:'DM Sans',sans-serif;font-weight:900;font-size:13px;color:#3DD68C;letter-spacing:0.1em;margin-bottom:6px;}
+.pillar-text{font-family:'Inter',sans-serif;font-size:15px;color:rgba(255,255,255,0.8);line-height:1.4;}
+
+/* URL */
+.url-wrap{
+  display:flex;align-items:center;gap:20px;
+}
+.url{
+  font-family:'DM Sans',sans-serif;font-weight:900;
+  font-size:38px;letter-spacing:-0.025em;color:#3DD68C;
+}
+.url-arrow{
+  width:52px;height:52px;border-radius:50%;
+  background:#3DD68C;display:flex;align-items:center;justify-content:center;
+  font-size:22px;color:#04342C;font-weight:900;
+}
+
+/* Bottom disclaimer */
+.disclaimer{
+  position:relative;z-index:1;
+  font-family:'Inter',sans-serif;font-size:12px;
+  color:rgba(255,255,255,0.25);
+}
+</style>
+</head>
+<body>
+
+<div class="bg-circle bc1"></div>
+<div class="bg-circle bc2"></div>
+
+<!-- Logo -->
+<div class="logo">
+  <svg width="36" height="23" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <line x1="96" y1="200" x2="214" y2="200" stroke="#FFFFFF" stroke-width="46" stroke-linecap="round"/>
+    <line x1="298" y1="200" x2="416" y2="200" stroke="#FFFFFF" stroke-width="46" stroke-linecap="round"/>
+    <line x1="214" y1="200" x2="298" y2="200" stroke="#3DD68C" stroke-width="46" stroke-linecap="round" stroke-dasharray="22 30"/>
+    <line x1="96" y1="312" x2="416" y2="312" stroke="#FFFFFF" stroke-width="46" stroke-linecap="round"/>
+  </svg>
+  <div class="logo-word">Cover<span>Gap</span></div>
+</div>
+
+<!-- Content -->
+<div class="content">
+
+  <div class="free-badge">
+    <div class="free-badge-dot"></div>
+    <div class="free-badge-text">Completely free</div>
+  </div>
+
+  <h1 class="headline">Free<br/><span class="green">cover</span><br/>review.</h1>
+  <p class="tagline">20 minutes. No jargon. No obligation.</p>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-num">01</div>
+      <div class="pillar-text">Tell us what you've got</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">02</div>
+      <div class="pillar-text">We find the gaps</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">03</div>
+      <div class="pillar-text">Talk it through, free</div>
+    </div>
+  </div>
+
+  <div class="url-wrap">
+    <span class="url">covergap.nz</span>
+    <div class="url-arrow">→</div>
+  </div>
+
+</div>
+
+<!-- Disclaimer -->
+<div class="disclaimer">Independent financial advice · FSP registered · NZ</div>
+
+</body>
+</html>

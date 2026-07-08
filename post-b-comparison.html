@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=1080"/>
+<title>CoverGap — Post B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1080px;overflow:hidden}
+body{
+  background:#FFFFFF;
+  font-family:'DM Sans',sans-serif;
+  display:flex;flex-direction:column;
+  align-items:flex-start;
+  padding:64px 72px;
+  position:relative;
+}
+
+/* Logo */
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:52px;}
+.logo-word{font-family:'DM Sans',sans-serif;font-weight:800;font-size:24px;letter-spacing:-0.025em;color:#111827;}
+.logo-word span{color:#5B21B6;}
+
+/* Header */
+.header{margin-bottom:48px;}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#5B21B6;margin-bottom:12px;}
+.headline{font-family:'DM Sans',sans-serif;font-weight:800;font-size:46px;line-height:1.08;letter-spacing:-0.03em;color:#111827;}
+
+/* Comparison grid */
+.comparison{display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;}
+
+/* Column */
+.col{
+  border-radius:18px;padding:32px 28px;
+  display:flex;flex-direction:column;gap:0;
+}
+.col-bank{background:#FFF8F8;border:1.5px solid #FECACA;}
+.col-adviser{background:#F3F0FF;border:1.5px solid #C4B5FD;}
+
+.col-header{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:28px;padding-bottom:20px;
+  border-bottom:1px solid rgba(17,24,39,0.08);
+}
+.col-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  flex-shrink:0;
+}
+.col-icon-bank{background:#FEE2E2;}
+.col-icon-adviser{background:#EDE9FE;}
+.col-title{font-family:'DM Sans',sans-serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;}
+.col-title-bank{color:#991B1B;}
+.col-title-adviser{color:#4C1D95;}
+
+/* Row items */
+.row{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;}
+.row:last-child{margin-bottom:0;}
+.row-dot{
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:900;flex-shrink:0;margin-top:1px;
+}
+.row-dot-bank{background:#FEE2E2;color:#DC2626;}
+.row-dot-adviser{background:#DDD6FE;color:#5B21B6;}
+.row-text{font-family:'Inter',sans-serif;font-size:16px;color:#374151;line-height:1.5;}
+.row-text strong{font-weight:600;color:#111827;}
+
+/* Bottom */
+.bottom{
+  margin-top:28px;
+  display:flex;align-items:center;justify-content:space-between;width:100%;
+}
+.disclaimer{font-family:'Inter',sans-serif;font-size:11px;color:#9CA3AF;}
+.url{font-family:'DM Sans',sans-serif;font-weight:700;font-size:16px;color:#5B21B6;}
+</style>
+</head>
+<body>
+
+<!-- Logo -->
+<div class="logo">
+  <svg width="30" height="19" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <line x1="96" y1="200" x2="214" y2="200" stroke="#111827" stroke-width="46" stroke-linecap="round"/>
+    <line x1="298" y1="200" x2="416" y2="200" stroke="#111827" stroke-width="46" stroke-linecap="round"/>
+    <line x1="214" y1="200" x2="298" y2="200" stroke="#5B21B6" stroke-width="46" stroke-linecap="round" stroke-dasharray="22 30"/>
+    <line x1="96" y1="312" x2="416" y2="312" stroke="#111827" stroke-width="46" stroke-linecap="round"/>
+  </svg>
+  <div class="logo-word">Cover<span>Gap</span></div>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <div class="eyebrow">Why it matters</div>
+  <h2 class="headline">Your bank vs. an<br/>independent adviser</h2>
+</div>
+
+<!-- Comparison -->
+<div class="comparison">
+
+  <!-- Bank column -->
+  <div class="col col-bank">
+    <div class="col-header">
+      <div class="col-icon col-icon-bank">🏦</div>
+      <div class="col-title col-title-bank">Bank Insurance</div>
+    </div>
+    <div class="row">
+      <div class="row-dot row-dot-bank">✕</div>
+      <div class="row-text"><strong>Pooled pricing</strong> — you pay for everyone's risk, not just yours</div>
+    </div>
+    <div class="row">
+      <div class="row-dot row-dot-bank">✕</div>
+      <div class="row-text"><strong>One product, one price</strong> — no comparison across the market</div>
+    </div>
+    <div class="row">
+      <div class="row-dot row-dot-bank">✕</div>
+      <div class="row-text"><strong>No assessment</strong> of your actual income, debts, or family needs</div>
+    </div>
+    <div class="row">
+      <div class="row-dot row-dot-bank">✕</div>
+      <div class="row-text"><strong>No ongoing review</strong> — you're on your own when life changes</div>
+    </div>
+  </div>
+
+  <!-- Adviser column -->
+  <div class="col col-adviser">
+    <div class="col-header">
+      <div class="col-icon col-icon-adviser">✦</div>
+      <div class="col-title col-title-adviser">Independent Adviser</div>
+    </div>
+    <div class="row">
+      <div class="row-dot row-dot-adviser">✓</div>
+      <div class="row-text"><strong>Priced for you</strong> — based on your health, age, and situation</div>
+    </div>
+    <div class="row">
+      <div class="row-dot row-dot-adviser">✓</div>
+      <div class="row-text"><strong>Whole-of-market access</strong> — NZ's leading insurers compared for you</div>
+    </div>
+    <div class="row">
+      <div class="row-dot row-dot-adviser">✓</div>
+      <div class="row-text"><strong>Tailored cover</strong> — the right amount for your income and family</div>
+    </div>
+    <div class="row">
+      <div class="row-dot row-dot-adviser">✓</div>
+      <div class="row-text"><strong>Annual reviews</strong> — your cover evolves as your life does</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bottom -->
+<div class="bottom">
+  <span class="disclaimer">Free · No obligation · Independent advice</span>
+  <span class="url">covergap.nz</span>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<!-- CoverGap – Ad 1 "Overpaying" – 9:16 (540×960) for screen recording
+     HOW TO RECORD:
+     1. Open this file in Chrome
+     2. Press Cmd+Shift+5 → "Record Selected Portion"
+     3. Drag selection to exactly cover this page (use the guide lines)
+     4. Click Record — the ad plays through 5 slides (~30 sec) automatically
+     5. Stop recording when the last slide appears
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=540">
+<title>Ad 1 — Overpaying — 9:16</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{
+  width:100vw;height:100vh;overflow:hidden;
+  background:#04342C;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+#wrapper{transform-origin:center center;}
+#ac{position:relative;width:390px;height:520px;overflow:hidden;}
+#ptcl{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+#sa{position:absolute;inset:0;z-index:1;overflow:hidden;font-family:'Inter',sans-serif;}
+#pg{position:absolute;bottom:0;left:0;right:0;z-index:3;display:flex;gap:3px;padding:0 14px 13px;}
+.ps{height:2.5px;flex:1;background:rgba(255,255,255,0.15);border-radius:2px;overflow:hidden;}
+.pf{height:100%;width:0;background:rgba(255,255,255,0.8);border-radius:2px;}
+@keyframes su{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes sc{from{transform:scale(0.6);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes sl{from{transform:translateX(-26px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-6deg)}40%{transform:rotate(6deg)}60%{transform:rotate(-4deg)}80%{transform:rotate(4deg)}}
+@keyframes pfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+</style>
+</head>
+<body>
+<div id="wrapper">
+  <div id="ac" style="background:#04342C;">
+    <div id="ptcl"></div>
+    <div id="sa"></div>
+    <div id="pg"></div>
+  </div>
+</div>
+<script>
+const DUR=5800;
+let cS=0,nxtT=null,pend=[];
+function later(fn,ms){const t=setTimeout(fn,ms);pend.push(t);return t;}
+function clearP(){pend.forEach(clearTimeout);pend=[];}
+function countUp(el,to,ms){
+  if(!el)return;const t=Date.now();
+  (function tick(){if(!el||!el.isConnected)return;const p=Math.min((Date.now()-t)/ms,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*to);if(p<1)requestAnimationFrame(tick);})();
+}
+function wRev(sel,d0,area){
+  (area||document).querySelectorAll(sel).forEach(el=>{
+    if(!el||!el.isConnected)return;
+    const ws=el.textContent.trim().split(/\s+/);el.innerHTML='';let d=d0;
+    ws.forEach(w=>{const s=document.createElement('span');s.style.cssText=`display:inline-block;margin-right:0.28em;animation:su 0.38s cubic-bezier(0.16,1,0.3,1) ${d.toFixed(2)}s both`;s.textContent=w;el.appendChild(s);d+=0.078;});
+  });
+}
+function mkParts(){
+  const p=document.getElementById('ptcl');if(!p)return;p.innerHTML='';
+  [[12,18],[68,12],[42,55],[88,72],[22,88],[92,38],[56,28],[8,62],[75,45],[35,75]].forEach(([x,y],i)=>{
+    const d=document.createElement('div');const sz=3+(i%3)*2.5;
+    d.style.cssText=`position:absolute;border-radius:50%;pointer-events:none;width:${sz}px;height:${sz}px;background:rgba(61,214,140,0.7);opacity:${0.05+(i%4)*0.03};top:${y}%;left:${x}%;animation:pfloat ${5+(i%3)*2.5}s ease-in-out ${(i%5)*0.6}s infinite`;
+    p.appendChild(d);
+  });
+}
+
+const SLIDES=[
+  {html:`<div style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:28px;text-align:center;font-family:'Inter',sans-serif;">
+    <div style="font-size:96px;font-weight:900;color:#3DD68C;line-height:0.9;animation:sc 0.55s cubic-bezier(0.16,1,0.3,1) 0.1s both;">2×</div>
+    <div style="height:16px"></div>
+    <div id="h1" style="font-size:19px;font-weight:700;color:#fff;line-height:1.4;max-width:280px;">the price. For the same cover.</div>
+    <div style="height:10px"></div>
+    <div id="h2" style="font-size:13.5px;color:rgba(255,255,255,0.55);line-height:1.7;max-width:265px;">Some people are paying nearly double for their life insurance — and don't even know it.</div>
+    <div style="height:18px"></div>
+    <div style="animation:fi 0.6s 2.4s both;font-size:10px;color:#3DD68C;letter-spacing:0.1em;font-weight:600;">KEEP WATCHING TO FIND OUT WHY ↓</div>
+  </div>`,
+  js:c=>{wRev('#h1',0.45,c);wRev('#h2',0.85,c);}},
+
+  {html:`<div style="height:100%;display:flex;flex-direction:column;justify-content:center;padding:26px;gap:10px;font-family:'Inter',sans-serif;">
+    <div id="h1" style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.1em;">THE PRICE DIFFERENCE</div>
+    <div style="background:rgba(255,255,255,0.05);border-radius:14px;padding:18px 20px;">
+      <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:5px;">Non-advised (pooled risk)</div>
+      <div style="display:flex;align-items:baseline;gap:4px;">
+        <div style="font-size:38px;font-weight:800;color:#E87070;">$<span id="c1">0</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.3);line-height:1.4;">/mo<br><div id="stk" style="width:0;height:2px;background:#E87070;transition:width 0.8s cubic-bezier(0.25,1,0.5,1);border-radius:1px;margin-top:3px;"></div></div>
+      </div>
+    </div>
+    <div id="arr" style="text-align:center;font-size:18px;color:#3DD68C;opacity:0;transition:opacity 0.5s;">↓ after adviser review</div>
+    <div id="cd2" style="background:rgba(61,214,140,0.07);border:1px solid rgba(61,214,140,0.2);border-radius:14px;padding:18px 20px;opacity:0;transition:opacity 0.6s;">
+      <div style="font-size:11px;color:rgba(61,214,140,0.65);margin-bottom:5px;">Adviser-arranged (same cover)</div>
+      <div style="display:flex;align-items:baseline;gap:4px;">
+        <div style="font-size:38px;font-weight:800;color:#3DD68C;">$<span id="c2">0</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.3);">/mo</div>
+      </div>
+      <div style="font-size:11.5px;color:rgba(61,214,140,0.55);margin-top:4px;">Structured for your actual situation.</div>
+    </div>
+    <div id="h2" style="font-size:11px;color:rgba(255,255,255,0.28);line-height:1.5;margin-top:2px;">Illustrative figures. Actual savings vary.</div>
+  </div>`,
+  js:c=>{
+    wRev('#h1',0.1,c);
+    later(()=>countUp(c.querySelector('#c1'),180,900),300);
+    later(()=>{const s=c.querySelector('#stk');if(s)s.style.width='52px';},1300);
+    later(()=>{const a=c.querySelector('#arr');if(a)a.style.opacity='1';},1750);
+    later(()=>{const d=c.querySelector('#cd2');if(d)d.style.opacity='1';countUp(c.querySelector('#c2'),95,700);},2150);
+    later(()=>wRev('#h2',0.1,c),3300);
+  }},
+
+  {html:`<div style="height:100%;display:flex;flex-direction:column;justify-content:center;padding:28px;gap:14px;font-family:'Inter',sans-serif;">
+    <div id="h1" style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.1em;">WHY THIS HAPPENS</div>
+    <div style="height:2px"></div>
+    <div id="h2" style="font-size:22px;font-weight:800;color:#fff;line-height:1.3;">Non-advised insurers pool risk across everyone.</div>
+    <div id="h3" style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.7;max-width:295px;">Without seeing your health, income, or needs — they price for the average. You pay for everyone else's risk, not just your own.</div>
+    <div style="background:rgba(61,214,140,0.07);border-left:3px solid #3DD68C;border-radius:0 6px 6px 0;padding:13px 16px;font-size:13.5px;color:rgba(255,255,255,0.75);line-height:1.6;animation:sl 0.5s cubic-bezier(0.16,1,0.3,1) 1.8s both;">An adviser assesses your situation — then sources from NZ's top insurers to find the right fit at the right price.</div>
+  </div>`,
+  js:c=>{wRev('#h1',0.1,c);wRev('#h2',0.3,c);later(()=>wRev('#h3',0.1,c),700);}},
+
+  {html:`<div style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:28px;text-align:center;gap:10px;font-family:'Inter',sans-serif;">
+    <div id="h1" style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.1em;">THE DATA</div>
+    <div style="height:4px"></div>
+    <div style="position:relative;width:158px;height:158px;">
+      <svg width="158" height="158" viewBox="0 0 158 158" style="position:absolute;top:0;left:0;transform:rotate(-90deg)">
+        <circle cx="79" cy="79" r="67" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/>
+        <circle id="rng" cx="79" cy="79" r="67" fill="none" stroke="#3DD68C" stroke-width="10" stroke-dasharray="421" stroke-dashoffset="421" style="transition:stroke-dashoffset 1.6s cubic-bezier(0.25,1,0.5,1)" stroke-linecap="round"/>
+      </svg>
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <div style="font-size:46px;font-weight:900;color:#3DD68C;line-height:1;"><span id="pct">0</span>%</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;">of switchers</div>
+      </div>
+    </div>
+    <div style="height:4px"></div>
+    <div id="h2" style="font-size:18px;font-weight:700;color:#fff;line-height:1.35;max-width:275px;">find they can reduce premiums after an adviser review</div>
+    <div id="h3" style="font-size:11.5px;color:rgba(255,255,255,0.3);line-height:1.5;max-width:260px;">NZ industry research.</div>
+  </div>`,
+  js:c=>{
+    wRev('#h1',0.1,c);
+    later(()=>{const r=c.querySelector('#rng');if(r)r.style.strokeDashoffset='210.5';countUp(c.querySelector('#pct'),50,1600);},400);
+    later(()=>wRev('#h2',0.1,c),600);
+    later(()=>wRev('#h3',0.1,c),1900);
+  }},
+
+  {html:`<div style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:30px;text-align:center;gap:12px;font-family:'Inter',sans-serif;">
+    <div style="animation:sc 0.5s cubic-bezier(0.16,1,0.3,1) 0.1s both;">
+      <svg width="58" height="58" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke="rgba(61,214,140,0.35)" stroke-width="1.3" fill="rgba(61,214,140,0.07)"/>
+        <path d="m8.5 12 2.5 2.5 4.5-4.5" stroke="#3DD68C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div id="h1" style="font-size:23px;font-weight:800;color:#fff;line-height:1.25;max-width:265px;">Find out if you're overpaying</div>
+    <div id="h2" style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.65;max-width:265px;">Free cover review. 20 minutes. No obligation.</div>
+    <div style="height:4px"></div>
+    <div id="h3" style="font-size:12px;color:rgba(255,255,255,0.3);line-height:1.55;max-width:260px;">Not a quote comparison. A review of the cover you already have.</div>
+    <div style="height:6px"></div>
+    <a href="https://covergap.nz" style="display:block;background:#1D9E75;border-radius:40px;padding:15px 36px;font-size:14px;font-weight:700;color:#fff;text-decoration:none;animation:pulse 2s 1.2s infinite;">covergap.nz →</a>
+  </div>`,
+  js:c=>{wRev('#h1',0.2,c);wRev('#h2',0.65,c);wRev('#h3',1.1,c);}}
+];
+
+function goSlide(si){
+  clearP();cS=si;
+  const sa=document.getElementById('sa');
+  sa.innerHTML=SLIDES[si].html;
+  setTimeout(()=>{if(sa.isConnected)SLIDES[si].js(sa);},60);
+  updProg(si);
+  if(si<SLIDES.length-1)nxtT=setTimeout(()=>goSlide(si+1),DUR);
+}
+function updProg(si){
+  document.querySelectorAll('.pf').forEach((s,i)=>{
+    s.style.transition='none';s.style.width='0';
+    if(i<si){s.style.width='100%';}
+    else if(i===si){setTimeout(()=>{if(s.isConnected){s.style.transition=`width ${DUR}ms linear`;s.style.width='100%';}},100);}
+  });
+}
+
+// Fit ad to viewport (scales to fill window without overflow)
+function fitAd(){
+  const scale=Math.min(window.innerWidth/390,window.innerHeight/520);
+  document.getElementById('wrapper').style.transform=`scale(${scale})`;
+}
+window.addEventListener('resize',fitAd);
+fitAd();
+
+// Init
+document.getElementById('pg').innerHTML=SLIDES.map(()=>`<div class="ps"><div class="pf"></div></div>`).join('');
+mkParts();
+goSlide(0);
+</script>
+</body>
+</html>
