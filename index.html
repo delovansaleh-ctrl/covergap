@@ -463,8 +463,8 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
     <!-- INSURER TRUST BAR -->
     <section style="background:#FFFFFF;border-bottom:1px solid rgba(17,24,39,0.06);padding:32px 0;overflow:hidden;">
       <p style="text-align:center;font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#9CA3AF;margin-bottom:24px;font-family:'DM Sans',sans-serif;">Independent advice across New Zealand's leading insurers</p>
-      <div style="position:relative;width:100%;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);">
-        <div style="display:flex;width:max-content;animation:marqueeX 36s linear infinite;will-change:transform;transform:translateZ(0);-webkit-transform:translateZ(0);">
+      <div style="position:relative;width:100%;overflow:hidden;">
+        <div style="display:flex;width:max-content;animation:marqueeX 36s linear infinite;">
           <div id="marquee-t1" style="display:flex;align-items:center;flex-shrink:0;gap:12px;padding-right:12px;"></div>
           <div id="marquee-t2" style="display:flex;align-items:center;flex-shrink:0;gap:12px;padding-right:12px;" aria-hidden="true"></div>
         </div>
@@ -919,17 +919,20 @@ function handleLeadSubmit(e) {
     .catch(() => { form.style.display = 'none'; success.style.display = 'block'; });
 }
 </script>
-<!-- ── META PIXEL (end of body — doesn't block page render) ── -->
+<!-- ── META PIXEL (deferred until after load event — never blocks paint) ── -->
 <script>
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','1018706937610256');
-fbq('track','PageView');
+window.addEventListener('load',function(){
+  var f=window,b=document,e='script',v='https://connect.facebook.net/en_US/fbevents.js';
+  var n,t,s;if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=true;n.version='2.0';n.queue=[];
+  t=b.createElement(e);t.async=true;t.src=v;
+  s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s);
+  fbq('init','1018706937610256');
+  fbq('track','PageView');
+});
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1018706937610256&ev=PageView&noscript=1"/></noscript>
 </body>
 </html>
-x
+xx
