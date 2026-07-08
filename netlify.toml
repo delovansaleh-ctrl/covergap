@@ -1,6 +1,5 @@
 [build]
-  command = "mkdir -p dist && cp index.html dist/ && cp app.js dist/ && cp -r fonts dist/ && cp post-*.html dist/ 2>/dev/null || true && cp *.png dist/ 2>/dev/null || true"
-  publish = "dist"
+  publish = "."
   functions = "netlify/functions"
 
 [functions]
