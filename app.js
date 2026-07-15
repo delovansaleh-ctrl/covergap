@@ -691,7 +691,7 @@ async function sendOtp(){
   btn.classList.add('loading');
 
   try{
-    const res = await fetch('/.netlify/functions/send-otp',{
+    const res = await fetch('https://fabulous-faloodeh-22f40b.netlify.app/.netlify/functions/send-otp',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({ phone: ST.phone }),
@@ -721,7 +721,7 @@ async function resendOtp(){
   if(countEl){ countEl.style.display='inline'; countEl.textContent='Sending…'; }
 
   try{
-    const res = await fetch('/.netlify/functions/send-otp',{
+    const res = await fetch('https://fabulous-faloodeh-22f40b.netlify.app/.netlify/functions/send-otp',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({ phone: ST.phone }),
@@ -746,7 +746,7 @@ async function verifyOtp(){
   verifyBtn.classList.add('loading');
 
   try{
-    const res = await fetch('/.netlify/functions/verify-otp',{
+    const res = await fetch('https://fabulous-faloodeh-22f40b.netlify.app/.netlify/functions/verify-otp',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({ phone:ST.phone, code }),

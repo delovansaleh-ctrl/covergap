@@ -1,8 +1,17 @@
 const twilio = require('twilio');
 
 exports.handler = async (event) => {
+  const cors = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers: cors, body: '' };
+  }
+
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method not allowed' };
+    return { statusCode: 405, headers: cors, body: 'Method not allowed' };
   }
 
   let phone, code;
@@ -28,14 +37,14 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...cors },
       body: JSON.stringify({ verified: check.status === 'approved' }),
     };
   } catch (err) {
     console.error('Twilio verify error:', err.message);
     return {
       statusCode: 400,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...cors },
       body: JSON.stringify({ error: err.message }),
     };
   }
