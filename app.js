@@ -331,12 +331,28 @@ function buildMarquee(){
   const items=MARQUEE_IDS.map(id=>{
     const p=INSURER_DATA.find(x=>x.id===id);
     if(!p) return '';
-    return `<span style="display:inline-flex;align-items:center;height:40px;padding:0 18px;gap:8px;border:1.5px solid #E5E7EB;border-radius:100px;background:#fff;white-space:nowrap;"><span style="width:10px;height:10px;border-radius:50%;background:${p.color};flex-shrink:0;display:inline-block;"></span><span style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;color:#374151;letter-spacing:-.01em;">${p.name}</span></span>`;
+    // Logo: use logoUrl if self-hosted, otherwise defer favicon load via data-src (never blocks paint)
+    const logoSrc=p.logoUrl||'';
+    const faviconSrc=p.logoUrl?'':`https://www.google.com/s2/favicons?domain=${p.domain}&sz=64`;
+    return `<span style="display:inline-flex;align-items:center;height:40px;padding:0 16px;gap:8px;border:1.5px solid #E5E7EB;border-radius:100px;background:#fff;white-space:nowrap;">
+      <img src="${logoSrc}" data-deferred-src="${faviconSrc}" width="20" height="20" alt="" decoding="async"
+        style="object-fit:contain;border-radius:2px;display:${logoSrc?'block':'none'}"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block'">
+      <span style="width:8px;height:8px;border-radius:50%;background:${p.color};flex-shrink:0;display:${logoSrc?'none':'inline-block'}"></span>
+      <span style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;color:#374151;letter-spacing:-.01em;">${p.name}</span>
+    </span>`;
   }).join('');
   ['marquee-t1','marquee-t2'].forEach(id=>{
     const el=document.getElementById(id);
     if(el) el.innerHTML=items;
   });
+  // Load external favicons only after page is fully painted — never blocks render
+  window.addEventListener('load',function(){
+    document.querySelectorAll('[data-deferred-src]').forEach(img=>{
+      const src=img.getAttribute('data-deferred-src');
+      if(src){img.src=src;img.style.display='block';}
+    });
+  },{once:true});
 }
 
 function buildProvGrid(){
