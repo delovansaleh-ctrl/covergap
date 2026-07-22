@@ -331,8 +331,7 @@ function buildMarquee(){
   const items=MARQUEE_IDS.map(id=>{
     const p=INSURER_DATA.find(x=>x.id===id);
     if(!p) return '';
-    const src=p.logoUrl||`https://www.google.com/s2/favicons?domain=${p.domain}&sz=128`;
-    return `<span style="display:inline-flex;align-items:center;height:40px;padding:0 18px;gap:9px;border:1.5px solid #E5E7EB;border-radius:100px;background:#fff;white-space:nowrap;"><img src="${src}" width="22" height="22" style="object-fit:contain;flex-shrink:0;" alt="${p.name}"><span style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;color:#374151;letter-spacing:-.01em;">${p.name}</span></span>`;
+    return `<span style="display:inline-flex;align-items:center;height:40px;padding:0 18px;gap:8px;border:1.5px solid #E5E7EB;border-radius:100px;background:#fff;white-space:nowrap;"><span style="width:10px;height:10px;border-radius:50%;background:${p.color};flex-shrink:0;display:inline-block;"></span><span style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;color:#374151;letter-spacing:-.01em;">${p.name}</span></span>`;
   }).join('');
   ['marquee-t1','marquee-t2'].forEach(id=>{
     const el=document.getElementById(id);
@@ -349,7 +348,7 @@ function buildProvGrid(){
     const sel=ST.providers.includes(p.id);
     const sz = p.logoH ? `max-height:${p.logoH}px;max-width:${p.logoH*2}px` : '';
     const src=p.logoUrl||`https://www.google.com/s2/favicons?domain=${p.domain}&sz=128`;
-    const lbl=`<img class="prov-logo" src="${src}"
+    const lbl=`<img class="prov-logo" src="${src}" loading="lazy"
          onerror="this.style.display='none';this.nextElementSibling.style.display='block'" alt="${p.name}" style="${sz}"/>
          <span class="prov-name-fb" style="color:${sel?'#5B21B6':p.color}">${p.name}</span>
          <span class="prov-tile-name">${p.name}</span>`;
