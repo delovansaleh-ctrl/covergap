@@ -85,12 +85,16 @@ details[open] summary>span:first-child{color:#5B21B6}
 .ci-bar3{animation:barPop 2s ease-in-out .5s infinite;transform-origin:bottom}
 .ci-cross{animation:crossPulse 2s ease-in-out infinite}
 
-/* ── BACKGROUND BLOBS ── */
-.blob1{position:fixed;top:-240px;left:28%;width:700px;height:600px;border-radius:50%;background:#5B21B6;filter:blur(140px);opacity:.04;pointer-events:none;z-index:0}
-.blob2{position:fixed;bottom:-120px;right:4%;width:380px;height:380px;border-radius:50%;background:#5B21B6;filter:blur(100px);opacity:.03;pointer-events:none;z-index:0;animation:floatBlob 20s ease-in-out infinite}
+/* ── BACKGROUND BLOBS (desktop only — filter:blur is too expensive on iOS GPU) ── */
+.blob1,.blob2{display:none}
+@media(min-width:769px){
+  .blob1{display:block;position:fixed;top:-240px;left:28%;width:700px;height:600px;border-radius:50%;background:#5B21B6;filter:blur(140px);opacity:.04;pointer-events:none;z-index:0}
+  .blob2{display:block;position:fixed;bottom:-120px;right:4%;width:380px;height:380px;border-radius:50%;background:#5B21B6;filter:blur(100px);opacity:.03;pointer-events:none;z-index:0;animation:floatBlob 20s ease-in-out infinite}
+}
 
 /* ── HEADER ── */
-header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(255,255,255,.94);backdrop-filter:blur(20px);border-bottom:1px solid rgba(17,24,39,.07)}
+header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(255,255,255,.97);border-bottom:1px solid rgba(17,24,39,.07)}
+@media(min-width:769px){header{background:rgba(255,255,255,.94);backdrop-filter:blur(20px)}}
 .logo-wrap{display:flex;align-items:center;gap:9px;user-select:none}
 .logo-word{font-family:'DM Sans',sans-serif;font-weight:700;font-size:20px;letter-spacing:-.025em;color:#111827}
 .logo-word span{color:#5B21B6}
