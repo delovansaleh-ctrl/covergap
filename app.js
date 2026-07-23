@@ -118,6 +118,8 @@ function goNext() {
   else if(s===3) next=4;
   else if(s===4) next=isNew?6:5;
   else next=Math.min(10,s+1);
+  // Track funnel step completions for Meta drop-off analysis
+  if(typeof fbq!=='undefined') fbq('trackCustom','FunnelStep',{step:s,next:next});
   navigateTo(next,1);
 }
 
@@ -285,6 +287,11 @@ function resetFunnel() {
 }
 
 function startFunnel() {
+  // Tell Meta someone started the review funnel — high volume signal for learning phase
+  if(typeof fbq!=='undefined'){
+    fbq('track','InitiateCheckout');                    // standard event Meta optimises on
+    fbq('trackCustom','FunnelStart');                   // custom for our own reporting
+  }
   _heroTimers.forEach(clearTimeout);
   window.scrollTo({top:0,behavior:'instant'});
   const s0el = document.getElementById('s0');
