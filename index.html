@@ -5,7 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>CoverGap — Free Insurance Review · NZ</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGxpbmUgeDE9IjYiIHkxPSIyMiIgeDI9IjI2IiB5Mj0iMjIiIHN0cm9rZT0iIzExMTgyNyIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48bGluZSB4MT0iMzgiIHkxPSIyMiIgeDI9IjU4IiB5Mj0iMjIiIHN0cm9rZT0iIzExMTgyNyIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48bGluZSB4MT0iMjYiIHkxPSIyMiIgeDI9IjM4IiB5Mj0iMjIiIHN0cm9rZT0iIzVCMjFCNiIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1kYXNoYXJyYXk9IjQgNSIvPjxsaW5lIHgxPSI2IiB5MT0iNDIiIHgyPSI1OCIgeTI9IjQyIiBzdHJva2U9IiMxMTE4MjciIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+">
+<link rel="icon" type="image/png" href="/favicon.png"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
 <meta name="description" content="Get a free 20-minute second opinion on your NZ insurance. No obligation, no cost — ever."/>
+<!-- Open Graph / link preview -->
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://covergap.nz/"/>
+<meta property="og:title" content="CoverGap — Free Insurance Review · NZ"/>
+<meta property="og:description" content="Get a free 20-minute second opinion on your NZ insurance. No obligation, no cost — ever."/>
+<meta property="og:image" content="https://covergap.nz/og-image.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://covergap.nz/og-image.png"/>
 
 
 <style>
@@ -332,21 +344,26 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
 .bottom-cta-btn{background:#5B47D6;color:#fff;font-size:17px;font-weight:700;padding:18px 48px;border-radius:50px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 8px 32px rgba(91,71,214,0.3);letter-spacing:-.01em;transition:background .2s,transform .2s}
 .bottom-cta-btn:hover{background:#4A3BC0;transform:translateY(-2px)}
 /* ── MARKETING SECTION MOBILE ── */
-.s0-mkt section{padding-left:20px;padding-right:20px}
+/* !important required — all section paddings are set as inline styles */
+.s0-mkt section{padding-left:20px !important;padding-right:20px !important}
 @media(max-width:768px){
-  /* Hero above-fold */
-  #s0 > div:first-child{padding:40px 20px}
+  /* Hero above-fold: tighten gaps so CTA is visible without scrolling */
+  #s0 > div:first-child{padding:36px 20px 28px}
+  #s0-headline{margin-bottom:24px !important}
+  #s0-viz{margin-bottom:20px !important}
+  #s0-sub{margin-bottom:16px !important}
   .s0-cta{font-size:15px;padding:14px 32px;width:100%;max-width:340px}
 
   /* Callback form: inputs stack, button full-width */
   #quick-cb > div:nth-child(2){flex-direction:column}
   #qc-btn{width:100%}
+  #quick-cb{margin-top:10px !important}
 
   /* Social proof badge: smaller on mobile */
   #s0 [style*="F5F3FF"]{font-size:11.5px !important}
 
-  /* All marketing sections: reduce vertical padding */
-  .s0-mkt section{padding-top:56px;padding-bottom:56px}
+  /* All marketing sections: reduce vertical padding (!important beats inline styles) */
+  .s0-mkt section{padding-top:52px !important;padding-bottom:52px !important}
 
   /* Section headings */
   .s0-mkt h2{font-size:clamp(22px,6vw,30px) !important}
@@ -354,6 +371,10 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
   /* How it works: single column, hide connector line */
   .s0-mkt .hiw-grid{grid-template-columns:1fr !important}
   .s0-mkt .hiw-connector{display:none !important}
+
+  /* Stats grid: 2×2 on mobile */
+  .s0-mkt .stats-grid{grid-template-columns:repeat(2,1fr) !important;gap:16px !important}
+  .s0-mkt .stats-grid .stat-num{font-size:28px !important}
 
   /* Testimonials: single column */
   .s0-mkt .testi-grid{grid-template-columns:1fr !important}
@@ -364,6 +385,10 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
 
   /* FAQ */
   .s0-mkt details summary{font-size:15px !important}
+
+  /* Trust strip: wrap on very small screens, hide dividers */
+  .trust-strip{flex-wrap:wrap !important;gap:6px !important;row-gap:8px !important}
+  .trust-divider{display:none !important}
 }
 </style>
 </head>
@@ -383,7 +408,6 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
     <span class="logo-word">Cover<span>Gap</span></span>
     <span class="logo-domain">.co.nz</span>
   </div>
-  <span class="header-note">Free cover review</span>
 </header>
 
 <div id="hero-wash"></div>
@@ -472,6 +496,51 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
           <div id="marquee-t1" style="display:flex;align-items:center;flex-shrink:0;gap:12px;padding-right:12px;"></div>
           <div id="marquee-t2" style="display:flex;align-items:center;flex-shrink:0;gap:12px;padding-right:12px;" aria-hidden="true"></div>
         </div>
+      </div>
+    </section>
+
+    <!-- SOCIAL PROOF — STATS BAND -->
+    <section style="background:#F9FAFB;padding:48px 48px;border-bottom:1px solid rgba(17,24,39,0.06);">
+      <div class="stats-grid" style="max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;">
+        <div>
+          <div class="stat-num" style="font-family:'DM Sans',sans-serif;font-weight:800;font-size:36px;color:#5B21B6;letter-spacing:-.03em;line-height:1;">100+</div>
+          <div style="font-size:13px;color:#6B7280;margin-top:6px;line-height:1.4;font-weight:500;">NZ families reviewed</div>
+        </div>
+        <div>
+          <div class="stat-num" style="font-family:'DM Sans',sans-serif;font-weight:800;font-size:36px;color:#5B21B6;letter-spacing:-.03em;line-height:1;">9</div>
+          <div style="font-size:13px;color:#6B7280;margin-top:6px;line-height:1.4;font-weight:500;">Insurers compared</div>
+        </div>
+        <div>
+          <div class="stat-num" style="font-family:'DM Sans',sans-serif;font-weight:800;font-size:36px;color:#5B21B6;letter-spacing:-.03em;line-height:1;">20<span style="font-size:22px;font-weight:700;">min</span></div>
+          <div style="font-size:13px;color:#6B7280;margin-top:6px;line-height:1.4;font-weight:500;">Average review time</div>
+        </div>
+        <div>
+          <div class="stat-num" style="font-family:'DM Sans',sans-serif;font-weight:800;font-size:36px;color:#5B21B6;letter-spacing:-.03em;line-height:1;">$0</div>
+          <div style="font-size:13px;color:#6B7280;margin-top:6px;line-height:1.4;font-weight:500;">Cost to you, always</div>
+        </div>
+      </div>
+
+      <!-- TRUST STRIP -->
+      <div class="trust-strip" style="display:flex;align-items:center;justify-content:center;gap:20px;margin-top:32px;flex-wrap:wrap;">
+        <span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#9CA3AF;font-family:'DM Sans',sans-serif;white-space:nowrap;">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4.6H13L9.25 8.6l1.5 4.6L7 10.2l-3.75 3L4.75 8.6 1 5.6h4.5z" fill="#9CA3AF"/></svg>
+          FSP Registered
+        </span>
+        <span style="width:1px;height:16px;background:rgba(17,24,39,.1);flex-shrink:0;" class="trust-divider"></span>
+        <span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#9CA3AF;font-family:'DM Sans',sans-serif;white-space:nowrap;">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5L2 4v4c0 3.3 2.2 5.2 5 6 2.8-.8 5-2.7 5-6V4L7 1.5z" stroke="#9CA3AF" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          Independent adviser
+        </span>
+        <span style="width:1px;height:16px;background:rgba(17,24,39,.1);flex-shrink:0;" class="trust-divider"></span>
+        <span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#9CA3AF;font-family:'DM Sans',sans-serif;white-space:nowrap;">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#9CA3AF" stroke-width="1.3"/><path d="M4.5 7l2 2 3-3" stroke="#9CA3AF" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          No obligation, ever
+        </span>
+        <span style="width:1px;height:16px;background:rgba(17,24,39,.1);flex-shrink:0;" class="trust-divider"></span>
+        <span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#9CA3AF;font-family:'DM Sans',sans-serif;white-space:nowrap;">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="3.5" width="10" height="7.5" rx="1.5" stroke="#9CA3AF" stroke-width="1.3"/><path d="M5 3.5V3a2 2 0 1 1 4 0v.5" stroke="#9CA3AF" stroke-width="1.3"/></svg>
+          Privacy protected
+        </span>
       </div>
     </section>
 
@@ -610,265 +679,183 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
     <button class="btn-next" id="btn-s1" onclick="goNext()">Next →</button>
   </div>
 
-  <!-- S2: PROVIDER -->
-  <div class="screen" id="s2" style="max-width:1020px">
+  <!-- S2: NAME + MOBILE -->
+  <div class="screen" id="s2" style="max-width:520px">
     <div class="back-row">
       <button class="btn-back" onclick="goBack()">← Back</button>
       <div class="progress-bar" id="prog2"></div>
     </div>
-    <div class="goal-pill" id="pill-s2"><span class="pill-dot"></span><span class="pill-text" id="pill-s2-text"></span></div>
+    <h1 class="h1">Where should we<br/>send your results?</h1>
+    <p class="sub">An adviser will call you to talk through your coverage — free, no obligation.</p>
+    <div class="fields-grid">
+      <div class="two-col">
+        <div>
+          <label class="field-lbl">First name</label>
+          <input class="field-input" id="f-fname" type="text" placeholder="Jane" autocomplete="given-name"
+            oninput="ST.firstName=this.value.trim();updateNextBtn()"/>
+        </div>
+        <div>
+          <label class="field-lbl">Mobile <span id="phone-status" style="font-size:10px;font-weight:500;letter-spacing:0;text-transform:none;margin-left:4px"></span></label>
+          <input class="field-input" id="f-phone" type="tel" placeholder="021 000 0000" autocomplete="tel"
+            oninput="handlePhone(this)"/>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:#9CA3AF;line-height:1.6;margin-bottom:24px">One of our advisers will call you within one business day. No spam, no pressure.</p>
+    <button class="btn-next" id="btn-s2" onclick="savePartialAndNext()">
+      <span id="s2-label">Continue →</span>
+      <svg id="s2-spin" style="display:none;animation:spin .8s linear infinite" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <!-- S3: AGE BAND -->
+  <div class="screen" id="s3" style="max-width:580px">
+    <div class="back-row">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+      <div class="progress-bar" id="prog3"></div>
+    </div>
+    <h1 class="h1">How old are you<span id="s3-name-insert"></span>?</h1>
+    <p class="sub">Helps us match you with the right adviser.</p>
+    <div class="grid-age" id="age-grid"></div>
+    <button class="btn-next" id="btn-s3" onclick="goNext()">Continue →</button>
+  </div>
+
+  <!-- S3b: OVER-65 BRANCH -->
+  <div class="screen" id="s3b" style="max-width:520px">
+    <div class="back-row">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+    </div>
+    <div style="text-align:center;padding:16px 0 8px">
+      <div style="font-size:52px;margin-bottom:20px">👋</div>
+      <h1 class="h1" style="font-size:clamp(24px,4vw,32px);margin-bottom:16px">Honest answer first.</h1>
+      <p class="sub" style="max-width:400px;margin:0 auto 20px">Most NZ life insurers won't write new life cover for people over 65. We won't waste your time pretending otherwise.</p>
+      <p class="sub" style="max-width:400px;margin:0 auto 28px">If you hold existing cover, we can help you review it — and there may still be options worth exploring. A quick call costs nothing.</p>
+      <button class="btn-next enabled" onclick="navigateTo(6,1)" style="max-width:320px;margin:0 auto;display:block">I'd still like a call →</button>
+      <p style="font-size:12px;color:#9CA3AF;margin-top:16px">No obligation. Free and independent.</p>
+    </div>
+  </div>
+
+  <!-- S4: PROVIDERS -->
+  <div class="screen" id="s4" style="max-width:1020px">
+    <div class="back-row">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+      <div class="progress-bar" id="prog4"></div>
+    </div>
+    <div class="goal-pill" id="pill-s4"><span class="pill-dot"></span><span class="pill-text" id="pill-s4-text"></span></div>
     <h1 class="h1">Who are you currently<br/>insured with?</h1>
-    <p class="sub">Select your current provider — we'll flag any gaps, free of charge.</p>
+    <p class="sub">Select all that apply — or choose "I'm not sure" to skip.</p>
+    <div class="prov-other" id="prov-notsure" onclick="selectProvider('notsure')" style="margin-bottom:20px">
+      <div class="chk" style="display:none">✓</div>
+      <span class="prov-other-name">🤷 I'm not sure / I don't know</span>
+    </div>
     <div class="grp-lbl">Your bank</div>
     <p class="grp-sub">Insurance arranged through your bank</p>
     <div class="grid-bank" id="bank-grid"></div>
     <div class="grp-lbl">Another insurer</div>
     <div class="grid-insurer" id="insurer-grid"></div>
-    <div class="prov-other" id="prov-other" onclick="selectProvider('other')">
-      <div class="chk">✓</div>
-      <span class="prov-other-name">Not sure / I'm not currently insured</span>
-    </div>
-    <button class="btn-next" id="btn-s2" onclick="goNext()">Next →</button>
-  </div>
-
-  <!-- S3: COVER TYPES -->
-  <div class="screen" id="s3" style="max-width:740px">
-    <div class="back-row">
-      <button class="btn-back" onclick="goBack()">← Back</button>
-      <div class="progress-bar" id="prog3"></div>
-    </div>
-    <div class="goal-pill" id="pill-s3"><span class="pill-dot"></span><span class="pill-text" id="pill-s3-text"></span></div>
-    <h1 class="h1" id="s3-title">What cover do you currently hold?</h1>
-    <p class="sub">Select all that apply — it's fine if you're not sure.</p>
-    <div class="grid-3" id="cover-grid"></div>
-    <button class="btn-next" id="btn-s3" onclick="goNext()">Next →</button>
-  </div>
-
-  <!-- S4: WHO FOR -->
-  <div class="screen" id="s4" style="max-width:680px">
-    <div class="back-row">
-      <button class="btn-back" onclick="goBack()">← Back</button>
-      <div class="progress-bar" id="prog4"></div>
-    </div>
-    <h1 class="h1">Who is this cover for?</h1>
-    <p class="sub">This helps us tailor the right level of cover.</p>
-    <div class="grid-3" id="whofor-grid"></div>
     <button class="btn-next" id="btn-s4" onclick="goNext()">Next →</button>
   </div>
 
-  <!-- S5: HEALTH -->
-  <div class="screen" id="s5" style="max-width:600px">
+  <!-- S5: COVER TYPES -->
+  <div class="screen" id="s5" style="max-width:740px">
     <div class="back-row">
       <button class="btn-back" onclick="goBack()">← Back</button>
       <div class="progress-bar" id="prog5"></div>
     </div>
-    <h1 class="h1">How would you describe<br/>your current health?</h1>
-    <p class="sub">This just helps us prepare for your conversation — nothing here limits your eligibility for a free review.</p>
-    <div class="vstack" id="health-grid"></div>
-    <p class="reassure">There are no wrong answers. Our advisers are experienced with all health situations.</p>
+    <div class="goal-pill" id="pill-s5"><span class="pill-dot"></span><span class="pill-text" id="pill-s5-text"></span></div>
+    <h1 class="h1" id="s5-title">What cover do you currently hold?</h1>
+    <p class="sub">Select all that apply — it's fine if you're not sure.</p>
+    <div class="grid-3" id="cover-grid"></div>
     <button class="btn-next" id="btn-s5" onclick="goNext()">Next →</button>
   </div>
 
-  <!-- S6: SMOKER -->
-  <div class="screen" id="s6" style="max-width:600px">
+  <!-- S6: CALL TIME + EMAIL -->
+  <div class="screen" id="s6" style="max-width:520px">
     <div class="back-row">
       <button class="btn-back" onclick="goBack()">← Back</button>
       <div class="progress-bar" id="prog6"></div>
     </div>
-    <div class="smoker-row">
-      <h1 style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:38px;line-height:1.1;letter-spacing:-.025em;color:#111827;max-width:320px;animation:headIn .5s cubic-bezier(.22,.61,.36,1) .06s both">Do you smoke or use nicotine products?</h1>
-      <!-- Minimal vapor art — in theme, works for smoking/vaping/nicotine equally -->
-      <div class="vapor-art">
-        <svg width="96" height="108" viewBox="0 0 96 108" fill="none">
-          <!-- Person breath hint -->
-          <circle cx="18" cy="78" r="12" fill="#EDE9FE" stroke="#DDD6FE" stroke-width="1.5"/>
-          <path d="M18 90 C10 95 8 100 14 102" stroke="#DDD6FE" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <!-- Vapor clouds rising -->
-          <ellipse style="animation:vaporRise 3.2s ease-out infinite" cx="44" cy="82" rx="16" ry="11" fill="rgba(91,33,182,.09)" stroke="rgba(91,33,182,.18)" stroke-width="1.2"/>
-          <ellipse style="animation:vaporRise 3.2s ease-out .7s infinite" cx="58" cy="64" rx="13" ry="9" fill="rgba(91,33,182,.07)" stroke="rgba(91,33,182,.14)" stroke-width="1"/>
-          <ellipse style="animation:vaporRise 3.2s ease-out 1.4s infinite" cx="68" cy="48" rx="10" ry="7" fill="rgba(91,33,182,.05)" stroke="rgba(91,33,182,.10)" stroke-width="1"/>
-          <ellipse style="animation:vaporRise 3.2s ease-out 2.1s infinite" cx="76" cy="34" rx="7" ry="5" fill="rgba(91,33,182,.04)" stroke="rgba(91,33,182,.08)" stroke-width=".8"/>
-        </svg>
-      </div>
-    </div>
-    <div class="vstack" id="smoker-grid"></div>
-    <button class="btn-next" id="btn-s6" onclick="goNext()">Next →</button>
+    <h1 class="h1">Last couple of things.</h1>
+    <p class="sub">When's the best time to reach you?</p>
+    <label class="field-lbl">Best time to call</label>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px" id="calltime-row"></div>
+    <label class="field-lbl">Email <span style="font-weight:400;color:#9CA3AF;font-size:10px;letter-spacing:0;text-transform:none">(optional — so we can send your summary)</span></label>
+    <input class="field-input" id="f-email" type="email" placeholder="jane@example.com" autocomplete="email"
+      oninput="ST.email=this.value.trim()"/>
+    <button class="btn-next" id="btn-s6" onclick="goNext()" style="margin-top:28px">Continue →</button>
   </div>
 
-  <!-- S7: AGE + GENDER -->
-  <div class="screen" id="s7" style="max-width:580px">
+  <!-- S7: REVIEW + SUBMIT -->
+  <div class="screen" id="s7" style="max-width:520px">
     <div class="back-row">
       <button class="btn-back" onclick="goBack()">← Back</button>
       <div class="progress-bar" id="prog7"></div>
     </div>
-    <h1 class="h1">Almost done —<br/>a couple quick ones.</h1>
-    <p class="sub">Helps us tailor your review.</p>
-    <label class="field-lbl">How old are you?</label>
-    <div class="grid-age" id="age-grid"></div>
-    <label class="field-lbl">Gender</label>
-    <div class="hflex" id="gender-row"></div>
-    <button class="btn-next" id="btn-s7" onclick="goNext()">Continue →</button>
+    <h1 class="h1">Does this look right?</h1>
+    <div style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:16px;padding:4px 20px 8px;margin-bottom:24px" id="s7-rows"></div>
+    <p style="font-size:12px;color:#9CA3AF;line-height:1.6;margin-bottom:20px">By submitting you agree to be contacted by an authorised financial adviser. Your details are kept private and secure.</p>
+    <button class="btn-next enabled" id="btn-s7" onclick="submitAndVerify()">
+      <span id="s7-submit-lbl">Submit my review request →</span>
+      <svg id="s7-submit-spin" style="display:none;animation:spin .8s linear infinite" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
   </div>
 
-  <!-- S8: REGION (NZ MAP) -->
-  <div class="screen" id="s8" style="max-width:700px">
-    <div class="back-row">
-      <button class="btn-back" onclick="goBack()">← Back</button>
-      <div class="progress-bar" id="prog8"></div>
+  <!-- S8: SMS VERIFICATION (soft gate) -->
+  <div class="screen" id="s8" style="max-width:520px">
+    <div class="progress-bar" id="prog8" style="margin-bottom:44px"></div>
+    <h1 class="h1">One last step —<br/>verify your number.</h1>
+    <p class="sub">This helps us confirm it's really you, so your adviser can reach you directly.</p>
+
+    <!-- Send section -->
+    <div id="otp-send-section">
+      <p style="font-size:14px;color:#374151;margin-bottom:20px">We'll text a 6-digit code to <strong style="color:#111827" id="s8-phone-display"></strong></p>
+      <button class="btn-next enabled" id="btn-send-otp" onclick="sendOtp()">
+        <span id="send-otp-lbl">Send verification code →</span>
+        <svg id="send-otp-spin" style="display:none;animation:spin .8s linear infinite" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
     </div>
-    <h1 class="h1">Where are you based?</h1>
-    <p class="sub">Tap your region to connect with the right local adviser.</p>
-    <div class="map-wrap">
-      <!-- SVG map of NZ -->
-      <div class="map-svg-wrap">
-        <svg id="nz-map" viewBox="0 0 200 580" width="180" height="522" style="overflow:visible">
-          <defs>
-            <filter id="map-shadow" x="-10%" y="-10%" width="120%" height="120%">
-              <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="rgba(91,33,182,0.12)"/>
-            </filter>
-          </defs>
 
-          <!-- ── NORTH ISLAND ── -->
-          <path class="region" data-r="Northland" onclick="selectRegion('Northland')"
-            d="M104,5 C98,8 88,14 78,24 C68,34 60,46 56,60 C53,70 55,78 62,82 C68,86 76,84 84,78 C92,70 100,56 106,40 C112,26 110,12 104,5 Z"/>
-
-          <path class="region" data-r="Auckland" onclick="selectRegion('Auckland')"
-            d="M62,82 C56,88 52,96 52,106 C52,114 58,120 68,122 C78,124 88,120 94,112 C100,104 100,94 96,86 C90,78 80,78 74,78 C68,78 64,80 62,82 Z"/>
-
-          <path class="region" data-r="Bay of Plenty" onclick="selectRegion('Bay of Plenty')"
-            d="M68,122 C78,124 88,122 96,118 C106,112 110,100 118,90 C124,82 132,76 144,74 C156,72 166,78 172,90 C168,104 158,116 146,122 C132,128 116,126 100,122 C84,118 74,116 68,122 Z"/>
-
-          <path class="region" data-r="Gisborne" onclick="selectRegion('Gisborne')"
-            d="M144,74 C152,68 162,64 172,68 C180,72 184,84 180,100 C176,112 166,122 156,124 C148,126 144,122 146,122 C158,116 168,104 172,90 C166,78 156,72 144,74 Z"/>
-
-          <path class="region" data-r="Hawke's Bay" onclick="selectRegion(&quot;Hawke's Bay&quot;)"
-            d="M146,122 C148,126 156,124 164,128 C172,132 178,148 174,166 C170,180 158,186 146,182 C138,178 132,168 132,156 C132,142 136,128 146,122 Z"/>
-
-          <path class="region" data-r="Taranaki" onclick="selectRegion('Taranaki')"
-            d="M40,176 C32,182 24,196 24,210 C24,222 34,230 48,228 C60,226 64,216 62,204 C60,192 52,180 40,176 Z"/>
-
-          <path class="region" data-r="Manawatū-Whanganui" onclick="selectRegion('Manawatū-Whanganui')"
-            d="M68,122 C62,128 56,134 52,142 C46,152 42,164 40,176 C52,180 60,192 62,204 C64,216 60,226 48,228 C52,234 58,240 66,246 C76,252 90,256 104,256 C112,250 120,240 126,228 C132,216 132,200 128,190 C124,178 116,168 114,158 C112,148 118,136 126,128 C120,124 112,122 100,122 C90,120 78,120 68,122 Z"/>
-
-          <path class="region" data-r="Wellington" onclick="selectRegion('Wellington')"
-            d="M66,246 C72,254 80,260 90,264 C100,268 112,266 120,260 C126,254 128,244 126,236 C124,230 120,224 114,222 C108,218 102,220 100,226 C98,232 98,244 94,250 C88,256 76,254 66,246 Z"/>
-
-          <!-- Foveaux Strait gap -->
-          <rect x="0" y="275" width="200" height="12" fill="#FFFFFF"/>
-
-          <!-- ── SOUTH ISLAND ── -->
-          <path class="region" data-r="Top of South" onclick="selectRegion('Top of South')"
-            d="M106,290 C118,282 134,278 150,278 C164,278 178,282 190,292 C198,300 200,314 194,324 C188,332 176,334 162,330 C150,326 140,316 130,306 C120,296 110,290 106,290 Z"/>
-
-          <path class="region" data-r="West Coast" onclick="selectRegion('West Coast')"
-            d="M106,290 C110,296 116,306 118,318 C120,332 114,352 106,374 C98,396 88,418 80,438 C76,448 72,456 68,456 C62,452 62,440 66,428 C72,412 80,392 88,368 C96,344 104,318 106,290 Z"/>
-
-          <path class="region" data-r="Canterbury" onclick="selectRegion('Canterbury')"
-            d="M130,306 C140,316 150,326 162,330 C176,334 188,332 196,322 C204,340 208,364 208,390 C208,416 202,440 192,456 C182,466 168,470 152,468 C138,466 126,456 118,440 C110,424 106,404 106,382 C106,362 108,342 110,324 C112,312 118,302 130,306 Z"/>
-
-          <path class="region" data-r="Otago" onclick="selectRegion('Otago')"
-            d="M106,382 C106,404 110,424 118,440 C126,456 138,466 152,468 C164,470 176,466 186,458 C190,466 190,476 184,484 C176,492 162,496 146,496 C130,496 114,490 100,480 C90,472 84,460 82,448 C82,440 84,432 88,424 C94,414 100,400 106,382 Z"/>
-
-          <path class="region" data-r="Southland" onclick="selectRegion('Southland')"
-            d="M82,448 C84,460 90,472 100,480 C114,490 130,496 146,496 C162,496 176,492 184,484 C188,492 190,504 184,514 C176,522 160,526 142,526 C122,526 102,520 86,510 C74,502 66,490 64,478 C62,466 64,454 68,448 C72,444 78,444 82,448 Z"/>
-
-          <!-- Stewart Island (Rakiura) — part of Southland -->
-          <path class="region" data-r="Southland" onclick="selectRegion('Southland')"
-            d="M80,538 C74,542 70,548 72,554 C74,560 82,562 90,560 C98,558 104,552 102,546 C100,540 88,534 80,538 Z"/>
-
-          <!-- Labels -->
-          <text x="84" y="44" text-anchor="middle" font-size="7" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Northland</text>
-          <text x="70" y="104" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Auckland</text>
-          <text x="46" y="152" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Waikato</text>
-          <text x="122" y="100" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Bay of Plenty</text>
-          <text x="166" y="90" text-anchor="middle" font-size="6" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Gisborne</text>
-          <text x="162" y="152" text-anchor="middle" font-size="6" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Hawke's Bay</text>
-          <text x="34" y="208" text-anchor="middle" font-size="6" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Taranaki</text>
-          <text x="82" y="186" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Whanganui</text>
-          <text x="96" y="244" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Wellington</text>
-          <text x="158" y="304" text-anchor="middle" font-size="6" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Top of South</text>
-          <text x="80" y="370" text-anchor="middle" font-size="6" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">West Coast</text>
-          <text x="162" y="400" text-anchor="middle" font-size="7" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Canterbury</text>
-          <text x="140" y="460" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Otago</text>
-          <text x="120" y="504" text-anchor="middle" font-size="6.5" fill="#6B7280" font-family="DM Sans,sans-serif" pointer-events="none">Southland</text>
-          <text x="88" y="554" text-anchor="middle" font-size="5.5" fill="#9CA3AF" font-family="DM Sans,sans-serif" pointer-events="none">Stewart Is.</text>
-        </svg>
-      </div>
-
-      <!-- Legend / list (mirrors map, lets users also click by name) -->
-      <div class="map-legend">
-        <div class="map-legend-title">North Island</div>
-        <div class="map-legend-list" id="ni-legend"></div>
-        <div class="map-legend-title">South Island</div>
-        <div class="map-legend-list" id="si-legend"></div>
-        <div class="selected-region-display" id="sel-region-display"></div>
-      </div>
-    </div>
-    <button class="btn-next" id="btn-s8" onclick="goNext()">Continue →</button>
-  </div>
-
-  <!-- S9: PERSONAL DETAILS -->
-  <div class="screen" id="s9" style="max-width:600px">
-    <div class="back-row">
-      <button class="btn-back" onclick="goBack()">← Back</button>
-      <div class="progress-bar" id="prog9"></div>
-    </div>
-    <h1 class="h1">Almost there.</h1>
-    <p class="sub" id="s9-sub">Let's get your details so we can be in touch.</p>
-    <div class="fields-grid">
-      <div class="two-col">
-        <div><label class="field-lbl">First name</label><input class="field-input" id="f-fname" type="text" placeholder="Jane" oninput="ST.firstName=this.value;updateNextBtn()"/></div>
-        <div><label class="field-lbl">Last name</label><input class="field-input" id="f-lname" type="text" placeholder="Smith" oninput="ST.lastName=this.value;updateNextBtn()"/></div>
-      </div>
-      <div class="two-col">
-        <div><label class="field-lbl">Email</label><input class="field-input" id="f-email" type="email" placeholder="jane@example.com" oninput="ST.email=this.value;updateNextBtn()"/></div>
-        <div>
-          <label class="field-lbl">Phone <span id="phone-status" style="font-size:10px;font-weight:500;letter-spacing:0;text-transform:none;margin-left:4px"></span></label>
-          <input class="field-input" id="f-phone" type="tel" placeholder="021 000 0000" oninput="handlePhone(this)"/>
-        </div>
-      </div>
-      <div>
-        <label class="field-lbl">Best time to call</label>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:2px" id="calltime-row"></div>
-      </div>
-    </div>
-    <p style="font-size:12px;color:#9CA3AF;line-height:1.6;margin-bottom:24px">By submitting you agree to be contacted by an authorised financial adviser. Your details are kept private and secure.</p>
-
-    <!-- OTP verification section (hidden until code sent) -->
-    <div id="otp-section" style="display:none;margin-bottom:24px;padding:20px;background:#F3F4F6;border-radius:12px;border:1.5px solid #E5E7EB">
+    <!-- Entry section (shown after code sent) -->
+    <div id="otp-entry-section" style="display:none">
       <p style="font-size:14px;color:#374151;margin-bottom:4px">We sent a 6-digit code to <strong id="otp-phone-display" style="color:#111827"></strong></p>
-      <p style="font-size:12px;color:#9CA3AF;margin-bottom:16px">Usually arrives within 30 seconds. Check it's not blocked as spam.</p>
+      <p style="font-size:12px;color:#9CA3AF;margin-bottom:16px">Usually arrives within 30 seconds.</p>
       <label class="field-lbl">Verification code</label>
       <input id="otp-input" class="field-input" type="text" inputmode="numeric" maxlength="6"
         placeholder="6-digit code" autocomplete="one-time-code"
-        style="font-size:22px;letter-spacing:.18em;font-family:'DM Sans',sans-serif;font-weight:700;margin-bottom:12px"
+        style="font-size:22px;letter-spacing:.18em;font-weight:700;margin-bottom:12px"
         oninput="this.value=this.value.replace(/\D/g,'');otpInputChanged()"/>
       <p id="otp-error" style="display:none;font-size:13px;color:#C0401A;margin-bottom:12px;font-weight:500"></p>
-      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-        <button class="btn-next enabled" id="btn-verify" onclick="verifyOtp()" style="padding:13px 24px">
-          <span id="verify-label">Verify & submit →</span>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+        <button class="btn-next enabled" id="btn-verify" onclick="verifyOtp()" style="padding:13px 24px;flex:none">
+          <span id="verify-label">Verify →</span>
           <svg id="verify-spin" style="display:none;animation:spin .8s linear infinite" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
-        <button onclick="resendOtp()" id="btn-resend" style="background:none;border:none;font-size:13px;color:#6B7280;cursor:pointer;font-family:'Inter',sans-serif;padding:0">Resend code</button>
+        <button onclick="resendOtp()" id="btn-resend" style="background:none;border:none;font-size:13px;color:#6B7280;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0">Resend code</button>
         <span id="resend-count" style="font-size:12px;color:#9CA3AF;display:none"></span>
       </div>
     </div>
 
-    <button class="btn-next" id="btn-s9" onclick="sendOtp()">
-      <span id="s9-label">Send verification code →</span>
-      <svg id="s9-spin" style="display:none;animation:spin .8s linear infinite" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
+    <!-- Soft-gate escape hatch — always visible -->
+    <div style="border-top:1px solid #E5E7EB;padding-top:20px;margin-top:8px">
+      <p style="font-size:13px;color:#6B7280;margin-bottom:10px">Having trouble with the code?</p>
+      <button onclick="skipVerification()"
+        style="background:none;border:1.5px solid #E5E7EB;color:#6B7280;border-radius:100px;padding:11px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:border-color .2s,color .2s"
+        onmouseover="this.style.borderColor='#9CA3AF';this.style.color='#374151'"
+        onmouseout="this.style.borderColor='#E5E7EB';this.style.color='#6B7280'">
+        Leave it with us — we'll call you anyway
+      </button>
+    </div>
   </div>
 
-  <!-- S10: CONFIRMATION -->
-  <div class="screen" id="s10" style="max-width:520px">
+  <!-- S9: SUCCESS -->
+  <div class="screen" id="s9" style="max-width:520px">
     <div class="confirm-wrap" style="margin-bottom:28px">
       <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
         <circle cx="40" cy="40" r="36" stroke="#5B21B6" stroke-width="3" fill="rgba(91,33,182,.06)" stroke-dasharray="226" stroke-dashoffset="226" style="animation:circleDraw .8s cubic-bezier(.22,.61,.36,1) .1s forwards"/>
         <path d="M24 40l12 12 20-22" stroke="#5B21B6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-dasharray="60" stroke-dashoffset="60" style="animation:checkDraw .5s ease .85s forwards"/>
       </svg>
     </div>
-    <h1 class="confirm-h1" id="s10-headline">Your request is in.</h1>
+    <h1 class="confirm-h1" id="s9-headline">Your request is in.</h1>
     <p class="confirm-body">We'll be in touch within 24 hours. One of our independent advisers will reach out via the contact details you provided.</p>
     <div class="confirm-tags">
       <div class="confirm-tag">Free — no cost, ever</div>
@@ -876,6 +863,7 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
       <div class="confirm-tag">Independent advice</div>
     </div>
   </div>
+
 
 </main>
 
@@ -939,4 +927,3 @@ window.addEventListener('load',function(){
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1018706937610256&ev=PageView&noscript=1"/></noscript>
 </body>
 </html>
-xx
