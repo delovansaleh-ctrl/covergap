@@ -1,5 +1,5 @@
 [build]
-  command = "mkdir -p dist && cp index.html app.js dist/ && cp -r fonts dist/ && cp *.png dist/ 2>/dev/null; cp CNAME dist/ 2>/dev/null; cp _headers dist/ 2>/dev/null; true"
+  command = "mkdir -p dist && cp index.html app.js dist/ && cp -r fonts dist/ && cp *.png dist/ 2>/dev/null; cp CNAME dist/ 2>/dev/null; cp _headers dist/ 2>/dev/null; sed -i \"s|/app.js?v=[^\\\"]*|/app.js?v=${COMMIT_REF:-dev}|\" dist/index.html; true"
   publish = "dist"
   functions = "netlify/functions"
 
