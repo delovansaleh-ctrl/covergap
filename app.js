@@ -109,7 +109,7 @@ function autoAdvance(fromScreen) {
   clearTimeout(_advTimer);
   _advTimer = setTimeout(() => {
     if (ST.screen === fromScreen && VALID[fromScreen] && VALID[fromScreen]()) goNext();
-  }, 260);
+  }, 550);
 }
 
 function goNext() {
