@@ -1,21 +1,21 @@
-const { getStore } = require('@netlify/blobs');
-const twilio = require('twilio');
+import { getStore } from '@netlify/blobs';
+import twilio from 'twilio';
 
-exports.handler = async (event) => {
+export default async (req, context) => {
   const cors = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
-  if (event.httpMethod === 'OPTIONS') return { statusCode: 200, headers: cors, body: '' };
-  if (event.httpMethod !== 'POST') return { statusCode: 405, headers: cors, body: 'Method not allowed' };
+  if (req.method === 'OPTIONS') return new Response('', { status: 200, headers: cors });
+  if (req.method !== 'POST') return new Response('Method not allowed', { status: 405, headers: cors });
 
   const startMs = Date.now();
-  const ua = event.headers['user-agent'] || '';
-  const referrer = event.headers['referer'] || '';
+  const ua = req.headers.get('user-agent') || '';
+  const referrer = req.headers.get('referer') || '';
 
   let body;
-  try { body = JSON.parse(event.body); }
-  catch { return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'Invalid JSON' }) }; }
+  try { body = await req.json(); }
+  catch { return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers: { 'Content-Type': 'application/json', ...cors } }); }
 
   const isNew = !body.leadId;
   const leadId = body.leadId || `cg_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
@@ -23,7 +23,7 @@ exports.handler = async (event) => {
 
   // Blobs must never take down the alert path — treat storage as best-effort.
   let leads = null;
-  try { leads = getStore('leads'); }
+  try { leads = getStore({ name: 'leads', consistency: 'strong' }); }
   catch (e) { console.error(JSON.stringify({ event: 'blobs_unavailable', error: e.message })); }
 
   // Read existing record (null if new or storage unavailable)
@@ -55,7 +55,7 @@ exports.handler = async (event) => {
   merged.updatedAt = now;
   if (incoming.status === 'complete') merged.verifiedAt = now;
 
-  // SMS alert to owner on first partial save
+  // SMS alert to owner on first partial save — fires BEFORE storage write
   if (isNew && incoming.status === 'partial') {
     const ownerPhone = process.env.OWNER_PHONE;
     const fromPhone  = process.env.TWILIO_FROM_NUMBER;
@@ -87,9 +87,10 @@ exports.handler = async (event) => {
   const duration = Date.now() - startMs;
   console.log(JSON.stringify({ event: 'save_lead', leadId, status: incoming.status, isNew, stored, duration, ts: now }));
 
-  return {
-    statusCode: 200,
+  return new Response(JSON.stringify({ success: true, leadId }), {
+    status: 200,
     headers: { 'Content-Type': 'application/json', ...cors },
-    body: JSON.stringify({ success: true, leadId }),
-  };
+  });
 };
+
+export const config = { path: '/.netlify/functions/save-lead' };

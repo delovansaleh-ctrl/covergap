@@ -1,25 +1,25 @@
-const { getStore } = require('@netlify/blobs');
-const twilio = require('twilio');
+import { getStore } from '@netlify/blobs';
+import twilio from 'twilio';
 
-exports.handler = async (event) => {
+export default async (req, context) => {
   const cors = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
-  if (event.httpMethod === 'OPTIONS') return { statusCode: 200, headers: cors, body: '' };
-  if (event.httpMethod !== 'POST') return { statusCode: 405, headers: cors, body: 'Method not allowed' };
+  if (req.method === 'OPTIONS') return new Response('', { status: 200, headers: cors });
+  if (req.method !== 'POST') return new Response('Method not allowed', { status: 405, headers: cors });
 
   const startMs = Date.now();
-  const ua = event.headers['user-agent'] || '';
-  const referrer = event.headers['referer'] || '';
-  const coldStart = !global.__cgWarm;
-  global.__cgWarm = true;
+  const ua = req.headers.get('user-agent') || '';
+  const referrer = req.headers.get('referer') || '';
+  const coldStart = !globalThis.__cgWarm;
+  globalThis.__cgWarm = true;
 
   let phone, code, leadId;
-  try { ({ phone, code, leadId } = JSON.parse(event.body)); }
-  catch { return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'Invalid request body' }) }; }
+  try { ({ phone, code, leadId } = await req.json()); }
+  catch { return new Response(JSON.stringify({ error: 'Invalid request body' }), { status: 400, headers: { 'Content-Type': 'application/json', ...cors } }); }
 
-  if (!phone || !code) return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'Phone and code required' }) };
+  if (!phone || !code) return new Response(JSON.stringify({ error: 'Phone and code required' }), { status: 400, headers: { 'Content-Type': 'application/json', ...cors } });
 
   const digits = phone.replace(/\D/g, '');
   const e164 = digits.startsWith('0') ? '+64' + digits.slice(1) : '+' + digits;
@@ -40,9 +40,8 @@ exports.handler = async (event) => {
 
   const durationMs = Date.now() - startMs;
 
-  // Write to verifyLogs store
   try {
-    const logs = getStore('verifyLogs');
+    const logs = getStore({ name: 'verifyLogs', consistency: 'strong' });
     const logKey = `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
     await logs.setJSON(logKey, {
       timestamp: ts, leadId: leadId || null,
@@ -56,7 +55,9 @@ exports.handler = async (event) => {
   console.log(JSON.stringify({ event: 'verify_otp', phone: e164, verified, durationMs, coldStart, ts }));
 
   if (errorCode) {
-    return { statusCode: 400, headers: { 'Content-Type': 'application/json', ...cors }, body: JSON.stringify({ error: twilioResponse.error }) };
+    return new Response(JSON.stringify({ error: twilioResponse.error }), { status: 400, headers: { 'Content-Type': 'application/json', ...cors } });
   }
-  return { statusCode: 200, headers: { 'Content-Type': 'application/json', ...cors }, body: JSON.stringify({ verified }) };
+  return new Response(JSON.stringify({ verified }), { status: 200, headers: { 'Content-Type': 'application/json', ...cors } });
 };
+
+export const config = { path: '/.netlify/functions/verify-otp' };
