@@ -21,11 +21,14 @@ exports.handler = async (event) => {
   const leadId = body.leadId || `cg_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
   const now = new Date().toISOString();
 
-  const leads = getStore('leads');
+  // Blobs must never take down the alert path — treat storage as best-effort.
+  let leads = null;
+  try { leads = getStore('leads'); }
+  catch (e) { console.error(JSON.stringify({ event: 'blobs_unavailable', error: e.message })); }
 
-  // Read existing record (null if new)
+  // Read existing record (null if new or storage unavailable)
   let existing = null;
-  if (!isNew) {
+  if (!isNew && leads) {
     existing = await leads.get(leadId, { type: 'json' }).catch(() => null);
   }
 
@@ -52,8 +55,6 @@ exports.handler = async (event) => {
   merged.updatedAt = now;
   if (incoming.status === 'complete') merged.verifiedAt = now;
 
-  await leads.setJSON(leadId, merged);
-
   // SMS alert to owner on first partial save
   if (isNew && incoming.status === 'partial') {
     const ownerPhone = process.env.OWNER_PHONE;
@@ -76,8 +77,15 @@ exports.handler = async (event) => {
     }
   }
 
+  // Persist last, guarded — a storage failure must not fail the request
+  let stored = false;
+  if (leads) {
+    try { await leads.setJSON(leadId, merged); stored = true; }
+    catch (e) { console.error(JSON.stringify({ event: 'blob_write_error', leadId, error: e.message })); }
+  }
+
   const duration = Date.now() - startMs;
-  console.log(JSON.stringify({ event: 'save_lead', leadId, status: incoming.status, isNew, duration, ts: now }));
+  console.log(JSON.stringify({ event: 'save_lead', leadId, status: incoming.status, isNew, stored, duration, ts: now }));
 
   return {
     statusCode: 200,
