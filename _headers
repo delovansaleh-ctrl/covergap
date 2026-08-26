@@ -1,0 +1,12 @@
+# HTML and the main script must revalidate on every load, otherwise a
+# returning visitor can end up running new HTML against a cached old app.js.
+/
+  Cache-Control: public, max-age=0, must-revalidate
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+/app.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Static assets are safe to cache hard — they change name/content rarely.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
