@@ -512,6 +512,17 @@ function isValidNZPhone(digits) {
 // ── SAVE LEAD (Netlify function) ──
 const SAVE_LEAD_URL = 'https://fabulous-faloodeh-22f40b.netlify.app/.netlify/functions/save-lead';
 
+// Turn stored ids ('aia','partners') into readable labels ('AIA','Partners Life')
+// for the lead email. Falls back to the raw id if a lookup ever misses.
+function labelsFor(ids, table, key) {
+  return (ids || [])
+    .map(id => {
+      const hit = table.find(x => x.id === id);
+      return hit ? hit[key] : id;
+    })
+    .join(', ');
+}
+
 async function saveLead(status) {
   const payload = {
     leadId: ST.leadId || undefined,
@@ -561,8 +572,8 @@ async function saveLead(status) {
         Age: ST.ageBand || '',
         Goal: GOALS[ST.goal] || ST.goal || '',
         'Best time to call': ST.callTime || '',
-        'Currently with': (ST.providers || []).join(', '),
-        'Interested in': (ST.coverTypes || []).join(', '),
+        'Currently with': labelsFor(ST.providers, [...BANK_DATA, ...INSURER_DATA, {id:'notsure',name:"I'm not sure"}], 'name'),
+        'Interested in': labelsFor(ST.coverTypes, COVER_DATA, 'title'),
         'Lead ID': ST.leadId || '',
       }),
     }).then(r => console.log('lead email:', r.status))
