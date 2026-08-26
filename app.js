@@ -538,6 +538,35 @@ async function saveLead(status) {
     console.error('save-lead error:', err.message);
     // Non-fatal — funnel continues
   }
+
+  // Email the full lead. Sent from the browser because FormSubmit rejects
+  // server-side calls (403). Fire-and-forget so it can never block the funnel.
+  if (status === 'complete-unverified' && !ST._emailSent) {
+    ST._emailSent = true;
+    const GOALS = {
+      premiums: 'Lower premiums', review: 'Review cover levels',
+      life_change: 'Big life change', dont_know: "Doesn't know current cover",
+      new: 'New to insurance',
+    };
+    fetch('https://formsubmit.co/ajax/delovan.saleh@spireadvice.co.nz', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', Accept: 'application/json'},
+      body: JSON.stringify({
+        _subject: `CoverGap lead: ${ST.firstName || 'Unknown'} (${ST.ageBand || 'age ?'})`,
+        _template: 'table',
+        Name: ST.firstName || '',
+        Mobile: ST.phone || '',
+        Email: ST.email || '',
+        Age: ST.ageBand || '',
+        Goal: GOALS[ST.goal] || ST.goal || '',
+        'Best time to call': ST.callTime || '',
+        'Currently with': (ST.providers || []).join(', '),
+        'Interested in': (ST.coverTypes || []).join(', '),
+        'Lead ID': ST.leadId || '',
+      }),
+    }).then(r => console.log('lead email:', r.status))
+      .catch(e => console.error('lead email failed:', e.message));
+  }
 }
 
 // ── SCREEN 2: PARTIAL LEAD SAVE + META PIXEL LEAD ──
