@@ -101,6 +101,17 @@ function updateNextBtn() {
 }
 
 // ── NAV ──
+// Auto-advance for single-select screens. Short pause so the tick is visible,
+// and guarded on ST.screen so a late tap can't jump the wrong screen.
+let _advTimer = null;
+function autoAdvance(fromScreen) {
+  if (ST.screen !== fromScreen) return;
+  clearTimeout(_advTimer);
+  _advTimer = setTimeout(() => {
+    if (ST.screen === fromScreen && VALID[fromScreen] && VALID[fromScreen]()) goNext();
+  }, 260);
+}
+
 function goNext() {
   if (!VALID[ST.screen] || !VALID[ST.screen]()) return;
   const path = getPath();
@@ -396,6 +407,8 @@ function selectGoal(id) {
     el.querySelector('.chk').style.display = s ? 'flex' : 'none';
   });
   updateNextBtn();
+  // Auto-advance: single-select, no reason to make people find a Next button
+  autoAdvance(1);
 }
 
 function selectAgeBand(band, el) {
@@ -408,7 +421,9 @@ function selectAgeBand(band, el) {
   updateNextBtn();
   if (band === 'Over 65') {
     setTimeout(() => navigateTo('3b', 1), 320);
+    return;
   }
+  autoAdvance(3);
 }
 
 function selectProvider(id) {

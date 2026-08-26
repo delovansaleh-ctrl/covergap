@@ -261,7 +261,7 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
 .field-input::placeholder{color:#9CA3AF}
 
 /* ── NEXT BUTTON ── */
-.btn-next{font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;border-radius:8px;border:none;padding:13px 30px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;line-height:1;background:#E5E7EB;color:#9CA3AF;pointer-events:none}
+.btn-next{font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;border-radius:8px;border:none;padding:13px 30px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;line-height:1;background:#E5E7EB;color:#9CA3AF;pointer-events:none;position:sticky;bottom:16px;z-index:20}@media (max-width:640px){.btn-next{width:100%;justify-content:center;padding:16px 24px;font-size:16px;bottom:12px;box-shadow:0 6px 24px rgba(15,13,20,.16)}.screen{padding-bottom:96px}}
 .btn-next.enabled{background:#5B47D6;color:#FFF;box-shadow:0 4px 24px var(--a-glow);pointer-events:auto}
 .btn-next.enabled:hover{background:#4A3BC0;transform:translateY(-1px)}
 .btn-next.loading{opacity:.65;pointer-events:none}
