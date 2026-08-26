@@ -779,9 +779,10 @@ footer{padding:16px 48px;border-top:1px solid rgba(17,24,39,.06);display:flex;al
     <p class="sub">When's the best time to reach you?</p>
     <label class="field-lbl">Best time to call</label>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px" id="calltime-row"></div>
-    <label class="field-lbl">Email <span style="font-weight:400;color:#9CA3AF;font-size:10px;letter-spacing:0;text-transform:none">(optional — so we can send your summary)</span></label>
+    <label class="field-lbl">Email</label>
+    <p style="font-size:12px;color:#9CA3AF;line-height:1.5;margin:-4px 0 8px">So we can send your review summary in writing.</p>
     <input class="field-input" id="f-email" type="email" placeholder="jane@example.com" autocomplete="email"
-      oninput="ST.email=this.value.trim()"/>
+      oninput="ST.email=this.value.trim();updateNextBtn()"/>
     <button class="btn-next" id="btn-s6" onclick="goNext()" style="margin-top:28px">Continue →</button>
   </div>
 

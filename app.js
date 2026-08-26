@@ -87,7 +87,7 @@ const VALID = {
   3: () => !!ST.ageBand,
   4: () => ST.providers.length > 0,
   5: () => ST.coverTypes.length > 0,
-  6: () => !!ST.callTime,
+  6: () => !!ST.callTime && /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(ST.email || ''),
   7: () => true,
   8: () => true,
   9: () => true,
@@ -169,7 +169,13 @@ function buildScreen(n) {
     case '3b': break; // static HTML
     case 4: buildProvGrid(); buildGoalPill('pill-s4', 'pill-s4-text'); break;
     case 5: buildCoverGrid(); buildGoalPill('pill-s5', 'pill-s5-text'); break;
-    case 6: buildCallTimeRow(); break;
+    case 6: {
+      buildCallTimeRow();
+      // Restore email if the user navigated back from the review screen
+      const em = document.getElementById('f-email');
+      if (em) em.value = ST.email || '';
+      break;
+    }
     case 7: buildReview(); break;
     case 8: {
       const disp = document.getElementById('s8-phone-display');
