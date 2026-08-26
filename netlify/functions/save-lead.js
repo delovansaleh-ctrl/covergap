@@ -77,6 +77,39 @@ export default async (req, context) => {
     }
   }
 
+  // Full-detail alert when the lead COMPLETES the form. Without this you only
+  // ever hear about the thin partial record and never see the finished lead.
+  // Guarded on completeAlertSent so verification (a second 'complete' write)
+  // can't double-text.
+  const isComplete = incoming.status === 'complete' || incoming.status === 'complete-unverified';
+  if (isComplete && !(existing && existing.completeAlertSent)) {
+    const ownerPhone = process.env.OWNER_PHONE;
+    const fromPhone  = process.env.TWILIO_FROM_NUMBER;
+    if (ownerPhone && fromPhone) {
+      try {
+        const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+        const g = {
+          premiums: 'lower premiums', review: 'review cover',
+          life_change: 'life change', dont_know: "doesn't know cover", new: 'new to insurance',
+        }[merged.goal] || merged.goal || '?';
+        const verified = incoming.status === 'complete' ? 'verified' : 'unverified';
+        const lines = [
+          `\u2705 CoverGap FULL LEAD (${verified})`,
+          `${merged.firstName || '?'} \u2014 ${merged.mobile || 'no mobile'}`,
+          merged.email ? `Email: ${merged.email}` : null,
+          `Age: ${merged.ageBand || '?'}  |  Goal: ${g}`,
+          merged.callTime ? `Best time: ${merged.callTime}` : null,
+          merged.providers ? `With: ${merged.providers}` : null,
+          merged.coverTypes ? `Wants: ${merged.coverTypes}` : null,
+        ].filter(Boolean);
+        await client.messages.create({ to: ownerPhone, from: fromPhone, body: lines.join('\n') });
+        merged.completeAlertSent = true;
+      } catch (smsErr) {
+        console.error(JSON.stringify({ event: 'complete_alert_error', leadId, error: smsErr.message }));
+      }
+    }
+  }
+
   // Persist last, guarded — a storage failure must not fail the request
   let stored = false;
   if (leads) {
