@@ -110,6 +110,40 @@ export default async (req, context) => {
     }
   }
 
+  // Email the full lead via FormSubmit (already activated for this address).
+  // Runs on completion only, same guard as the SMS, and never blocks the response.
+  if (isComplete && !(existing && existing.completeAlertSent)) {
+    try {
+      const goalLabel = {
+        premiums: 'Lower premiums', review: 'Review cover levels',
+        life_change: 'Big life change', dont_know: "Doesn't know current cover",
+        new: 'New to insurance',
+      }[merged.goal] || merged.goal || '';
+      const resp = await fetch('https://formsubmit.co/ajax/delovan.saleh@spireadvice.co.nz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: `CoverGap lead: ${merged.firstName || 'Unknown'} (${merged.ageBand || 'age ?'})`,
+          _template: 'table',
+          Name: merged.firstName || '',
+          Mobile: merged.mobile || '',
+          Email: merged.email || '',
+          Age: merged.ageBand || '',
+          Goal: goalLabel,
+          'Best time to call': merged.callTime || '',
+          'Currently with': merged.providers || '',
+          'Interested in': merged.coverTypes || '',
+          Verified: incoming.status === 'complete' ? 'Yes' : 'Not yet',
+          'Lead ID': leadId,
+          Submitted: now,
+        }),
+      });
+      console.log(JSON.stringify({ event: 'lead_email', leadId, ok: resp.ok, status: resp.status }));
+    } catch (mailErr) {
+      console.error(JSON.stringify({ event: 'lead_email_error', leadId, error: mailErr.message }));
+    }
+  }
+
   // Persist last, guarded — a storage failure must not fail the request
   let stored = false;
   if (leads) {
