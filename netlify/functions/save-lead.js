@@ -121,7 +121,15 @@ export default async (req, context) => {
       }[merged.goal] || merged.goal || '';
       const resp = await fetch('https://formsubmit.co/ajax/delovan.saleh@spireadvice.co.nz', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          // FormSubmit rejects server-side calls that don't look like they
+          // came from the activated site — 403 without these.
+          Origin: 'https://covergap.nz',
+          Referer: 'https://covergap.nz/',
+          'User-Agent': 'Mozilla/5.0 (compatible; CoverGapLeadBot/1.0)',
+        },
         body: JSON.stringify({
           _subject: `CoverGap lead: ${merged.firstName || 'Unknown'} (${merged.ageBand || 'age ?'})`,
           _template: 'table',
