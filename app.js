@@ -296,7 +296,8 @@ function buildS2() {
 function buildAgeBandGrid() {
   const g = document.getElementById('age-grid'); if (!g) return;
   const ins = document.getElementById('s3-name-insert');
-  if (ins) ins.textContent = ST.firstName ? ST.firstName : '';
+  // Comma + space, otherwise it renders as "How old are youDelovan?"
+  if (ins) ins.textContent = ST.firstName ? ', ' + ST.firstName : '';
   g.innerHTML = AGE_BANDS.map((band, i) => {
     const sel = ST.ageBand === band;
     return `<div class="card card-age${sel?' sel':''}" data-id="${band}"
