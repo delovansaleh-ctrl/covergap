@@ -1,15 +1,5 @@
-const admin = require('firebase-admin');
+const { getStore } = require('@netlify/blobs');
 const twilio = require('twilio');
-
-// Initialise once per cold start
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(
-      JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
-    ),
-  });
-}
-const db = admin.firestore();
 
 exports.handler = async (event) => {
   const cors = {
@@ -29,9 +19,16 @@ exports.handler = async (event) => {
 
   const isNew = !body.leadId;
   const leadId = body.leadId || `cg_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-  const now = admin.firestore.FieldValue.serverTimestamp();
+  const now = new Date().toISOString();
 
-  // Build the update payload — only write non-empty incoming fields
+  const leads = getStore('leads');
+
+  // Read existing record (null if new)
+  let existing = null;
+  if (!isNew) {
+    existing = await leads.get(leadId, { type: 'json' }).catch(() => null);
+  }
+
   const incoming = {
     status:     body.status     || 'partial',
     firstName:  body.firstName  || '',
@@ -46,32 +43,18 @@ exports.handler = async (event) => {
     referrer:   body.referrer   || referrer,
   };
 
-  // Strip empty strings so they don't overwrite existing values on update
-  const nonEmpty = Object.fromEntries(Object.entries(incoming).filter(([, v]) => v !== ''));
-  // Always update status
-  nonEmpty.status = incoming.status;
-
-  try {
-    const ref = db.collection('leads').doc(leadId);
-
-    if (isNew) {
-      await ref.set({
-        leadId,
-        createdAt: now,
-        updatedAt: now,
-        ...incoming,
-      });
-    } else {
-      const patch = { updatedAt: now, ...nonEmpty };
-      if (body.status === 'complete') patch.verifiedAt = now;
-      await ref.set(patch, { merge: true });
-    }
-  } catch (fsErr) {
-    console.error(JSON.stringify({ event: 'firestore_error', leadId, error: fsErr.message, ts: new Date().toISOString() }));
-    // Non-fatal — still send the SMS alert
+  // Merge: keep existing non-empty values, overwrite with non-empty incoming values
+  const merged = existing ? { ...existing } : { leadId, createdAt: now };
+  for (const [k, v] of Object.entries(incoming)) {
+    if (v !== '') merged[k] = v;
   }
+  merged.status = incoming.status; // always update status
+  merged.updatedAt = now;
+  if (incoming.status === 'complete') merged.verifiedAt = now;
 
-  // SMS alert to owner on new partial lead
+  await leads.setJSON(leadId, merged);
+
+  // SMS alert to owner on first partial save
   if (isNew && incoming.status === 'partial') {
     const ownerPhone = process.env.OWNER_PHONE;
     const fromPhone  = process.env.TWILIO_FROM_NUMBER;
@@ -94,7 +77,7 @@ exports.handler = async (event) => {
   }
 
   const duration = Date.now() - startMs;
-  console.log(JSON.stringify({ event: 'save_lead', leadId, status: incoming.status, isNew, duration, ts: new Date().toISOString() }));
+  console.log(JSON.stringify({ event: 'save_lead', leadId, status: incoming.status, isNew, duration, ts: now }));
 
   return {
     statusCode: 200,

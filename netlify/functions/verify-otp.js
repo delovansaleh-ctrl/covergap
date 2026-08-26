@@ -1,14 +1,5 @@
-const admin = require('firebase-admin');
+const { getStore } = require('@netlify/blobs');
 const twilio = require('twilio');
-
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(
-      JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
-    ),
-  });
-}
-const db = admin.firestore();
 
 exports.handler = async (event) => {
   const cors = {
@@ -49,19 +40,14 @@ exports.handler = async (event) => {
 
   const durationMs = Date.now() - startMs;
 
-  // Write to verifyLogs
+  // Write to verifyLogs store
   try {
-    await db.collection('verifyLogs').add({
-      timestamp: admin.firestore.FieldValue.serverTimestamp(),
-      leadId: leadId || null,
-      action: 'check',
-      phone: e164,
-      twilioResponse,
-      errorCode,
-      durationMs,
-      coldStart,
-      userAgent: ua,
-      referrer,
+    const logs = getStore('verifyLogs');
+    const logKey = `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+    await logs.setJSON(logKey, {
+      timestamp: ts, leadId: leadId || null,
+      action: 'check', phone: e164,
+      twilioResponse, errorCode, durationMs, coldStart, userAgent: ua, referrer,
     });
   } catch (logErr) {
     console.error('verifyLogs write failed:', logErr.message);
